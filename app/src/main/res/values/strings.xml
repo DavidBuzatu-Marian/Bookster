@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Bookster</string>
+    <string name="hint_login_email">Email</string>
+    <string name="hint_login_password">Password</string>
+    <string name="title_activity_forgot_password">Forgot Password</string>
+    <string name="content_description_logo">Plane</string>
+    <string name="act_main_iv_logo">Bookster</string>
+    <string name="act_main_tv_login">Login</string>
+    <string name="act_main_btn_login">Login</string>
+    <string name="act_main_btn_register">Register</string>
 </resources>
