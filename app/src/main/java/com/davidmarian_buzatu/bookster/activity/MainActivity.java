@@ -3,6 +3,7 @@ package com.davidmarian_buzatu.bookster.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -66,5 +67,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             email.setError("Invalid Credentials");
         }
+    }
+
+    public void startRegisterActivity(View view) {
+        Intent regAct = new Intent(this, RegisterActivity.class);
+        startActivity(regAct);
     }
 }

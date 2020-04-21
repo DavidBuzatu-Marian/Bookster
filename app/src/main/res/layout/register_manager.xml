@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:background="@drawable/ic_background_register">
+
+    <TextView
+        android:id="@+id/act_register_TV_Logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/act_register_tv_register_manager"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="24dp"
+        android:textSize="32sp"
+        android:textColor="@color/colorGray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="200dp"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/act_register_CV_FormContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+
+        app:layout_constraintTop_toBottomOf="@id/act_register_TV_Logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        card_view:cardCornerRadius="16dp"
+        card_view:cardElevation="8dp">
+
+        <LinearLayout
+            android:id="@+id/act_register_LL_CV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/act_register_TIL_name"
+                        style="@style/TextInputLayoutStyle"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:background="#FFFFFF"
+                        android:padding="6dp"
+                        android:textColorHint="#000000"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/error_appearance"
+
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/act_register_TIET_name"
+                            style="@style/InputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:hint="@string/hint_register_business_name" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="64dp"
+                    android:background="#E4E4E4" />
+               <RelativeLayout
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="1"
+                   >
+                   <com.google.android.material.textfield.TextInputLayout
+                       android:id="@+id/act_register_TIL_address"
+                       style="@style/TextInputLayoutStyle"
+                       android:layout_marginTop="6dp"
+                       android:layout_marginBottom="12dp"
+                       android:layout_width="match_parent"
+                       android:layout_height="64dp"
+                       android:background="#FFFFFF"
+                       android:padding="6dp"
+                       android:textColorHint="#000000"
+                       app:errorEnabled="true"
+                       app:errorTextAppearance="@style/error_appearance"
+
+                       >
+
+                       <com.google.android.material.textfield.TextInputEditText
+                           android:id="@+id/act_register_TIET_address"
+                           style="@style/InputEditText"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:layout_marginTop="6dp"
+                           android:hint="@string/hint_register_address" />
+
+                   </com.google.android.material.textfield.TextInputLayout>
+               </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E4E4E4" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/act_register_TIL_email"
+                style="@style/TextInputLayoutStyle"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="#FFFFFF"
+                android:padding="12dp"
+                android:textColorHint="#000000"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/error_appearance"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/act_register_TIET_email"
+                    style="@style/InputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:hint="@string/hint_login_email" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E4E4E4" />
+
+            <RelativeLayout
+                android:id="@+id/act_register_RL_CV_Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/act_register_TIL_password"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:background="#FFFFFF"
+                    android:padding="12dp"
+                    android:textColorHint="#000000"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/error_appearance">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/act_register_TIET_password"
+                        style="@style/InputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="6dp"
+                        android:ems="10"
+                        android:hint="@string/hint_login_password"
+                        android:inputType="textPassword"
+                        android:maxLength="20" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/act_register_IV_ShowPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:src="@drawable/ic_baseline_visibility_off_24px"
+                    android:textAlignment="center"
+                    android:contentDescription="@string/title_activity_forgot_password"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E4E4E4" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/act_register_cpp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ccp_contentColor="@color/colorPrimaryDark"
+                    app:ccp_flagBorderColor="@color/colorPrimaryDark"
+                    app:ccp_autoDetectCountry="true"
+                    app:ccpDialog_searchEditTextTint="@color/colorBlack"
+                    app:ccpDialog_backgroundColor="@color/colorGray"
+                    app:ccpDialog_textColor="@color/colorBlack"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    />
+
+                <EditText
+                    android:id="@+id/act_register_ET_carrierNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:importantForAutofill="no"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:hint="@string/hint_login_number"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/act_register_CV_FormContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/act_register_btn_register"
+        android:backgroundTint="@color/colorLogin"
+        app:cornerRadius="16dp"
+        android:layout_marginTop="12dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
