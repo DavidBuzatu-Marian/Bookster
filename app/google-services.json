@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "180886735112",
+    "firebase_url": "https://bookster-9e512.firebaseio.com",
+    "project_id": "bookster-9e512",
+    "storage_bucket": "bookster-9e512.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180886735112:android:ea1fbf5cc492e8aa0604bd",
+        "android_client_info": {
+          "package_name": "com.davidmarian_buzatu.bookster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180886735112-g51vb8f6oj37t878lb9i5qie8c76fkq4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.davidmarian_buzatu.bookster",
+            "certificate_hash": "f4c3814ffdd9a4eff0c334e643e5f99390da5596"
+          }
+        },
+        {
+          "client_id": "180886735112-19ov8558ov5m87va604no8q1co185l1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1myKSH7Ssa0aaypjA6pE2Iq-P0PUJeyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180886735112-19ov8558ov5m87va604no8q1co185l1b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
