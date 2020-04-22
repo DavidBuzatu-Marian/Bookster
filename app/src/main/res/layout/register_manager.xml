@@ -54,8 +54,6 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/act_register_TIL_name"
                         style="@style/TextInputLayoutStyle"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="12dp"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:background="#FFFFFF"
@@ -67,7 +65,7 @@
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/act_register_TIET_name"
+                            android:id="@+id/act_register_TIET_name_manager"
                             style="@style/InputEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -87,10 +85,8 @@
                    android:layout_weight="1"
                    >
                    <com.google.android.material.textfield.TextInputLayout
-                       android:id="@+id/act_register_TIL_address"
+                       android:id="@+id/act_register_TIL_address_manager"
                        style="@style/TextInputLayoutStyle"
-                       android:layout_marginTop="6dp"
-                       android:layout_marginBottom="12dp"
                        android:layout_width="match_parent"
                        android:layout_height="64dp"
                        android:background="#FFFFFF"
@@ -102,7 +98,7 @@
                        >
 
                        <com.google.android.material.textfield.TextInputEditText
-                           android:id="@+id/act_register_TIET_address"
+                           android:id="@+id/act_register_TIET_address_manager"
                            style="@style/InputEditText"
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content"
@@ -119,10 +115,8 @@
                 android:background="#E4E4E4" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/act_register_TIL_email"
+                android:id="@+id/act_register_TIL_email_manager"
                 style="@style/TextInputLayoutStyle"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:background="#FFFFFF"
@@ -134,7 +128,7 @@
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/act_register_TIET_email"
+                    android:id="@+id/act_register_TIET_email_manager"
                     style="@style/InputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -149,14 +143,12 @@
                 android:background="#E4E4E4" />
 
             <RelativeLayout
-                android:id="@+id/act_register_RL_CV_Password"
+                android:id="@+id/act_register_RL_CV_Password_manager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/act_register_TIL_password"
+                    android:id="@+id/act_register_TIL_password_manager"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -167,7 +159,7 @@
                     app:errorTextAppearance="@style/error_appearance">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/act_register_TIET_password"
+                        android:id="@+id/act_register_TIET_password_manager"
                         style="@style/InputEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -181,19 +173,19 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
-                    android:id="@+id/act_register_IV_ShowPassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:src="@drawable/ic_baseline_visibility_off_24px"
-                    android:textAlignment="center"
-                    android:contentDescription="@string/title_activity_forgot_password"/>
+<!--                <ImageView-->
+<!--                    android:id="@+id/act_register_IV_ShowPassword"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:gravity="center"-->
+<!--                    android:src="@drawable/ic_baseline_visibility_off_24px"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:contentDescription="@string/title_activity_forgot_password"/>-->
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"
@@ -203,7 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.hbb20.CountryCodePicker
-                    android:id="@+id/act_register_cpp"
+                    android:id="@+id/act_register_cpp_manager"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ccp_contentColor="@color/colorPrimaryDark"
@@ -217,7 +209,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/act_register_ET_carrierNumber"
+                    android:id="@+id/act_register_ET_carrierNumber_manager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone"
@@ -226,6 +218,8 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:textCursorDrawable="@null"
                     android:hint="@string/hint_login_number"/>
             </LinearLayout>
         </LinearLayout>
@@ -244,6 +238,7 @@
         android:backgroundTint="@color/colorLogin"
         app:cornerRadius="16dp"
         android:layout_marginTop="12dp"
+        android:onClick="registerUser"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

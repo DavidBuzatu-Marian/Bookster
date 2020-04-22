@@ -6,6 +6,23 @@
     xmlns:card_view="http://schemas.android.com/tools"
     android:background="@drawable/ic_background_register">
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Main content -->
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_baseline_arrow_forward_24px"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <TextView
         android:id="@+id/act_register_TV_Logo"
         android:layout_width="wrap_content"
@@ -18,6 +35,7 @@
         android:textColor="@color/colorGray"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="200dp"
+        android:fontFamily="@font/roboto_regular"
         />
 
     <androidx.cardview.widget.CardView
@@ -33,7 +51,7 @@
 
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         card_view:cardCornerRadius="16dp"
         card_view:cardElevation="8dp">
 
@@ -46,8 +64,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/act_register_TIL_name"
                 style="@style/TextInputLayoutStyle"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="12dp"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:background="#FFFFFF"
@@ -76,12 +92,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/act_register_TIL_email"
                 style="@style/TextInputLayoutStyle"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:background="#FFFFFF"
-                android:padding="12dp"
+                android:padding="6dp"
                 android:textColorHint="#000000"
                 app:errorEnabled="true"
                 app:errorTextAppearance="@style/error_appearance"
@@ -106,9 +120,7 @@
             <RelativeLayout
                 android:id="@+id/act_register_RL_CV_Password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/act_register_TIL_password"
@@ -116,7 +128,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:background="#FFFFFF"
-                    android:padding="12dp"
+                    android:padding="6dp"
                     android:textColorHint="#000000"
                     app:errorEnabled="true"
                     app:errorTextAppearance="@style/error_appearance">
@@ -136,19 +148,19 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
-                    android:id="@+id/act_register_IV_ShowPassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:src="@drawable/ic_baseline_visibility_off_24px"
-                    android:textAlignment="center"
-                    android:contentDescription="@string/title_activity_forgot_password"/>
+<!--                <ImageView-->
+<!--                    android:id="@+id/act_register_IV_ShowPassword"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:gravity="center"-->
+<!--                    android:src="@drawable/ic_baseline_visibility_off_24px"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:contentDescription="@string/title_activity_forgot_password"/>-->
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"
@@ -167,8 +179,8 @@
                     app:ccpDialog_searchEditTextTint="@color/colorBlack"
                     app:ccpDialog_backgroundColor="@color/colorGray"
                     app:ccpDialog_textColor="@color/colorBlack"
-                    android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
+                    android:layout_marginTop="6dp"
                     />
 
                 <EditText
@@ -181,6 +193,8 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:textCursorDrawable="@null"
                     android:hint="@string/hint_login_number"/>
             </LinearLayout>
         </LinearLayout>
@@ -199,6 +213,7 @@
         android:backgroundTint="@color/colorLogin"
         app:cornerRadius="16dp"
         android:layout_marginTop="12dp"
+        android:onClick="registerUser"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
