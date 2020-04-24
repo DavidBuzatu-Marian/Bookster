@@ -26,4 +26,13 @@
     <string name="act_register_dialog_message">Loading...</string>
     <string name="act_main_dialog_title">Logging in</string>
     <string name="act_main_dialog_message">Loading...</string>
+    <string name="frag_search_TV_destination">Your destination</string>
+    <string name="search_title">Type in a location</string>
+    <string name="frag_search_SV_hint">Type in a location</string>
+    <string name="frag_search_TV_start_date">Start date</string>
+    <string name="frag_search_TV_end_date">End date</string>
+    <string name="frag_search_IV_content_descr">PersonIcon</string>
+    <string name="frag_search_TV_nr_persons">Number of persons</string>
+    <string name="frag_search_BTN_search">Search</string>
+    <string name="frag_search_ET_date">dd/MM/yyyy</string>
 </resources>

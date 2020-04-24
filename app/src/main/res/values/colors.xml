@@ -8,4 +8,6 @@
     <color name="colorGray">#E6E6EA</color>
     <color name="colorLogin">#2AB7CA</color>
     <color name="colorRegister">#147078</color>
+    <color name="colorHeader">#7D7D7D</color>
+    <color name="colorBackground">#F4F4F8</color>
 </resources>

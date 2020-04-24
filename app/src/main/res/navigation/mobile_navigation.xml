@@ -15,7 +15,11 @@
         android:id="@+id/navigation_search"
         android:name="com.davidmarian_buzatu.bookster.activity.ui.search.SearchFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <argument
+            android:name="Type"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_messages"

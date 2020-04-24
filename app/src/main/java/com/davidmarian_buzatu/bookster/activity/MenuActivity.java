@@ -2,14 +2,16 @@ package com.davidmarian_buzatu.bookster.activity;
 
 import android.os.Bundle;
 
+
 import com.davidmarian_buzatu.bookster.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
+
 import androidx.navigation.ui.NavigationUI;
+
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -26,6 +28,11 @@ public class MenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        Bundle extras = getIntent().getExtras();
+        navController.navigate(R.id.navigation_search, extras);
+
     }
+
 
 }
