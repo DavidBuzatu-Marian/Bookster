@@ -15,4 +15,15 @@
     <string name="hint_register_business_name">Business Name</string>
     <string name="hint_register_address">Business Address</string>
     <string name="hint_login_number">Phone</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_search">Search</string>
+    <string name="title_messages">Messages</string>
+    <string name="title_profile">Profile</string>
+    <string name="act_register_dialog_title">Creating Account</string>
+    <string name="act_register_dialog_message">Loading...</string>
+    <string name="act_main_dialog_title">Logging in</string>
+    <string name="act_main_dialog_message">Loading...</string>
 </resources>

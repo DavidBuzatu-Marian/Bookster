@@ -5,12 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.davidmarian_buzatu.bookster.R;
@@ -36,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Activity mActivity = this;
     private int mPos;
     private RegisterAdapter mRegAdapter;
+    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
             // REGISTER CLIENT
             try {
                 if (validFields(email, password, name) && mRegAdapter.getIsValidNumberClient()) {
+                    showLoadingDialog();
                     createUser(email, password, name, mRegAdapter.getmCCPClient(), "Client");
                 } else if(!mRegAdapter.getIsValidNumberClient())  {
                     Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
@@ -106,7 +109,10 @@ public class RegisterActivity extends AppCompatActivity {
                 name = findViewById(R.id.act_register_TIET_name_manager);
 
                 if (validFields(email, password, name) && mRegAdapter.getIsValidNumberManager() && address.getText() != null) {
+                    showLoadingDialog();
                     createUser(email, password, name, address, mRegAdapter.getmCCPManager(), "Manager");
+                } else if(!mRegAdapter.getIsValidNumberManager())  {
+                    Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                 }
             } catch (IllegalArgumentException ex) {
                 email.setError("Invalid credentials");
@@ -127,7 +133,8 @@ public class RegisterActivity extends AppCompatActivity {
                             saveUserInfo(email.getText().toString(), CCP.getFullNumberWithPlus(), name.getText().toString(), address.getText().toString(), type);
                         } else {
                             Log.d("REG_TEST", "Registered user failed");
-                            email.setError(task.getException().toString());
+                            Toast.makeText(RegisterActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
+                            mDialog.dismiss();
                         }
                     }
                 });
@@ -150,6 +157,8 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         // TODO: GET USER INSTANCE
                         Log.d("REG_TEST", "SAVED USER INFO");
+                        mDialog.dismiss();
+                        redirectToUI("Manager");
                     }
                 });
     }
@@ -165,7 +174,8 @@ public class RegisterActivity extends AppCompatActivity {
                             saveUserInfo(email.getText().toString(), CCP.getFullNumberWithPlus(), name.getText().toString(), type);
                         } else {
                             Log.d("REG_TEST", "Registered user failed");
-                            email.setError(task.getException().toString());
+                            Toast.makeText(RegisterActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
+                            mDialog.dismiss();
                         }
                     }
                 });
@@ -187,6 +197,8 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("REG_TEST", "SAVED USER INFO");
+                        mDialog.dismiss();
+                        redirectToUI("Client");
                     }
                 });
     }
@@ -272,5 +284,18 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
+    private void showLoadingDialog() {
+        mDialog = new ProgressDialog(this);
+        mDialog.setMessage(getString(R.string.act_register_dialog_message));
+        mDialog.setTitle(getString(R.string.act_register_dialog_title));
+        mDialog.setIndeterminate(false);
+        mDialog.setCancelable(false);
+        mDialog.show();
+    }
 
+    private void redirectToUI(String type) {
+        Intent landingAct = new Intent(this, MenuActivity.class);
+        landingAct.putExtra("Type", type);
+        startActivity(landingAct);
+    }
 }
