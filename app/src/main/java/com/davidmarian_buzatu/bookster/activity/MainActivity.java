@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        // TODO: REDIRECT ON SUCCESS
         FirebaseUser currentUser = mAuth.getCurrentUser();
         // redirect if currentUser != null;
     }
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                        }
                    }
                });
+
            } catch (IllegalArgumentException ex) {
                email.setError("Invalid Credentials");
            }

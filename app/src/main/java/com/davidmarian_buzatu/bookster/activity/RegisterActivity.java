@@ -23,6 +23,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hbb20.CountryCodePicker;
 
@@ -87,6 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
         name = findViewById(R.id.act_register_TIET_name);
         CountryCodePicker CCP = mRegAdapter.getCCP();
         if (mPos == 0) {
+            // REGISTER CLIENT
             try {
                 if (validFields(email, password, name) && mRegAdapter.getIsValidNumber()) {
                     createUser(email, password, name, CCP, "Client");
@@ -95,6 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                 email.setError("Invalid credentials");
             }
         } else {
+            // REGISTER MANAGER
             try {
                 address = findViewById(R.id.act_register_TIET_address_manager);
                 email = findViewById(R.id.act_register_TIET_email_manager);
@@ -138,10 +141,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         FirebaseFirestore.getInstance()
                 .collection("users")
-                .add(userInfo)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                .document(mAuth.getCurrentUser().getUid())
+                .set(userInfo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onSuccess(Void aVoid) {
                         // TODO: GET USER INSTANCE
                         Log.d("REG_TEST", "SAVED USER INFO");
                     }
@@ -173,13 +177,14 @@ public class RegisterActivity extends AppCompatActivity {
         userInfo.put("PhoneNumber", number);
         userInfo.put("Type", type);
 
+
         FirebaseFirestore.getInstance()
                 .collection("users")
-                .add(userInfo)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                .document(mAuth.getCurrentUser().getUid())
+                .set(userInfo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        // TODO: GET USER INSTANCE
+                    public void onSuccess(Void aVoid) {
                         Log.d("REG_TEST", "SAVED USER INFO");
                     }
                 });
