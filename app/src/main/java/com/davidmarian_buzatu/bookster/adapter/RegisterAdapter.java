@@ -17,9 +17,10 @@ import com.davidmarian_buzatu.bookster.R;
 import com.hbb20.CountryCodePicker;
 
 public class RegisterAdapter  extends PagerAdapter {
-    private CountryCodePicker mCCP;
-    private boolean mIsValidNumber;
+    private CountryCodePicker mCCPClient, mCCPManager;
+    private boolean mIsValidNumberClient = false,  mIsValidNumberManager = false;
     private final Context mContext;
+    private EditText mEditTextCarrierNumberClient, mEditTextCarrierNumberManager;
 
     public RegisterAdapter(Context context) {
         mContext = context;
@@ -66,24 +67,43 @@ public class RegisterAdapter  extends PagerAdapter {
     }
 
     private void setCCP(ViewGroup layout, int position) {
-        mCCP = position == 0 ? layout.findViewById(R.id.act_register_cpp) : layout.findViewById(R.id.act_register_cpp_manager);
-        EditText mEditTextCarrierNumber = position == 0 ? layout.findViewById(R.id.act_register_ET_carrierNumber) : layout.findViewById(R.id.act_register_ET_carrierNumber_manager);
+        if(position == 0) {
+            mCCPClient = layout.findViewById(R.id.act_register_cpp);
+            mEditTextCarrierNumberClient = layout.findViewById(R.id.act_register_ET_carrierNumber);
 
-        mCCP.registerCarrierNumberEditText(mEditTextCarrierNumber);
+            mCCPClient.registerCarrierNumberEditText(mEditTextCarrierNumberClient);
+            mCCPClient.setPhoneNumberValidityChangeListener(new CountryCodePicker.PhoneNumberValidityChangeListener() {
+                @Override
+                public void onValidityChanged(boolean isValidNumber) {
+                    mIsValidNumberClient = isValidNumber;
+                }
+            });
+        }else {
+            mCCPManager = layout.findViewById(R.id.act_register_cpp_manager);
+            mEditTextCarrierNumberManager = layout.findViewById(R.id.act_register_ET_carrierNumber_manager);
+            mCCPManager.registerCarrierNumberEditText(mEditTextCarrierNumberManager);
 
-        mCCP.setPhoneNumberValidityChangeListener(new CountryCodePicker.PhoneNumberValidityChangeListener() {
-            @Override
-            public void onValidityChanged(boolean isValidNumber) {
-                mIsValidNumber = isValidNumber;
-            }
-        });
+            mCCPManager.setPhoneNumberValidityChangeListener(new CountryCodePicker.PhoneNumberValidityChangeListener() {
+                @Override
+                public void onValidityChanged(boolean isValidNumber) {
+                    mIsValidNumberManager = isValidNumber;
+                }
+            });
+        }
     }
 
-    public CountryCodePicker getCCP() {
-        return mCCP;
+    public CountryCodePicker getmCCPClient() {
+        return mCCPClient;
     }
 
-    public boolean getIsValidNumber() {
-        return mIsValidNumber;
+    public CountryCodePicker getmCCPManager() {
+        return mCCPManager;
+    }
+
+    public boolean getIsValidNumberClient() {
+        return mIsValidNumberClient;
+    }
+    public boolean getIsValidNumberManager() {
+        return mIsValidNumberManager;
     }
 }

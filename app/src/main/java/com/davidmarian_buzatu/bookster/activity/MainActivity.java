@@ -7,14 +7,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
                        if (task.isSuccessful()) {
                            // Success
                            Log.d("Login", "SignInWithEmail: Success");
-
-                           // TODO: GET USER TYPE AND GET INSTANCE OF IT
-
                            // Redirect
+                           getUserTypeAndRedirect();
+
+
                        } else {
                            // Fail
                            Log.d("Login", "SignInWithEmail: Fail");
-                           email.setError("Invalid Credentials");
+                           Toast.makeText(MainActivity.this, "Check your internet connection!", Toast.LENGTH_LONG).show();
                        }
                    }
                });
@@ -70,6 +74,24 @@ public class MainActivity extends AppCompatActivity {
             email.setError("Invalid Credentials");
         }
     }
+
+    private void getUserTypeAndRedirect() {
+        FirebaseFirestore.getInstance().collection("users").document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+//                    redirectToLanding(documentSnapshot.get("Type").toString());
+                }
+            }
+        });
+    }
+
+//    private void redirectToLanding(String type) {
+//        Intent landingAct = new Intent(this, Landing.class);
+//        landingAct.putExtra("Type", type);
+//        startActivity(landingAct);
+//    }
 
     public void startRegisterActivity(View view) {
         Intent regAct = new Intent(this, RegisterActivity.class);

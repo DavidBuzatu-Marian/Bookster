@@ -86,12 +86,13 @@ public class RegisterActivity extends AppCompatActivity {
         email = findViewById(R.id.act_register_TIET_email);
         password = findViewById(R.id.act_register_TIET_password);
         name = findViewById(R.id.act_register_TIET_name);
-        CountryCodePicker CCP = mRegAdapter.getCCP();
         if (mPos == 0) {
             // REGISTER CLIENT
             try {
-                if (validFields(email, password, name) && mRegAdapter.getIsValidNumber()) {
-                    createUser(email, password, name, CCP, "Client");
+                if (validFields(email, password, name) && mRegAdapter.getIsValidNumberClient()) {
+                    createUser(email, password, name, mRegAdapter.getmCCPClient(), "Client");
+                } else if(!mRegAdapter.getIsValidNumberClient())  {
+                    Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                 }
             } catch (IllegalArgumentException ex) {
                 email.setError("Invalid credentials");
@@ -104,8 +105,8 @@ public class RegisterActivity extends AppCompatActivity {
                 password = findViewById(R.id.act_register_TIET_password_manager);
                 name = findViewById(R.id.act_register_TIET_name_manager);
 
-                if (validFields(email, password, name) && mRegAdapter.getIsValidNumber() && address.getText() != null) {
-                    createUser(email, password, name, address, CCP, "Manager");
+                if (validFields(email, password, name) && mRegAdapter.getIsValidNumberManager() && address.getText() != null) {
+                    createUser(email, password, name, address, mRegAdapter.getmCCPManager(), "Manager");
                 }
             } catch (IllegalArgumentException ex) {
                 email.setError("Invalid credentials");
@@ -122,6 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             //TODO: SAVE INFO IN FIRESTORE
                             Log.d("REG_TEST", "Registered user");
+
                             saveUserInfo(email.getText().toString(), CCP.getFullNumberWithPlus(), name.getText().toString(), address.getText().toString(), type);
                         } else {
                             Log.d("REG_TEST", "Registered user failed");
@@ -159,7 +161,6 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //Success
                         if (task.isSuccessful()) {
-                            //TODO: SAVE INFO IN FIRESTORE
                             Log.d("REG_TEST", "Registered user");
                             saveUserInfo(email.getText().toString(), CCP.getFullNumberWithPlus(), name.getText().toString(), type);
                         } else {
