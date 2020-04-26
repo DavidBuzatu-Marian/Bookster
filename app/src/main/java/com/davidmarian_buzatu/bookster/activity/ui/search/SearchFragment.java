@@ -35,15 +35,11 @@ import java.util.Locale;
 public class SearchFragment extends Fragment {
 
     private User mCurrentUser;
-    private UploadCities uploadCities=new UploadCities();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        
+
         View root = inflater.inflate(R.layout.fragment_search, container, false);
-
-
-        uploadCities.uploadCitiesToDatabase();
 
 
         getUserInstance(getArguments().getString("Type"));
@@ -53,6 +49,11 @@ public class SearchFragment extends Fragment {
         setUpSubmitButton(root);
         return root;
     }
+//
+//    private void addCitiesToFirebase() {
+//        UploadCities uploadCities = new UploadCities();
+//        uploadCities.uploadCitiesToDatabase();
+//    }
 
     private void setUpSubmitButton(View root) {
         Button btnSearch = root.findViewById(R.id.frag_search_BTN_search);
@@ -68,7 +69,7 @@ public class SearchFragment extends Fragment {
         mCurrentUser.getUserInfo().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     setTVHeaderMessage(root);
                 }
             }
