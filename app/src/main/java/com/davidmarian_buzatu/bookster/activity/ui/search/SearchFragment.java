@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -41,13 +42,26 @@ public class SearchFragment extends Fragment {
         
         View root = inflater.inflate(R.layout.fragment_search, container, false);
 
+
         uploadCities.uploadCitiesToDatabase();
+
 
         getUserInstance(getArguments().getString("Type"));
         getUserInfo(root);
         setUpCalendarPicker(root);
         setUpNumberPicker(root);
+        setUpSubmitButton(root);
         return root;
+    }
+
+    private void setUpSubmitButton(View root) {
+        Button btnSearch = root.findViewById(R.id.frag_search_BTN_search);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startListOffersFragment(root);
+            }
+        });
     }
 
     private void getUserInfo(View root) {
@@ -145,5 +159,14 @@ public class SearchFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         edittext.setText(sdf.format(calendar.getTime()));
+    }
+
+    private void startListOffersFragment(View view) {
+        ListOffersFragment nextFragment = new ListOffersFragment();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, nextFragment)
+                .addToBackStack(null)
+                .commit();
+        Log.d("LIST_OFFER", "LISTED");
     }
 }
