@@ -2,6 +2,7 @@ package com.davidmarian_buzatu.bookster.activity.ui.search;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.MenuActivity;
+import com.davidmarian_buzatu.bookster.activity.ui.search.helper.UploadCities;
 import com.davidmarian_buzatu.bookster.model.Client;
 import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.User;
@@ -32,12 +34,15 @@ import java.util.Locale;
 public class SearchFragment extends Fragment {
 
     private User mCurrentUser;
+    private UploadCities uploadCities=new UploadCities();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         
         View root = inflater.inflate(R.layout.fragment_search, container, false);
-        
+
+        uploadCities.uploadCitiesToDatabase();
+
         getUserInstance(getArguments().getString("Type"));
         getUserInfo(root);
         setUpCalendarPicker(root);
