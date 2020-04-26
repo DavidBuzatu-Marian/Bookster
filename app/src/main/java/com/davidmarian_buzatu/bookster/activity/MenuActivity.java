@@ -18,7 +18,7 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_menu);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -30,6 +30,9 @@ public class MenuActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         Bundle extras = getIntent().getExtras();
+        navController.navigate(R.id.navigation_home, extras);
+        navController.navigate(R.id.navigation_messages, extras);
+        navController.navigate(R.id.navigation_profile, extras);
         navController.navigate(R.id.navigation_search, extras);
 
     }
