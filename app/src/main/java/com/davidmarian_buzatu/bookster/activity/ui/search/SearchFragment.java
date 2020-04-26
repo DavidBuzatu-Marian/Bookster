@@ -39,7 +39,7 @@ public class SearchFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         
         View root = inflater.inflate(R.layout.fragment_search, container, false);
-        
+
         getUserInstance(getArguments().getString("Type"));
         getUserInfo(root);
         setUpCalendarPicker(root);
@@ -158,7 +158,7 @@ public class SearchFragment extends Fragment {
     private void startListOffersFragment(View view) {
         ListOffersFragment nextFragment = new ListOffersFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, nextFragment, "SearchFragment")
+                .replace(R.id.nav_host_fragment, nextFragment)
                 .addToBackStack(null)
                 .commit();
         Log.d("LIST_OFFER", "LISTED");
