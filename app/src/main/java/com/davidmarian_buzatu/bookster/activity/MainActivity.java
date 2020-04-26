@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
            try {
                showLoadingDialog();
                signInUser(email, password);
-
            } catch (IllegalArgumentException ex) {
                email.setError("Invalid Credentials");
+               mDialog.dismiss();
            }
         } else {
             email.setError("Invalid Credentials");
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void signInUser(TextInputEditText email, TextInputEditText password) {
+
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

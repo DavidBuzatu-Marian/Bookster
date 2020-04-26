@@ -99,6 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             } catch (IllegalArgumentException ex) {
                 email.setError("Invalid credentials");
+                mDialog.dismiss();
             }
         } else {
             // REGISTER MANAGER
@@ -116,6 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             } catch (IllegalArgumentException ex) {
                 email.setError("Invalid credentials");
+                mDialog.dismiss();
             }
         }
     }
