@@ -98,8 +98,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                 }
             } catch (IllegalArgumentException ex) {
-                email.setError("Invalid credentials");
                 mDialog.dismiss();
+                email.setError("Invalid credentials");
             }
         } else {
             // REGISTER MANAGER
@@ -116,8 +116,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                 }
             } catch (IllegalArgumentException ex) {
-                email.setError("Invalid credentials");
                 mDialog.dismiss();
+                email.setError("Invalid credentials");
             }
         }
     }

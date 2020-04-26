@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
                showLoadingDialog();
                signInUser(email, password);
            } catch (IllegalArgumentException ex) {
-               email.setError("Invalid Credentials");
                mDialog.dismiss();
+               email.setError("Invalid Credentials");
            }
         } else {
             email.setError("Invalid Credentials");
