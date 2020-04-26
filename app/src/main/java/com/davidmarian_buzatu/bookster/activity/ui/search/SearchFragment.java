@@ -18,6 +18,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.MenuActivity;
+import com.davidmarian_buzatu.bookster.model.Client;
+import com.davidmarian_buzatu.bookster.model.Manager;
+import com.davidmarian_buzatu.bookster.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,26 +31,50 @@ import java.util.Locale;
 
 public class SearchFragment extends Fragment {
 
-    private SearchViewModel searchViewModel;
+    private User mCurrentUser;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        searchViewModel =
-                ViewModelProviders.of(this).get(SearchViewModel.class);
+        
         View root = inflater.inflate(R.layout.fragment_search, container, false);
-        final TextView textView = root.findViewById(R.id.text_search);
-        searchViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
-        TextView tv = root.findViewById(R.id.frag_search_TV_welcome);
-        tv.setText(getArguments().getString("Type"));
+        
+        getUserInstance(getArguments().getString("Type"));
+        getUserInfo(root);
         setUpCalendarPicker(root);
         setUpNumberPicker(root);
         return root;
+    }
+
+    private void getUserInfo(View root) {
+        mCurrentUser.getUserInfo().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    setTVHeaderMessage(root);
+                }
+            }
+        });
+    }
+
+    private void setTVHeaderMessage(View root) {
+        TextView tv = root.findViewById(R.id.frag_search_TV_welcome);
+        tv.setText(new StringBuilder()
+                .append(getString(R.string.frag_search_TV_welcome_user))
+                .append(", ")
+                .append(mCurrentUser.getUserName()).toString());
+    }
+
+    private void getUserInstance(String type) {
+        switch (type) {
+            case "Client":
+                mCurrentUser = Client.getInstance();
+                break;
+            case "Manager":
+                mCurrentUser = Manager.getInstance();
+                break;
+            default:
+                mCurrentUser = null;
+        }
     }
 
     private void setUpNumberPicker(View root) {
