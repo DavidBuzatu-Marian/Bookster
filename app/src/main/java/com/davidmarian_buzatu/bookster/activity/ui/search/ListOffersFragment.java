@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
+import com.davidmarian_buzatu.bookster.model.Offer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListOffersFragment extends Fragment {
 
@@ -36,7 +40,11 @@ public class ListOffersFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ListOffersAdapter();
+        ArrayList<Offer> test = new ArrayList<>();
+        test.add(new Offer("Arad", "1423", "Dont know", "Exemplu", "ere", null));
+        test.add(new Offer("Arad", "1423", "Dont know", "Exemplu", "ere", null));
+        test.add(new Offer("Arad", "1423", "Dont know", "Exemplu", "ere", null));
+        mAdapter = new ListOffersAdapter(test);
         recyclerView.setAdapter(mAdapter);
     }
 }

@@ -11,4 +11,6 @@
     <color name="colorHeader">#7D7D7D</color>
     <color name="colorBackground">#F4F4F8</color>
     <color name="colorBlackHeader">#3D3D3D</color>
+    <color name="colorOfferItem">#F4F4F8</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

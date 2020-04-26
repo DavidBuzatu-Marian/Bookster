@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBackground">
 
 
         <RelativeLayout
@@ -107,16 +108,16 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/frag_listOffers_CV_offers"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@id/frag_listOffers_LL_location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="224dp"
 
-        app:cardCornerRadius="30dp"
-        app:cardElevation="8dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/colorWhite"
+        app:cardCornerRadius="36dp"
+        app:cardElevation="0dp"
         >
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/frag_listOffers_RV_offers"
