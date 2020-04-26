@@ -41,7 +41,7 @@ public class Client implements User {
     public String getUserPhoneNumber() {
         String phoneNumber = null;
         if(userInfo != null) {
-            phoneNumber = (String) userInfo.get("phoneNumber");
+            phoneNumber = (String) userInfo.get("PhoneNumber");
         }
         return phoneNumber;
     }
@@ -49,7 +49,7 @@ public class Client implements User {
     public String getUserName() {
         String name = null;
         if(userInfo != null) {
-            name = (String) userInfo.get("name");
+            name = (String) userInfo.get("Name");
         }
         return name;
     }

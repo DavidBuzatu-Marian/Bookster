@@ -40,7 +40,7 @@ public class Manager implements User {
     public String getUserPhoneNumber() {
         String phoneNumber = null;
         if(userInfo != null) {
-            phoneNumber = (String) userInfo.get("phoneNumber");
+            phoneNumber = (String) userInfo.get("PhoneNumber");
         }
         return phoneNumber;
     }
@@ -48,7 +48,7 @@ public class Manager implements User {
     public String getUserName() {
         String name = null;
         if(userInfo != null) {
-            name = (String) userInfo.get("name");
+            name = (String) userInfo.get("Name");
         }
         return name;
     }
@@ -56,7 +56,7 @@ public class Manager implements User {
     public String getUserAddress() {
         String address = null;
         if(userInfo != null) {
-            address = (String) userInfo.get("address");
+            address = (String) userInfo.get("Address");
         }
         return address;
     }
@@ -64,7 +64,7 @@ public class Manager implements User {
     public String getUserBusinessName() {
         String bName = null;
         if(userInfo != null) {
-            bName = (String) userInfo.get("business");
+            bName = (String) userInfo.get("Business");
         }
         return bName;
     }
