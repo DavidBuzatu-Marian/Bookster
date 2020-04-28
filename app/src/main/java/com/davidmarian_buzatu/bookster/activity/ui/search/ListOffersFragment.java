@@ -52,10 +52,10 @@ public class ListOffersFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         ArrayList<Offer> test = new ArrayList<>();
-        test.add(new Offer("Arad", "1423", "Dont know", "Exemplu", "ere", null));
-        test.add(new Offer("Arad", "1423", "Dont know", "Exemplu", "ere", null));
-        test.add(new Offer("Arad", "1423", "Dont know", "Exemplu", "ere", null));
-        mAdapter = new ListOffersAdapter(test);
+        test.add(new Offer("Arad", "1423", "Dont know", "Lorem magic text with a lot of description without any sense lot of description without any sense", "5", "https://firebasestorage.googleapis.com/v0/b/bookster-9e512.appspot.com/o/properties_ref%2F184305239.jpg?alt=media&token=57ee7fe1-0110-4bfa-bb01-8795c7a3b159"  ,null));
+        test.add(new Offer("Arad", "1423", "Dont know", "Lorem magic text with a lot of description without any sense lot of description without any sense", "4", "https://firebasestorage.googleapis.com/v0/b/bookster-9e512.appspot.com/o/properties_ref%2F5ea7ba25-596db591.jpg?alt=media&token=d24b8ca2-57c1-428b-96a8-6d20f55f6327", null));
+        test.add(new Offer("Arad", "1423", "Dont know", "Lorem magic text with a lot of description without any sense lot of description without any sense", "3.4", "https://firebasestorage.googleapis.com/v0/b/bookster-9e512.appspot.com/o/properties_ref%2Fhotelreview1a.jpg?alt=media&token=028052e8-cdb0-4ca8-8d5e-848a23f8dc54", null));
+        mAdapter = new ListOffersAdapter(test, getContext());
         recyclerView.setAdapter(mAdapter);
     }
 }

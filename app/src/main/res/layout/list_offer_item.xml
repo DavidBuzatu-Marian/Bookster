@@ -28,20 +28,23 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <ImageView
-                android:id="@+id/adapter_listOffer_SIV"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
+
+                android:id="@+id/adapter_listOffer_IV_presentation"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/ic_map_marked_alt_solid"
                 app:shapeAppearanceOverlay="@style/roundedImageView"
                 />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_marginStart="6dp"
                 android:padding="12dp">
                 <TextView
+
                     android:id="@+id/adapter_listOffer_TV_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,6 +52,8 @@
                     android:fontFamily="@font/roboto_bolditalic"
                     android:textSize="24sp"
                     android:textColor="@color/colorBlackHeader"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     />
                 <TextView
                     android:id="@+id/adapter_listOffer_TV_description"
@@ -58,6 +63,10 @@
                     android:fontFamily="@font/roboto_mediumitalic"
                     android:textSize="16sp"
                     android:textColor="@color/colorBlackHeader"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    app:layout_constraintTop_toBottomOf="@id/adapter_listOffer_TV_name"
+                    app:layout_constraintStart_toStartOf="parent"
                     />
                 <Button
                     android:id="@+id/adapter_listOffer_BTN_view"
@@ -68,8 +77,11 @@
                     android:textSize="14sp"
                     app:cornerRadius="18dp"
                     android:layout_gravity="bottom"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     />
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -96,6 +108,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal">
             <TextView
+                android:id="@+id/adapter_listOffer_TV_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4.8"
