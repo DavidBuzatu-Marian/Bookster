@@ -135,16 +135,11 @@ public class SearchFragment extends Fragment {
             }
 
         };
+        setEditOnClick(edittextStart, dateStart, calendarStart);
+        setEditOnClick(edittextEnd, dateEnd, calendarEnd);
+    }
 
-        edittextStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(getContext(), dateStart, calendarStart
-                        .get(Calendar.YEAR), calendarStart.get(Calendar.MONTH),
-                        calendarStart.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-
+    private void setEditOnClick(EditText edittextEnd, DatePickerDialog.OnDateSetListener dateEnd, Calendar calendarEnd) {
         edittextEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +159,10 @@ public class SearchFragment extends Fragment {
 
     private void startListOffersFragment(View view) {
         ListOffersFragment nextFragment = new ListOffersFragment();
+        Bundle bundle = new Bundle();
+        // TODO: PUT CITY VALUE FROM SEARCH INPUT
+        bundle.putString("City", "Rome");
+        nextFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)
                 .addToBackStack(null)
