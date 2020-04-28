@@ -38,4 +38,5 @@
     <string name="frag_search_TV_welcome_user">Welcome</string>
     <string name="frag_listOffers_TV_header">Offers available</string>
     <string name="adapter_listOffer_BTN_view">Show full offer</string>
+    <string name="frag_displayOffer_TV_facilities">Most popular facilities</string>
 </resources>

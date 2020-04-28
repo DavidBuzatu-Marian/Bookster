@@ -13,4 +13,5 @@
     <color name="colorBlackHeader">#3D3D3D</color>
     <color name="colorOfferItem">#F4F4F8</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorCardOffer">#EBEBF2</color>
 </resources>
