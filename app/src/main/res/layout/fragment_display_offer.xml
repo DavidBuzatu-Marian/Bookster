@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    android:paddingBottom="60dp"
+    android:clipToPadding="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frag_displayOffer_CL_page1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/frag_displayOffer_CV_presentation"
@@ -114,7 +118,7 @@
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,11 +148,12 @@
             android:id="@+id/frag_displayOffer_TV_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:fontFamily="@font/roboto_bold"
             android:text="Hotel Hilton"
             android:textSize="28sp"
+            android:textColor="@color/colorBlackHeader"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_CV_header" />
 
@@ -163,10 +168,10 @@
             android:paddingStart="48dp"
             android:paddingEnd="48dp"
             android:text="Curabitur ultrices erat at urna porta venenatis.
-Morbi laoreet pharetra egestas. Sed auctor, elit non
-ultrices fringilla, orci odio semper quam, vitae
-pellentesque ligula elit bibendum metus. Praesent
-vitae congue enim. Morbi nec metus dignissim, luctus.."
+    Morbi laoreet pharetra egestas. Sed auctor, elit non
+    ultrices fringilla, orci odio semper quam, vitae
+    pellentesque ligula elit bibendum metus. Praesent
+    vitae congue enim. Morbi nec metus dignissim, luctus.."
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -176,8 +181,9 @@ vitae congue enim. Morbi nec metus dignissim, luctus.."
             android:id="@+id/frag_displayOffer_TV_facilities"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
+            android:textColor="@color/colorBlackHeader"
             android:fontFamily="@font/roboto_bold"
             android:text="@string/frag_displayOffer_TV_facilities"
             android:textSize="28sp"
@@ -185,88 +191,459 @@ vitae congue enim. Morbi nec metus dignissim, luctus.."
             app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_description" />
 
         <LinearLayout
+            android:id="@+id/frag_displayOffer_LL_facilities"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingStart="48dp"
             android:paddingEnd="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_facilities"
-            android:orientation="vertical">
+            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_facilities">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:gravity="center">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_swimming_pool_solid"
+                    android:drawablePadding="12dp"
                     android:fontFamily="@font/roboto_light"
                     android:text="Swimming pool"
                     android:textColor="@color/colorAccent"
-                    android:textSize="16sp"
-                    android:drawablePadding="12dp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_swimming_pool_solid"
+                    android:drawablePadding="12dp"
                     android:fontFamily="@font/roboto_light"
                     android:text="Swimming pool"
                     android:textColor="@color/colorAccent"
-                    android:textSize="16sp"
-                    android:drawablePadding="12dp"/>
+                    android:textSize="16sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:gravity="center">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_swimming_pool_solid"
+                    android:drawablePadding="12dp"
                     android:fontFamily="@font/roboto_light"
                     android:text="Swimming pool"
                     android:textColor="@color/colorAccent"
-                    android:textSize="16sp"
-                    android:drawablePadding="12dp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_swimming_pool_solid"
+                    android:drawablePadding="12dp"
                     android:fontFamily="@font/roboto_light"
                     android:text="Swimming pool"
                     android:textColor="@color/colorAccent"
-                    android:textSize="16sp"
-                    android:drawablePadding="12dp"/>
+                    android:textSize="16sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:gravity="center">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_swimming_pool_solid"
+                    android:drawablePadding="12dp"
                     android:fontFamily="@font/roboto_light"
                     android:text="Swimming pool"
                     android:textColor="@color/colorAccent"
-                    android:textSize="16sp"
-                    android:drawablePadding="12dp"/>
+                    android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/frag_displayOffer_TV_availability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/frag_displayOffer_TV_availability"
+            android:textColor="@color/colorBlackHeader"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_LL_facilities" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/frag_displayOffer_CV_availability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="32dp"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_availability">
+
+            <RelativeLayout
+                android:id="@+id/frag_displayOffer_LL_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_check_in_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/frag_displayOffer_TV_check_in"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_check_in_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/frag_displayOffer_TV_check_in_title"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Tue 19 May 2020"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+                <View
+                    android:id="@+id/frag_displayOffer_View_bar1"
+                    android:layout_width="1dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="9dp"
+                    android:layout_toEndOf="@id/frag_displayOffer_TV_check_in_date"
+                    android:background="#E4E4E4" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_check_out_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="9dp"
+                    android:layout_toEndOf="@id/frag_displayOffer_View_bar1"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/frag_displayOffer_TV_check_out"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_check_out_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/frag_displayOffer_TV_check_out_title"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@id/frag_displayOffer_View_bar1"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Mon 25 May 2020"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_guests_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="9dp"
+                    android:layout_toEndOf="@id/frag_displayOffer_TV_check_out_date"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/frag_displayOffer_TV_guests_title"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_guests_nr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/frag_displayOffer_TV_guests_title"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@id/frag_displayOffer_TV_check_out_date"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="2"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/frag_displayOffer_TV_rooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/frag_displayOffer_TV_rooms"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_CV_availability" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/frag_displayOffer_CV_offer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_rooms">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_price_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/frag_displayOffer_TV_price_top"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_price_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="803.4$"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_price_top" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_room"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/frag_displayOffer_TV_room_type"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_room_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="20dp"
+                    android:drawableStart="@drawable/ic_rest"
+                    android:drawablePadding="12dp"
+                    android:text="King Size Room"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_room" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_room_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="1-extra large double bed"
+                    android:textColor="@color/colorGrayText"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_room_type" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Size: 29m2"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_room_description" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_room_facilities"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/frag_displayOffer_TV_room_facilities"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_size" />
+
+                <LinearLayout
+                    android:id="@+id/frag_displayOffer_LL_room_facilities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_room_facilities">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_check_solid"
+                            android:drawablePadding="12dp"
+                            android:fontFamily="@font/roboto_light"
+                            android:text="Swimming pool"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_check_solid"
+                            android:drawablePadding="12dp"
+                            android:fontFamily="@font/roboto_light"
+                            android:text="Swimming pool"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_check_solid"
+                            android:drawablePadding="12dp"
+                            android:fontFamily="@font/roboto_light"
+                            android:text="Swimming pool"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_check_solid"
+                            android:drawablePadding="12dp"
+                            android:fontFamily="@font/roboto_light"
+                            android:text="Swimming pool"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_check_solid"
+                            android:drawablePadding="12dp"
+                            android:fontFamily="@font/roboto_light"
+                            android:text="Swimming pool"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_price_bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/frag_displayOffer_TV_price_bottom"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_LL_room_facilities" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_price_per_night"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="$ 203.4"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_price_bottom" />
+
+                <TextView
+                    android:id="@+id/frag_displayOffer_TV_price_per_night_extra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/frag_displayOffer_TV_price_per_night_extra"
+                    android:textColor="@color/colorBlackHeader"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_price_per_night" />
+
+                <Button
+                    android:id="@+id/frag_displayOffer_BTN_reserve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginEnd="48dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="@string/frag_displayOffer_BTN_reserve"
+                    android:textSize="14sp"
+                    app:cornerRadius="18dp"
+                    android:layout_marginTop="24dp"
+                    android:backgroundTint="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_price_per_night_extra" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -39,4 +39,15 @@
     <string name="frag_listOffers_TV_header">Offers available</string>
     <string name="adapter_listOffer_BTN_view">Show full offer</string>
     <string name="frag_displayOffer_TV_facilities">Most popular facilities</string>
+    <string name="frag_displayOffer_TV_availability">Availability</string>
+    <string name="frag_displayOffer_TV_check_in">Check-in date</string>
+    <string name="frag_displayOffer_TV_check_out">Check-out date</string>
+    <string name="frag_displayOffer_TV_guests_title">Guests</string>
+    <string name="frag_displayOffer_TV_rooms">Rooms</string>
+    <string name="frag_displayOffer_TV_room_type">Room type</string>
+    <string name="frag_displayOffer_TV_room_facilities">Facilities:</string>
+    <string name="frag_displayOffer_TV_price_bottom">Price for 1 night</string>
+    <string name="frag_displayOffer_TV_price_top">Total price</string>
+    <string name="frag_displayOffer_TV_price_per_night_extra">Includes taxes and charges</string>
+    <string name="frag_displayOffer_BTN_reserve">Reserve</string>
 </resources>

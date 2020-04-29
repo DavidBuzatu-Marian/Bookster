@@ -14,4 +14,5 @@
     <color name="colorOfferItem">#F4F4F8</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorCardOffer">#EBEBF2</color>
+    <color name="colorGrayText">#888888</color>
 </resources>
