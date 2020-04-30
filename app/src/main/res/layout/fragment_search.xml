@@ -101,6 +101,16 @@
                 </LinearLayout>
 
             </LinearLayout>
+            
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/frag_search_LV"
+                android:divider="#ad5"
+                android:dividerHeight="2dp"
+                android:layout_below="@+id/frag_search_SV"
+                />
+            
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/frag_search_SV"
                 android:layout_width="match_parent"
