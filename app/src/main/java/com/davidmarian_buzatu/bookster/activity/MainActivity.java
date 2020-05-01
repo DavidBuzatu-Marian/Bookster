@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.davidmarian_buzatu.bookster.R;
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private ProgressDialog mDialog;
+    private boolean mShowPasswordTrue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +37,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        showPasswordSetUp();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        showLoadingDialog();
         if (currentUser != null) {
+            showLoadingDialog();
             getUserTypeAndRedirect();
-        } else {
-            mDialog.dismiss();
         }
     }
 
@@ -117,5 +121,26 @@ public class MainActivity extends AppCompatActivity {
     public void startRegisterActivity(View view) {
         Intent regAct = new Intent(this, RegisterActivity.class);
         startActivity(regAct);
+    }
+
+    private void showPasswordSetUp() {
+        final ImageView imageViewShowPassword = findViewById(R.id.act_main_IV_ShowPassword);
+        imageViewShowPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final TextInputEditText editTextPass = findViewById(R.id.act_main_TIET_password);
+                if (mShowPasswordTrue) {
+                    editTextPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    imageViewShowPassword.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_visibility_24px));
+                    editTextPass.setSelection(editTextPass.getText().length());
+                    mShowPasswordTrue = false;
+                } else {
+                    editTextPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    imageViewShowPassword.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_visibility_off_24px));
+                    editTextPass.setSelection(editTextPass.getText().length());
+                    mShowPasswordTrue = true;
+                }
+            }
+        });
     }
 }
