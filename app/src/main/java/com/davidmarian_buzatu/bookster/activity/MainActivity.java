@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private ProgressDialog mDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +35,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        // TODO: REDIRECT ON SUCCESS
+    protected void onResume() {
+        super.onResume();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        // redirect if currentUser != null;
+        showLoadingDialog();
+        if (currentUser != null) {
+            getUserTypeAndRedirect();
+        } else {
+            mDialog.dismiss();
+        }
     }
 
     public void formSubmit(View view) {
@@ -46,21 +51,21 @@ public class MainActivity extends AppCompatActivity {
         email = findViewById(R.id.act_main_TIET_email);
         password = findViewById(R.id.act_main_TIET_password);
 
-        if(email.getText() != null && password.getText() != null) {
+        if (email.getText() != null && password.getText() != null) {
             // Login user
-           try {
-               showLoadingDialog();
-               signInUser(email, password);
-           } catch (IllegalArgumentException ex) {
-               mDialog.dismiss();
-               email.setError("Invalid Credentials");
-           }
+            try {
+                showLoadingDialog();
+                signInUser(email, password);
+            } catch (IllegalArgumentException | FirebaseAuthInvalidCredentialsException ex) {
+                mDialog.dismiss();
+                email.setError("Invalid Credentials");
+            }
         } else {
             email.setError("Invalid Credentials");
         }
     }
 
-    private void signInUser(TextInputEditText email, TextInputEditText password) {
+    private void signInUser(TextInputEditText email, TextInputEditText password) throws FirebaseAuthInvalidCredentialsException {
 
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -90,10 +95,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getUserTypeAndRedirect() {
+        assert mAuth.getCurrentUser() != null;
         FirebaseFirestore.getInstance().collection("users").document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     mDialog.dismiss();
                     redirectToUI(documentSnapshot.get("Type").toString());
