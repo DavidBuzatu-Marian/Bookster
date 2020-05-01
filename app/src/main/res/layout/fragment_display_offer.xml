@@ -278,6 +278,37 @@
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/frag_displayOffer_TV_pictures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/colorBlackHeader"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/frag_displayOffer_TV_pictures"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_LL_facilities" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/frag_displayOffer_CV_pictures"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_pictures"
+            android:elevation="4dp"
+            app:cardCornerRadius="24dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="32dp">
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/frag_displayOffer_VP_images"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+
+                />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/frag_displayOffer_TV_availability"
@@ -290,7 +321,7 @@
             android:textColor="@color/colorBlackHeader"
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_LL_facilities" />
+            app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_CV_pictures" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/frag_displayOffer_CV_availability"

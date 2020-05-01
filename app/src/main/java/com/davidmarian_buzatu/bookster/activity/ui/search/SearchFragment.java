@@ -213,7 +213,8 @@ public class SearchFragment extends Fragment {
     }
 
     private void startListOffersFragment(View view) {
-        ListOffersFragment nextFragment = new ListOffersFragment();
+//        ListOffersFragment nextFragment = new ListOffersFragment();
+        DisplayOfferFragment nextFragment = new DisplayOfferFragment();
         Bundle bundle = new Bundle();
         // TODO: PUT CITY VALUE FROM SEARCH INPUT
         bundle.putString("City", "Rome");
