@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,12 @@ import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,10 +100,26 @@ public class SearchFragment extends Fragment {
     private void setUpSearchView(View root) {
         FloatingSearchView searchView = root.findViewById(R.id.frag_search_FSV);
 
-        List<SearchList> list = new ArrayList<>(3);
-        list.add(new SearchList("Rome"));
-        list.add(new SearchList("Paris"));
-        list.add(new SearchList("Timisoara"));
+        List<SearchList> list1=new ArrayList<>();
+
+            FirebaseFirestore.getInstance()
+                    .collection("cities")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("LIST_VIEW","Task Succesful in list view");
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    list1.add(new SearchList(document.getId() + ", " + document.getData().get("Country")));
+                                    Log.d("LIST_VIEW", document.getId() + ", " + document.getData().get("Country"));
+                                }
+                            } else {
+                                Log.d("LIST_FAILED", "Fail to add documents");
+                            }
+                        }
+                    });
+            
 
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
@@ -107,7 +129,7 @@ public class SearchFragment extends Fragment {
                 } else {
 
                     searchView.swapSuggestions(
-                            getFilteredList(list, newQuery));
+                            getFilteredList(list1, newQuery));
                 }
             }
         });
