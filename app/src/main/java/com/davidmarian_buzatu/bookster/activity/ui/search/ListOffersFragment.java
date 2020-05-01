@@ -1,5 +1,6 @@
 package com.davidmarian_buzatu.bookster.activity.ui.search;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,24 +16,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
 import com.davidmarian_buzatu.bookster.model.Offer;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ListOffersFragment extends Fragment {
 
     private RecyclerView.Adapter mAdapter;
+    private View mRoot;
+    private String mCity;
+    private Long mStartDate, mEndDate;
+    private ProgressDialog mDialog;
+    private List<Offer> mOffers;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_list_offers, container, false);
-
-
-        setUpRecyclerView(root);
-
-        return root;
+        mRoot = inflater.inflate(R.layout.fragment_list_offers, container, false);
+        return mRoot;
     }
 
     @Override
@@ -41,8 +49,112 @@ public class ListOffersFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if(bundle != null) {
-            Log.d("SEARCHED", bundle.getString("City"));
+            mCity = bundle.getString("City");
+            mStartDate = bundle.getLong("StartDate");
+            mEndDate = bundle.getLong("EndDate");
         }
+        displayLoadingDialog();
+        getOffers();
+    }
+
+    private void displayLoadingDialog() {
+        mDialog = new ProgressDialog(getContext());
+        mDialog.setMessage(getString(R.string.frag_listOffers_dialog_message));
+        mDialog.setIndeterminate(false);
+        mDialog.setCancelable(false);
+        mDialog.show();
+    }
+
+    private void getOffers() {
+        mOffers = new ArrayList<>();
+        FirebaseFirestore.getInstance()
+                .collection("offers")
+                .whereEqualTo("City", mCity)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            for(QueryDocumentSnapshot doc: task.getResult()) {
+                                Map<String, Object> mapOffer = doc.getData();
+                                Offer offer = getOfferFromMap(mapOffer);
+                                if(isValid(offer, mStartDate, mEndDate)) {
+                                    mOffers.add(offer);
+                                }
+                                Log.d("SEARCHED", doc.getId() + " => " + doc.getData());
+                            }
+                            setUpRecyclerView(mRoot);
+                            mDialog.dismiss();
+                        } else {
+                            mDialog.dismiss();
+                        }
+                    }
+                });
+    }
+
+    private boolean isValid(Offer offer, Long mStartDate, Long mEndDate) {
+        return (offer.getDateStart() <= mStartDate && offer.getDateEnd() >= mEndDate);
+    }
+
+    private Offer getOfferFromMap(Map<String, Object> mapOffer) {
+        Offer offer = new Offer();
+        for(Map.Entry<String, Object> entry: mapOffer.entrySet()) {
+            switch(entry.getKey()) {
+                case "City":
+                    offer.setCity((String) entry.getValue());
+                    break;
+                case "DateEnd":
+                    offer.setDateEnd((Long) entry.getValue());
+                    break;
+                case "DateStart":
+                    offer.setDateStart((Long) entry.getValue());
+                    break;
+                case "Description":
+                    offer.setDescription((String) entry.getValue());
+                    break;
+                case "Facilities":
+                    offer.setFacilities((ArrayList<String>) entry.getValue());
+                    break;
+                case "HotelName":
+                    offer.setName((String) entry.getValue());
+                    break;
+                case "ManagerID":
+                    offer.setManagerID((String) entry.getValue());
+                    break;
+                case "NrPerson":
+                    offer.setNrPersons((String)entry.getValue());
+                    break;
+                case "Pictures":
+                    offer.setPictures((ArrayList<String>) entry.getValue());
+                    break;
+                case "PopularFacilities":
+                    offer.setPopularFacilities((ArrayList<String>) entry.getValue());
+                    break;
+                case "PresentationURL":
+                    offer.setPresentationURL((String) entry.getValue());
+                    break;
+                case "Price":
+                    offer.setPrice((String) entry.getValue());
+                    break;
+                case "Rating":
+                    offer.setRating((String) entry.getValue());
+                    break;
+                case "RoomDescription":
+                    offer.setRoomDescription((String) entry.getValue());
+                    break;
+                case "RoomType":
+                    offer.setRoomType((String) entry.getValue());
+                    break;
+                case "RoomsAvailable":
+                    offer.setRoomsAvailable((String) entry.getValue());
+                    break;
+                case "Size":
+                    offer.setSize((String) entry.getValue());
+                    break;
+            }
+        }
+
+        return offer;
     }
 
     private void setUpRecyclerView(View root) {
@@ -51,11 +163,7 @@ public class ListOffersFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        ArrayList<Offer> test = new ArrayList<>();
-        test.add(new Offer("Arad", "1423", "Dont know", "Lorem magic text with a lot of description without any sense lot of description without any sense", "5", "https://firebasestorage.googleapis.com/v0/b/bookster-9e512.appspot.com/o/properties_ref%2F184305239.jpg?alt=media&token=57ee7fe1-0110-4bfa-bb01-8795c7a3b159"  ,null));
-        test.add(new Offer("Arad", "1423", "Dont know", "Lorem magic text with a lot of description without any sense lot of description without any sense", "4", "https://firebasestorage.googleapis.com/v0/b/bookster-9e512.appspot.com/o/properties_ref%2F5ea7ba25-596db591.jpg?alt=media&token=d24b8ca2-57c1-428b-96a8-6d20f55f6327", null));
-        test.add(new Offer("Arad", "1423", "Dont know", "Lorem magic text with a lot of description without any sense lot of description without any sense", "3.4", "https://firebasestorage.googleapis.com/v0/b/bookster-9e512.appspot.com/o/properties_ref%2Fhotelreview1a.jpg?alt=media&token=028052e8-cdb0-4ca8-8d5e-848a23f8dc54", null));
-        mAdapter = new ListOffersAdapter(test, getContext());
+        mAdapter = new ListOffersAdapter(mOffers, getContext());
         recyclerView.setAdapter(mAdapter);
     }
 }

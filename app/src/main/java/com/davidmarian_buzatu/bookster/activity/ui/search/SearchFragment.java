@@ -46,6 +46,8 @@ import java.util.Locale;
 public class SearchFragment extends Fragment {
 
     private User mCurrentUser;
+    private String mCitySearched;
+    private Long  mStartDate, mEndDate;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +74,11 @@ public class SearchFragment extends Fragment {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startListOffersFragment(root);
+                if(mCitySearched != null && mStartDate > 0 && mEndDate > 0) {
+                    startListOffersFragment(root);
+                } else {
+                    Toast.makeText(getContext(), "Please complete all fields", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -100,26 +106,24 @@ public class SearchFragment extends Fragment {
     private void setUpSearchView(View root) {
         FloatingSearchView searchView = root.findViewById(R.id.frag_search_FSV);
 
-        List<SearchList> list1=new ArrayList<>();
-
-            FirebaseFirestore.getInstance()
-                    .collection("cities")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("LIST_VIEW","Task Succesful in list view");
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    list1.add(new SearchList(document.getId() + ", " + document.getData().get("Country")));
-                                    Log.d("LIST_VIEW", document.getId() + ", " + document.getData().get("Country"));
-                                }
-                            } else {
-                                Log.d("LIST_FAILED", "Fail to add documents");
+        List<SearchList> listCities = new ArrayList<>();
+        FirebaseFirestore.getInstance()
+                .collection("cities")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("LIST_VIEW", "Task Succesful in list view");
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                listCities.add(new SearchList(document.getId() + ", " + document.getData().get("Country")));
                             }
+                        } else {
+                            Log.d("LIST_FAILED", "Fail to add documents");
                         }
-                    });
-            
+                    }
+                });
+
 
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
@@ -129,7 +133,7 @@ public class SearchFragment extends Fragment {
                 } else {
 
                     searchView.swapSuggestions(
-                            getFilteredList(list1, newQuery));
+                            getFilteredList(listCities, newQuery));
                 }
             }
         });
@@ -138,12 +142,16 @@ public class SearchFragment extends Fragment {
             public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
                 searchView.setSearchText(searchSuggestion.getBody());
                 searchView.clearSuggestions();
-
+                // get only city name
+                mCitySearched = searchSuggestion.getBody().split(",")[0];
             }
 
             @Override
             public void onSearchAction(String currentQuery) {
-
+                searchView.setSearchText(currentQuery);
+                searchView.clearSuggestions();
+                // get only city name
+                mCitySearched = currentQuery.split(",")[0];
             }
         });
 
@@ -197,6 +205,7 @@ public class SearchFragment extends Fragment {
                 calendarStart.set(Calendar.MONTH, monthOfYear);
                 calendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel(calendarStart, edittextStart);
+                mStartDate = calendarStart.getTimeInMillis();
             }
 
         };
@@ -209,6 +218,7 @@ public class SearchFragment extends Fragment {
                 calendarEnd.set(Calendar.MONTH, monthOfYear);
                 calendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel(calendarEnd, edittextEnd);
+                mEndDate = calendarEnd.getTimeInMillis();
             }
 
         };
@@ -235,16 +245,16 @@ public class SearchFragment extends Fragment {
     }
 
     private void startListOffersFragment(View view) {
-//        ListOffersFragment nextFragment = new ListOffersFragment();
-        DisplayOfferFragment nextFragment = new DisplayOfferFragment();
+        ListOffersFragment nextFragment = new ListOffersFragment();
         Bundle bundle = new Bundle();
         // TODO: PUT CITY VALUE FROM SEARCH INPUT
-        bundle.putString("City", "Rome");
+        bundle.putString("City", mCitySearched);
+        bundle.putLong("StartDate", mStartDate);
+        bundle.putLong("EndDate", mEndDate);
         nextFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)
                 .addToBackStack(null)
                 .commit();
-        Log.d("LIST_OFFER", "LISTED");
     }
 }

@@ -17,13 +17,14 @@ import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.model.Offer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.ListOfferViewHolder> {
 
-    private ArrayList<Offer> mDataSet;
+    private List<Offer> mDataSet;
     private Context mContext;
 
-    public ListOffersAdapter(ArrayList<Offer> dataset, Context context) {
+    public ListOffersAdapter(List<Offer> dataset, Context context) {
         mDataSet = dataset;
         mContext = context;
     }

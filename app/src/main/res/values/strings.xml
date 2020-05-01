@@ -51,4 +51,5 @@
     <string name="frag_displayOffer_TV_price_per_night_extra">Includes taxes and charges</string>
     <string name="frag_displayOffer_BTN_reserve">Reserve</string>
     <string name="frag_displayOffer_TV_pictures">Pictures</string>
+    <string name="frag_listOffers_dialog_message">Filtering for your needs</string>
 </resources>
