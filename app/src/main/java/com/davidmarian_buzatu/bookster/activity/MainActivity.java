@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
             email.setError("Invalid Credentials");
         }
     }
-
     private void signInUser(TextInputEditText email, TextInputEditText password) throws FirebaseAuthInvalidCredentialsException {
 
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
