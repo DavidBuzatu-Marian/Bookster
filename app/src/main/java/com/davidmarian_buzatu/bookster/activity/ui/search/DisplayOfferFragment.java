@@ -2,6 +2,7 @@ package com.davidmarian_buzatu.bookster.activity.ui.search;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,13 @@ import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.google.gson.GsonBuilder;
+
+
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneOffset;
+import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,12 +75,59 @@ public class DisplayOfferFragment extends Fragment {
         setHeaderInfo(root);
         setRating(root);
         setHotelInfo(root);
-        createAndSetFacilities(root);
+        createAndSetFacilities(root, R.id.frag_displayOffer_LL_facilities, mOffer.getPopularFacilities(), true);
+        setAvailability(root);
+        setRoomInfo(root);
+        createAndSetFacilities(root, R.id.frag_displayOffer_LL_room_facilities, mOffer.getFacilities(), false);
     }
 
-    private void createAndSetFacilities(View root) {
-        LinearLayout parentLL = root.findViewById(R.id.frag_displayOffer_LL_facilities);
-        List<String> offerPopularFacilities = mOffer.getPopularFacilities();
+
+    private void setRoomInfo(View root) {
+        TextView textViewRoomType = root.findViewById(R.id.frag_displayOffer_TV_room_type);
+        TextView textViewRoomDescr = root.findViewById(R.id.frag_displayOffer_TV_room_description);
+        TextView textViewRoomSize = root.findViewById(R.id.frag_displayOffer_TV_room_size);
+        TextView textViewRoomPriceTotal = root.findViewById(R.id.frag_displayOffer_TV_price_total);
+        TextView textViewRoomPrice = root.findViewById(R.id.frag_displayOffer_TV_price_per_night);
+
+        textViewRoomType.setText(mOffer.getRoomType());
+        textViewRoomDescr.setText(mOffer.getRoomDescription());
+        textViewRoomSize.setText(Html.fromHtml("Size (metre sq.): " + mOffer.getSize() ));
+        textViewRoomPriceTotal.setText(new StringBuilder()
+                .append(getTotalPrice(mOffer.getPrice()))
+                .append(" €").toString());
+        textViewRoomPrice.setText(new StringBuilder()
+                .append(mOffer.getPrice())
+                .append(" €")
+                .toString());
+    }
+
+    private double getTotalPrice(String price) {
+        double numberOfDays = ChronoUnit.DAYS.between(getDate(mOffer.getDateStart()), getDate(mOffer.getDateEnd()));
+        return numberOfDays * Double.parseDouble(mOffer.getPrice());
+    }
+
+    private void setAvailability(View root) {
+        TextView startDate = root.findViewById(R.id.frag_displayOffer_TV_check_in_date);
+        TextView endDate = root.findViewById(R.id.frag_displayOffer_TV_check_out_date);
+
+        startDate.setText(getFormattedDate(mOffer.getDateStart()));
+        endDate.setText(getFormattedDate(mOffer.getDateEnd()));
+    }
+
+    private String getFormattedDate(Long date) {
+        LocalDateTime ldt = getDate(date);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEEE dd MMMM YYYY");
+        return dtf.format(ldt);
+    }
+
+    private LocalDateTime getDate(Long date) {
+        Instant dateInstant = Instant.ofEpochMilli(date);
+        return LocalDateTime.ofInstant(dateInstant, ZoneOffset.UTC);
+    }
+
+    private void createAndSetFacilities(View root, int parentId, List<String> facilities, boolean isPopularFacility) {
+        LinearLayout parentLL = root.findViewById(parentId);
+        List<String> offerPopularFacilities = facilities;
         for (int i = 0; i < offerPopularFacilities.size(); i += 2) {
             // We put 2 textviews per row
             LinearLayout parentTVs = new LinearLayout(getContext());
@@ -83,10 +138,10 @@ public class DisplayOfferFragment extends Fragment {
             params.setMargins(0, 24, 0, 0);
             parentTVs.setLayoutParams(params);
             // Create textviews
-            TextView tv1 = createTextView(offerPopularFacilities.get(i));
+            TextView tv1 = createTextView(offerPopularFacilities.get(i), isPopularFacility);
             TextView tv2 = null;
             if (i + 1 < offerPopularFacilities.size()) {
-                tv2 = createTextView(offerPopularFacilities.get(i + 1));
+                tv2 = createTextView(offerPopularFacilities.get(i + 1), isPopularFacility);
             }
             // Add to layouts
             parentTVs.addView(tv1);
@@ -97,16 +152,21 @@ public class DisplayOfferFragment extends Fragment {
         }
     }
 
-    private TextView createTextView(String text) {
+    private TextView createTextView(String text, boolean isPopularFacility) {
         TextView tv = new TextView(getContext());
         Integer drawableID = 0;
         tv.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
         // get correct drawable
-        drawableID = getDrawable(text);
+        if (isPopularFacility) {
+            drawableID = getDrawable(text);
+            tv.setText(Facilities.valueOf(text).toString());
+        } else {
+            drawableID = R.drawable.ic_check_solid;
+            tv.setText(text);
+        }
         tv.setCompoundDrawablesWithIntrinsicBounds(drawableID, 0, 0, 0);
         tv.setCompoundDrawablePadding(12);
         tv.setTypeface(ResourcesCompat.getFont(getContext(), R.font.roboto_light));
-        tv.setText(Facilities.valueOf(text).toString());
         tv.setTextColor(getResources().getColor(R.color.colorAccent));
         tv.setTextSize(16);
 

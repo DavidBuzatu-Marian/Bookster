@@ -263,7 +263,8 @@
                 android:id="@+id/frag_displayOffer_LL_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:padding="12dp"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/frag_displayOffer_TV_check_in_title"
@@ -320,30 +321,30 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/frag_displayOffer_TV_guests_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="9dp"
-                    android:layout_toEndOf="@id/frag_displayOffer_TV_check_out_date"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="@string/frag_displayOffer_TV_guests_title"
-                    android:textColor="@color/colorBlackHeader"
-                    android:textSize="14sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/frag_displayOffer_TV_guests_title"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_marginStart="9dp"-->
+<!--                    android:layout_toEndOf="@id/frag_displayOffer_TV_check_out_date"-->
+<!--                    android:fontFamily="@font/roboto_bold"-->
+<!--                    android:text="@string/frag_displayOffer_TV_guests_title"-->
+<!--                    android:textColor="@color/colorBlackHeader"-->
+<!--                    android:textSize="14sp" />-->
 
-                <TextView
-                    android:id="@+id/frag_displayOffer_TV_guests_nr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/frag_displayOffer_TV_guests_title"
-                    android:layout_marginStart="9dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_toEndOf="@id/frag_displayOffer_TV_check_out_date"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="2"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="14sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/frag_displayOffer_TV_guests_nr"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/frag_displayOffer_TV_guests_title"-->
+<!--                    android:layout_marginStart="9dp"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:layout_toEndOf="@id/frag_displayOffer_TV_check_out_date"-->
+<!--                    android:fontFamily="@font/roboto_bold"-->
+<!--                    android:text="2"-->
+<!--                    android:textColor="@color/colorPrimary"-->
+<!--                    android:textSize="14sp" />-->
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -437,7 +438,7 @@
                     app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_room_type" />
 
                 <TextView
-                    android:id="@+id/frag_displayOffer_TV_size"
+                    android:id="@+id/frag_displayOffer_TV_room_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -458,7 +459,7 @@
                     android:textColor="@color/colorBlackHeader"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_size" />
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_room_size" />
 
                 <LinearLayout
                     android:id="@+id/frag_displayOffer_LL_room_facilities"
@@ -470,81 +471,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_room_facilities">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableStart="@drawable/ic_check_solid"
-                            android:drawablePadding="12dp"
-                            android:fontFamily="@font/roboto_light"
-                            android:text="Swimming pool"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableStart="@drawable/ic_check_solid"
-                            android:drawablePadding="12dp"
-                            android:fontFamily="@font/roboto_light"
-                            android:text="Swimming pool"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableStart="@drawable/ic_check_solid"
-                            android:drawablePadding="12dp"
-                            android:fontFamily="@font/roboto_light"
-                            android:text="Swimming pool"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableStart="@drawable/ic_check_solid"
-                            android:drawablePadding="12dp"
-                            android:fontFamily="@font/roboto_light"
-                            android:text="Swimming pool"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableStart="@drawable/ic_check_solid"
-                            android:drawablePadding="12dp"
-                            android:fontFamily="@font/roboto_light"
-                            android:text="Swimming pool"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="16sp" />
-                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView

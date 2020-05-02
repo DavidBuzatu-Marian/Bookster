@@ -43,7 +43,7 @@
     <string name="frag_displayOffer_TV_check_in">Check-in date</string>
     <string name="frag_displayOffer_TV_check_out">Check-out date</string>
     <string name="frag_displayOffer_TV_guests_title">Guests</string>
-    <string name="frag_displayOffer_TV_rooms">Rooms</string>
+    <string name="frag_displayOffer_TV_rooms">Room</string>
     <string name="frag_displayOffer_TV_room_type">Room type</string>
     <string name="frag_displayOffer_TV_room_facilities">Facilities:</string>
     <string name="frag_displayOffer_TV_price_bottom">Price for 1 night</string>
