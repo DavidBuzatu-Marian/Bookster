@@ -8,4 +8,11 @@
     <color name="colorGray">#E6E6EA</color>
     <color name="colorLogin">#2AB7CA</color>
     <color name="colorRegister">#147078</color>
+    <color name="colorHeader">#7D7D7D</color>
+    <color name="colorBackground">#F4F4F8</color>
+    <color name="colorBlackHeader">#3D3D3D</color>
+    <color name="colorOfferItem">#F4F4F8</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorCardOffer">#EBEBF2</color>
+    <color name="colorGrayText">#888888</color>
 </resources>

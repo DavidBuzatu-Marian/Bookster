@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        AndroidThreeTen.init(this);
         mAuth = FirebaseAuth.getInstance();
         showPasswordSetUp();
     }
@@ -57,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (email.getText() != null && password.getText() != null) {
             // Login user
+           try {
+               showLoadingDialog();
+               signInUser(email, password);
+           } catch (IllegalArgumentException ex) {
+               mDialog.dismiss();
+               email.setError("Invalid Credentials");
+           }
             try {
                 showLoadingDialog();
                 signInUser(email, password);
@@ -68,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             email.setError("Invalid Credentials");
         }
     }
-
+    private void signInUser(TextInputEditText email, TextInputEditText password) {
     private void signInUser(TextInputEditText email, TextInputEditText password) throws FirebaseAuthInvalidCredentialsException {
 
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

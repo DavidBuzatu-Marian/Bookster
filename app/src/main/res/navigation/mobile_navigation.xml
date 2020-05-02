@@ -9,22 +9,42 @@
         android:id="@+id/navigation_home"
         android:name="com.davidmarian_buzatu.bookster.activity.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="Type"
+            app:argType="string"
+            android:defaultValue="Client" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.davidmarian_buzatu.bookster.activity.ui.search.SearchFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <argument
+            android:name="Type"
+            app:argType="string"
+            android:defaultValue="Client"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_messages"
         android:name="com.davidmarian_buzatu.bookster.activity.ui.messages.MessagesFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_messages" />
+        tools:layout="@layout/fragment_messages">
+        <argument
+            android:name="Type"
+            app:argType="string"
+            android:defaultValue="Client"/>
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.davidmarian_buzatu.bookster.activity.ui.profile.ProfileFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <argument
+            android:name="Type"
+            app:argType="string"
+            android:defaultValue="Client"/>
+    </fragment>
 </navigation>
