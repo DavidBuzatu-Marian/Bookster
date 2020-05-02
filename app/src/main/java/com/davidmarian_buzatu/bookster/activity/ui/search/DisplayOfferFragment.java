@@ -1,5 +1,6 @@
 package com.davidmarian_buzatu.bookster.activity.ui.search;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,9 +24,15 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
+import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.model.Offer;
+import com.davidmarian_buzatu.bookster.model.Reservation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.GsonBuilder;
 
 
@@ -36,6 +44,7 @@ public class DisplayOfferFragment extends Fragment {
 
     private ViewPager2 mViewPager2;
     private Offer mOffer;
+    private ProgressDialog mDialog;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -243,20 +252,55 @@ public class DisplayOfferFragment extends Fragment {
     }
 
     private void reserveOffer() {
-        int nrRoomsAvailable = Integer.parseInt(mOffer.getRoomsAvailable()) ;
-        if(nrRoomsAvailable> 0) {
+        int nrRoomsAvailable = Integer.parseInt(mOffer.getRoomsAvailable());
+        if (nrRoomsAvailable > 0) {
             mOffer.setRoomsAvailable(--nrRoomsAvailable + "");
         }
 
+        displayLoadingDialog();
+        updateOfferInFirebase().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Reservation reservation = new Reservation(mOffer.getDateStart(), mOffer.getDateEnd(), mOffer.getPrice(), mOffer.getCity().getCityName(), mOffer.getOfferID());
+                    saveReservationToFirebase(reservation);
+                } else {
+                    mDialog.dismiss();
+                    Toast.makeText(getContext(), "Error while making reservation", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
-        updateOfferInFirebase();
-        saveReservationToFirebase();
     }
 
-    private void saveReservationToFirebase() {
+    private void displayLoadingDialog() {
+        mDialog = DialogShow.getInstance().getDisplayDialog(getContext(), R.string.frag_displayOffer_dialog_message);
+        mDialog.show();
     }
 
-    private void updateOfferInFirebase() {
+    private void saveReservationToFirebase(Reservation reservation) {
+        FirebaseFirestore.getInstance()
+                .collection("reservations")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .set(reservation)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        mDialog.dismiss();
+                        if(task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Reservation Made!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getContext(), "Reservation Error!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    private Task<Void> updateOfferInFirebase() {
+        return FirebaseFirestore.getInstance()
+                .collection("offers")
+                .document(mOffer.getOfferID())
+                .set(mOffer);
     }
 
 }

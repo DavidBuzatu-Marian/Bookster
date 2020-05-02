@@ -96,10 +96,10 @@ public class ListOffersFragment extends Fragment {
                             for (QueryDocumentSnapshot doc : task.getResult()) {
                                 Map<String, Object> mapOffer = doc.getData();
                                 Offer offer = getOfferFromMap(mapOffer);
+                                offer.setOfferID(doc.getId());
                                 if (isValid(offer, mStartDate, mEndDate)) {
                                     mOffers.add(offer);
                                 }
-                                Log.d("SEARCHED", doc.getId() + " => " + doc.getData());
                             }
                             setUpRecyclerView(mRoot);
                             mDialog.dismiss();

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Offer {
 
-    private String mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating, mLongitude, mLatitude;
+    private String mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating, mLongitude, mLatitude, mID;
     private List<String> mFacilities, mPictures, mPopularFacilities;
     private String mNrPersons, mPrice, mRoomsAvailable,  mSize;
     private Long mDateStart, mDateEnd;
@@ -159,5 +159,12 @@ public class Offer {
 
     public void setLatitude(String mLatitude) {
         this.mLatitude = mLatitude;
+    }
+
+    public void setOfferID(String id) {
+        mID = id;
+    }
+    public String getOfferID() {
+        return mID;
     }
 }
