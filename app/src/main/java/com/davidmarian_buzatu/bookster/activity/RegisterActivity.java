@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.RegisterAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -287,11 +288,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void showLoadingDialog() {
-        mDialog = new ProgressDialog(this);
-        mDialog.setMessage(getString(R.string.act_register_dialog_message));
-        mDialog.setTitle(getString(R.string.act_register_dialog_title));
-        mDialog.setIndeterminate(false);
-        mDialog.setCancelable(false);
+        mDialog = DialogShow.getInstance().getDisplayDialog(this, R.string.act_register_dialog_message, R.string.act_register_dialog_title);
         mDialog.show();
     }
 
