@@ -1,107 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackground">
 
 
-        <RelativeLayout
-            android:id="@+id/frag_listOffers_RL_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+    <RelativeLayout
+        android:id="@+id/frag_listOffers_RL_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/frag_listOffers_BTN_back"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="24dp"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-
-                android:background="@drawable/ic_arrow_left_solid"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:textColor="@color/colorBlackHeader"
-                android:textSize="28sp"
-                android:layout_centerHorizontal="true"
-                android:fontFamily="@font/roboto_bold"
-                android:text="@string/frag_listOffers_TV_header"/>
-        </RelativeLayout>
-    
-        <LinearLayout
-            android:id="@+id/frag_listOffers_LL_date_period"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="36dp"
+        <ImageView
+            android:id="@+id/frag_listOffers_BTN_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintTop_toBottomOf="@id/frag_listOffers_RL_header"
-            >
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_calendar"
-                />
-            <TextView
-                android:id="@+id/frag_listOffers_TV_start_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:fontFamily="@font/roboto_regular"
-                android:textColor="@color/colorBlackHeader"
-                android:text="Tue 14 May 2020"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="12dp"
-                />
-            <View
-                android:layout_width="1dp"
-                android:layout_height="16dp"
-                android:background="#E4E4E4"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="12dp"/>
-            <TextView
-                android:id="@+id/frag_listOffers_TV_end_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:fontFamily="@font/roboto_regular"
-                android:textColor="@color/colorBlackHeader"
-                android:text="Mon 20 May 2020"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="12dp"
-                />
+            android:layout_marginTop="24dp"
 
-        </LinearLayout>
+            android:background="@drawable/ic_arrow_left_solid" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/frag_listOffers_TV_header"
+            android:textColor="@color/colorBlackHeader"
+            android:textSize="28sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/frag_listOffers_LL_date_period"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/frag_listOffers_RL_header">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_calendar" />
+
+        <TextView
+            android:id="@+id/frag_listOffers_TV_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Tue 14 May 2020"
+            android:textColor="@color/colorBlackHeader"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:background="#E4E4E4" />
+
+        <TextView
+            android:id="@+id/frag_listOffers_TV_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Mon 20 May 2020"
+            android:textColor="@color/colorBlackHeader"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/frag_listOffers_LL_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="6dp"
         android:layout_marginStart="24dp"
-        app:layout_constraintTop_toBottomOf="@id/frag_listOffers_LL_date_period"
-        >
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/frag_listOffers_LL_date_period">
+
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_placeholder"
-            />
+            android:src="@drawable/ic_placeholder" />
+
         <TextView
             android:id="@+id/frag_listOffers_TV_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:fontFamily="@font/roboto_regular"
-            android:textColor="@color/colorBlackHeader"
-            android:text="Athens, Greece"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
-            />
+            android:fontFamily="@font/roboto_regular"
+            android:text="Athens, Greece"
+            android:textColor="@color/colorBlackHeader"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -109,21 +109,20 @@
         android:id="@+id/frag_listOffers_CV_offers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_listOffers_LL_location"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="224dp"
-
         android:layout_marginBottom="60dp"
         android:backgroundTint="@color/colorWhite"
         app:cardCornerRadius="36dp"
+
         app:cardElevation="0dp"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_listOffers_LL_location">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/frag_listOffers_RV_offers"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

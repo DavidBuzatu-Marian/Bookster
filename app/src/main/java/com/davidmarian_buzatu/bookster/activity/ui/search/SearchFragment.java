@@ -2,7 +2,6 @@ package com.davidmarian_buzatu.bookster.activity.ui.search;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -11,10 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.NumberPicker;
-import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,14 +25,10 @@ import com.davidmarian_buzatu.bookster.model.Client;
 import com.davidmarian_buzatu.bookster.model.ListCities;
 import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.User;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,7 +40,8 @@ public class SearchFragment extends Fragment {
 
     private User mCurrentUser;
     private String mCitySearched;
-    private Long  mStartDate, mEndDate;
+    private Long mStartDate, mEndDate;
+    private String mLocation;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +68,7 @@ public class SearchFragment extends Fragment {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mCitySearched != null && mStartDate > 0 && mEndDate > 0) {
+                if (mCitySearched != null && mStartDate > 0 && mEndDate > 0) {
                     startListOffersFragment(root);
                 } else {
                     Toast.makeText(getContext(), "Please complete all fields", Toast.LENGTH_LONG).show();
@@ -126,6 +119,8 @@ public class SearchFragment extends Fragment {
             public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
                 searchView.setSearchText(searchSuggestion.getBody());
                 searchView.clearSuggestions();
+                // get location
+                mLocation = searchSuggestion.getBody();
                 // get only city name
                 mCitySearched = searchSuggestion.getBody().split(",")[0];
             }
@@ -134,6 +129,8 @@ public class SearchFragment extends Fragment {
             public void onSearchAction(String currentQuery) {
                 searchView.setSearchText(currentQuery);
                 searchView.clearSuggestions();
+                // get location
+                mLocation = currentQuery;
                 // get only city name
                 mCitySearched = currentQuery.split(",")[0];
             }
@@ -231,7 +228,7 @@ public class SearchFragment extends Fragment {
     private void startListOffersFragment(View view) {
         ListOffersFragment nextFragment = new ListOffersFragment();
         Bundle bundle = new Bundle();
-        // TODO: PUT CITY VALUE FROM SEARCH INPUT
+        bundle.putString("Location", mLocation);
         bundle.putString("City", mCitySearched);
         bundle.putLong("StartDate", mStartDate);
         bundle.putLong("EndDate", mEndDate);

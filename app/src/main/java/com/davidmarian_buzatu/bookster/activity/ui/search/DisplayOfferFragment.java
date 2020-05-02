@@ -1,6 +1,7 @@
 package com.davidmarian_buzatu.bookster.activity.ui.search;
 
-import android.graphics.Typeface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Gravity;
@@ -13,26 +14,21 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
 import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.google.gson.GsonBuilder;
 
 
-import org.threeten.bp.Instant;
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneOffset;
-import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.ChronoUnit;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayOfferFragment extends Fragment {
@@ -91,7 +87,7 @@ public class DisplayOfferFragment extends Fragment {
 
         textViewRoomType.setText(mOffer.getRoomType());
         textViewRoomDescr.setText(mOffer.getRoomDescription());
-        textViewRoomSize.setText(Html.fromHtml("Size (metre sq.): " + mOffer.getSize() ));
+        textViewRoomSize.setText(Html.fromHtml("Size (metre sq.): " + mOffer.getSize()));
         textViewRoomPriceTotal.setText(new StringBuilder()
                 .append(getTotalPrice(mOffer.getPrice()))
                 .append(" €").toString());
@@ -102,27 +98,18 @@ public class DisplayOfferFragment extends Fragment {
     }
 
     private double getTotalPrice(String price) {
-        double numberOfDays = ChronoUnit.DAYS.between(getDate(mOffer.getDateStart()), getDate(mOffer.getDateEnd()));
-        return numberOfDays * Double.parseDouble(mOffer.getPrice());
+        DateFormater df = DateFormater.getInstance();
+        double numberOfDays = ChronoUnit.DAYS.between(df.getDate(mOffer.getDateStart()), df.getDate(mOffer.getDateEnd()));
+        return numberOfDays * Double.parseDouble(price);
     }
 
     private void setAvailability(View root) {
+        DateFormater df = DateFormater.getInstance();
         TextView startDate = root.findViewById(R.id.frag_displayOffer_TV_check_in_date);
         TextView endDate = root.findViewById(R.id.frag_displayOffer_TV_check_out_date);
 
-        startDate.setText(getFormattedDate(mOffer.getDateStart()));
-        endDate.setText(getFormattedDate(mOffer.getDateEnd()));
-    }
-
-    private String getFormattedDate(Long date) {
-        LocalDateTime ldt = getDate(date);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("EEEE dd MMMM YYYY");
-        return dtf.format(ldt);
-    }
-
-    private LocalDateTime getDate(Long date) {
-        Instant dateInstant = Instant.ofEpochMilli(date);
-        return LocalDateTime.ofInstant(dateInstant, ZoneOffset.UTC);
+        startDate.setText(df.getFormattedDate(mOffer.getDateStart(), "EEEE dd MMMM YYYY"));
+        endDate.setText(df.getFormattedDate(mOffer.getDateEnd(), "EEEE dd MMMM YYYY"));
     }
 
     private void createAndSetFacilities(View root, int parentId, List<String> facilities, boolean isPopularFacility) {
@@ -209,11 +196,33 @@ public class DisplayOfferFragment extends Fragment {
 
     private void setHeaderInfo(View root) {
         TextView textViewCity = root.findViewById(R.id.frag_displayOffer_TV_header_city);
+        ImageView imageViewMap = root.findViewById(R.id.frag_displayOffer_IV_header_map);
         textViewCity.setText(new StringBuilder()
                 .append(mOffer.getCity().getCityName())
                 .append(", ")
                 .append(mOffer.getCity().getCountry()).toString());
-        // TODO: LOOK INTO DISTANCE CALCULATOR WITH GOOGLE MAPS
+
+        imageViewMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startMapsActivity();
+            }
+        });
+
+    }
+
+    private void startMapsActivity() {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https")
+                .authority("www.google.com")
+                .appendPath("maps")
+                .appendPath("dir")
+                .appendPath("")
+                .appendQueryParameter("api", "1")
+                .appendQueryParameter("destination", mOffer.getLatitude() + "," + mOffer.getLongitude());
+        Intent maps = new Intent(Intent.ACTION_VIEW);
+        maps.setData(Uri.parse(builder.build().toString()));
+        startActivity(maps);
     }
 
     private void setPresentationImage(View root) {

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
 import com.davidmarian_buzatu.bookster.model.City;
 import com.davidmarian_buzatu.bookster.model.Offer;
@@ -22,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +38,28 @@ public class ListOffersFragment extends Fragment {
     private Long mStartDate, mEndDate;
     private ProgressDialog mDialog;
     private List<Offer> mOffers;
+    private String mLocation;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         mRoot = inflater.inflate(R.layout.fragment_list_offers, container, false);
+        setInformationInViews();
         return mRoot;
     }
+
+    private void setInformationInViews() {
+        TextView textViewStartDate = mRoot.findViewById(R.id.frag_listOffers_TV_start_date);
+        TextView textViewEndDate = mRoot.findViewById(R.id.frag_listOffers_TV_end_date);
+        TextView textViewLocation = mRoot.findViewById(R.id.frag_listOffers_TV_location);
+        DateFormater df = DateFormater.getInstance();
+
+        textViewStartDate.setText(df.getFormattedDate(mStartDate, "EEE dd MMMM YYYY"));
+        textViewEndDate.setText(df.getFormattedDate(mEndDate, "EEE dd MMMM YYYY"));
+        textViewLocation.setText(mLocation);
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +67,7 @@ public class ListOffersFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
+            mLocation = bundle.getString("Location");
             mCity = bundle.getString("City");
             mStartDate = bundle.getLong("StartDate");
             mEndDate = bundle.getLong("EndDate");
@@ -152,6 +170,11 @@ public class ListOffersFragment extends Fragment {
                 case "Size":
                     offer.setSize((String) entry.getValue());
                     break;
+                case "Latitude":
+                    offer.setLatitude((String) entry.getValue());
+                    break;
+                case "Longitude":
+                    offer.setLongitude((String) entry.getValue());
                 default:
                     break;
             }
