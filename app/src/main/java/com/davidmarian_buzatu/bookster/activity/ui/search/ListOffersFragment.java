@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
+import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
 import com.davidmarian_buzatu.bookster.model.City;
 import com.davidmarian_buzatu.bookster.model.Offer;
@@ -77,12 +78,10 @@ public class ListOffersFragment extends Fragment {
     }
 
     private void displayLoadingDialog() {
-        mDialog = new ProgressDialog(getContext());
-        mDialog.setMessage(getString(R.string.frag_listOffers_dialog_message));
-        mDialog.setIndeterminate(false);
-        mDialog.setCancelable(false);
+        mDialog = DialogShow.getInstance().getDisplayDialog(getContext(), R.string.frag_listOffers_dialog_message);
         mDialog.show();
     }
+
 
     private void getOffers() {
         mOffers = new ArrayList<>();

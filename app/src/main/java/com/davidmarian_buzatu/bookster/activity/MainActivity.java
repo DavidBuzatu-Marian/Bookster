@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -82,11 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showLoadingDialog() {
-        mDialog = new ProgressDialog(this);
-        mDialog.setMessage(getString(R.string.act_main_dialog_message));
-        mDialog.setTitle(getString(R.string.act_main_dialog_title));
-        mDialog.setIndeterminate(false);
-        mDialog.setCancelable(false);
+        mDialog = DialogShow.getInstance().getDisplayDialog(this, R.string.act_main_dialog_message, R.string.act_main_dialog_title);
         mDialog.show();
     }
 

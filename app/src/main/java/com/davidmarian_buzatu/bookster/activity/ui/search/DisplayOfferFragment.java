@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,6 +76,17 @@ public class DisplayOfferFragment extends Fragment {
         setAvailability(root);
         setRoomInfo(root);
         createAndSetFacilities(root, R.id.frag_displayOffer_LL_room_facilities, mOffer.getFacilities(), false);
+        setUpButtonListener(root);
+    }
+
+    private void setUpButtonListener(View root) {
+        Button buttonSubmit = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reserveOffer();
+            }
+        });
     }
 
 
@@ -228,6 +240,23 @@ public class DisplayOfferFragment extends Fragment {
     private void setPresentationImage(View root) {
         ImageView imageViewPresentation = root.findViewById(R.id.frag_displayOffer_IV_presentation);
         Glide.with(getContext()).load(mOffer.getPresentaion()).into(imageViewPresentation);
+    }
+
+    private void reserveOffer() {
+        int nrRoomsAvailable = Integer.parseInt(mOffer.getRoomsAvailable()) ;
+        if(nrRoomsAvailable> 0) {
+            mOffer.setRoomsAvailable(--nrRoomsAvailable + "");
+        }
+
+
+        updateOfferInFirebase();
+        saveReservationToFirebase();
+    }
+
+    private void saveReservationToFirebase() {
+    }
+
+    private void updateOfferInFirebase() {
     }
 
 }
