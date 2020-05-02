@@ -4,16 +4,17 @@ import java.util.List;
 
 public class Offer {
 
-    private String mCity, mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating;
+    private String mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating;
     private List<String> mFacilities, mPictures, mPopularFacilities;
     private String mNrPersons, mPrice, mRoomsAvailable,  mSize;
     private Long mDateStart, mDateEnd;
+    private City mCity;
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         mCity = city;
     }
 
-    public String getCity() {
+    public City getCity() {
         return mCity;
     }
 

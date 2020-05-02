@@ -17,18 +17,18 @@
             android:id="@+id/frag_displayOffer_CV_presentation"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            app:cardCornerRadius="64dp"
             app:layout_constraintEnd_toEndOf="parent"
 
-
+            style="@style/PresentationCardView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/frag_displayOffer_IV_presentation"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_example" />
+                android:contentDescription="@string/frag_displayOffer_TV_availability"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -128,18 +128,15 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/adapter_displayOffer_TV_rating"
+                    android:id="@+id/frag_displayOffer_TV_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
                     android:text="4.8"
                     android:textColor="@color/colorWhite"
+                    android:drawableEnd="@drawable/ic_star"
+                    android:drawablePadding="6dp"
                     android:textSize="12sp" />
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_star" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -201,81 +198,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_TV_facilities">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_swimming_pool_solid"
-                    android:drawablePadding="12dp"
-                    android:fontFamily="@font/roboto_light"
-                    android:text="Swimming pool"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_swimming_pool_solid"
-                    android:drawablePadding="12dp"
-                    android:fontFamily="@font/roboto_light"
-                    android:text="Swimming pool"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_swimming_pool_solid"
-                    android:drawablePadding="12dp"
-                    android:fontFamily="@font/roboto_light"
-                    android:text="Swimming pool"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_swimming_pool_solid"
-                    android:drawablePadding="12dp"
-                    android:fontFamily="@font/roboto_light"
-                    android:text="Swimming pool"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_swimming_pool_solid"
-                    android:drawablePadding="12dp"
-                    android:fontFamily="@font/roboto_light"
-                    android:text="Swimming pool"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp" />
-            </LinearLayout>
         </LinearLayout>
 
         <TextView

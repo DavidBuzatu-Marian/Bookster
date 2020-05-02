@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
+import com.davidmarian_buzatu.bookster.model.City;
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,7 +49,7 @@ public class ListOffersFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = this.getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
             mCity = bundle.getString("City");
             mStartDate = bundle.getLong("StartDate");
             mEndDate = bundle.getLong("EndDate");
@@ -74,11 +75,11 @@ public class ListOffersFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()) {
-                            for(QueryDocumentSnapshot doc: task.getResult()) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
                                 Map<String, Object> mapOffer = doc.getData();
                                 Offer offer = getOfferFromMap(mapOffer);
-                                if(isValid(offer, mStartDate, mEndDate)) {
+                                if (isValid(offer, mStartDate, mEndDate)) {
                                     mOffers.add(offer);
                                 }
                                 Log.d("SEARCHED", doc.getId() + " => " + doc.getData());
@@ -98,10 +99,10 @@ public class ListOffersFragment extends Fragment {
 
     private Offer getOfferFromMap(Map<String, Object> mapOffer) {
         Offer offer = new Offer();
-        for(Map.Entry<String, Object> entry: mapOffer.entrySet()) {
-            switch(entry.getKey()) {
-                case "City":
-                    offer.setCity((String) entry.getValue());
+        for (Map.Entry<String, Object> entry : mapOffer.entrySet()) {
+            switch (entry.getKey()) {
+                case "Country":
+                    offer.setCity(new City(mCity, (String) entry.getValue()));
                     break;
                 case "DateEnd":
                     offer.setDateEnd((Long) entry.getValue());
@@ -122,7 +123,7 @@ public class ListOffersFragment extends Fragment {
                     offer.setManagerID((String) entry.getValue());
                     break;
                 case "NrPerson":
-                    offer.setNrPersons((String)entry.getValue());
+                    offer.setNrPersons((String) entry.getValue());
                     break;
                 case "Pictures":
                     offer.setPictures((ArrayList<String>) entry.getValue());
@@ -151,6 +152,8 @@ public class ListOffersFragment extends Fragment {
                 case "Size":
                     offer.setSize((String) entry.getValue());
                     break;
+                default:
+                    break;
             }
         }
 
@@ -163,7 +166,7 @@ public class ListOffersFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ListOffersAdapter(mOffers, getContext());
+        mAdapter = new ListOffersAdapter(mOffers, getContext(), getActivity());
         recyclerView.setAdapter(mAdapter);
     }
 }
