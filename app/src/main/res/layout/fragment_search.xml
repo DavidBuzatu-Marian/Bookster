@@ -173,7 +173,8 @@
                     android:autofillHints="false"
                     android:hint="@string/frag_search_ET_date"
                     android:inputType="date"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -197,7 +198,8 @@
                     android:autofillHints="false"
                     android:hint="@string/frag_search_ET_date"
                     android:inputType="date"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:focusable="false"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
