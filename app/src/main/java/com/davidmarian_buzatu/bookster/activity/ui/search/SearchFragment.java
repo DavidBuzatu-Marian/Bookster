@@ -26,6 +26,7 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.SearchList;
 import com.davidmarian_buzatu.bookster.model.Client;
+import com.davidmarian_buzatu.bookster.model.ListCities;
 import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -106,24 +107,7 @@ public class SearchFragment extends Fragment {
     private void setUpSearchView(View root) {
         FloatingSearchView searchView = root.findViewById(R.id.frag_search_FSV);
 
-        List<SearchList> listCities = new ArrayList<>();
-        FirebaseFirestore.getInstance()
-                .collection("cities")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("LIST_VIEW", "Task Succesful in list view");
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                listCities.add(new SearchList(document.getId() + ", " + document.getData().get("Country")));
-                            }
-                        } else {
-                            Log.d("LIST_FAILED", "Fail to add documents");
-                        }
-                    }
-                });
-
+        List<SearchList> listCities = ListCities.getInstance().getList();
 
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
