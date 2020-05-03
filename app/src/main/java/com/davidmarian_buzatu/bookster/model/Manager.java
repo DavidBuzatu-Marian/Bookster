@@ -13,6 +13,7 @@ public class Manager implements User {
     private static Manager user = null;
     private static DocumentSnapshot userInfo;
     private FirebaseUser firebaseUser;
+    private String userID;
 
     private Manager(FirebaseUser currentUser) {
         firebaseUser = currentUser;
@@ -26,6 +27,7 @@ public class Manager implements User {
     }
     @Override
     public Task<DocumentSnapshot> getUserInfo() {
+        userID = FirebaseAuth.getInstance().getUid();
         Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("users").document(firebaseUser.getUid()).get();
         task.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -51,6 +53,11 @@ public class Manager implements User {
             name = (String) userInfo.get("Name");
         }
         return name;
+    }
+
+    @Override
+    public String getUserID() {
+        return userID;
     }
 
     public String getUserAddress() {
