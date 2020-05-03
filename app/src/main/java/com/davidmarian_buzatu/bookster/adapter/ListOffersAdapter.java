@@ -82,7 +82,7 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
             mName.setText(offer.getName());
             mDescription.setText(offer.getDescription());
             mRating.setText(offer.getRating());
-            Glide.with(context).load(offer.getPresentaion()).into(mPresentationImage);
+            Glide.with(context).load(offer.getPresentationURL()).into(mPresentationImage);
             setButtonListener(offer);
         }
 
