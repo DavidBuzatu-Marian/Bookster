@@ -33,12 +33,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.gson.GsonBuilder;
 
 
 import org.threeten.bp.temporal.ChronoUnit;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DisplayOfferFragment extends Fragment {
 
@@ -248,7 +251,7 @@ public class DisplayOfferFragment extends Fragment {
 
     private void setPresentationImage(View root) {
         ImageView imageViewPresentation = root.findViewById(R.id.frag_displayOffer_IV_presentation);
-        Glide.with(getContext()).load(mOffer.getPresentaion()).into(imageViewPresentation);
+        Glide.with(getContext()).load(mOffer.getPresentationURL()).into(imageViewPresentation);
     }
 
     private void reserveOffer() {
@@ -279,10 +282,12 @@ public class DisplayOfferFragment extends Fragment {
     }
 
     private void saveReservationToFirebase(Reservation reservation) {
+        Map<String, Object> reservationMap = new HashMap<>();
+        reservationMap.put(reservation.getStartDate().toString(), reservation);
         FirebaseFirestore.getInstance()
                 .collection("reservations")
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .set(reservation)
+                .set(reservationMap, SetOptions.merge())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

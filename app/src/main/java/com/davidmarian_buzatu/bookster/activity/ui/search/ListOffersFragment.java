@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +88,7 @@ public class ListOffersFragment extends Fragment {
         mOffers = new ArrayList<>();
         FirebaseFirestore.getInstance()
                 .collection("offers")
-                .whereEqualTo("City", mCity)
+                .whereEqualTo("city", mCity)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -102,77 +103,75 @@ public class ListOffersFragment extends Fragment {
                                 }
                             }
                             setUpRecyclerView(mRoot);
-                            mDialog.dismiss();
-                        } else {
-                            mDialog.dismiss();
                         }
+                        mDialog.dismiss();
                     }
                 });
     }
 
     private boolean isValid(Offer offer, Long mStartDate, Long mEndDate) {
-        return (offer.getDateStart() <= mStartDate && offer.getDateEnd() >= mEndDate);
+        return (offer.getDateStart() <= mStartDate && offer.getDateEnd() >= mEndDate && Integer.parseInt(offer.getRoomsAvailable()) > 0);
     }
 
     private Offer getOfferFromMap(Map<String, Object> mapOffer) {
         Offer offer = new Offer();
         for (Map.Entry<String, Object> entry : mapOffer.entrySet()) {
             switch (entry.getKey()) {
-                case "Country":
+                case "country":
                     offer.setCity(new City(mCity, (String) entry.getValue()));
                     break;
-                case "DateEnd":
+                case "dateEnd":
                     offer.setDateEnd((Long) entry.getValue());
                     break;
-                case "DateStart":
+                case "dateStart":
                     offer.setDateStart((Long) entry.getValue());
                     break;
-                case "Description":
+                case "description":
                     offer.setDescription((String) entry.getValue());
                     break;
-                case "Facilities":
+                case "facilities":
                     offer.setFacilities((ArrayList<String>) entry.getValue());
                     break;
-                case "HotelName":
+                case "name":
                     offer.setName((String) entry.getValue());
                     break;
-                case "ManagerID":
+                case "managerID":
                     offer.setManagerID((String) entry.getValue());
                     break;
-                case "NrPerson":
+                case "nrPerson":
                     offer.setNrPersons((String) entry.getValue());
                     break;
-                case "Pictures":
+                case "pictures":
                     offer.setPictures((ArrayList<String>) entry.getValue());
                     break;
-                case "PopularFacilities":
+                case "popularFacilities":
                     offer.setPopularFacilities((ArrayList<String>) entry.getValue());
                     break;
-                case "PresentationURL":
+                case "presentationURL":
                     offer.setPresentationURL((String) entry.getValue());
                     break;
-                case "Price":
+                case "price":
                     offer.setPrice((String) entry.getValue());
                     break;
-                case "Rating":
+                case "rating":
                     offer.setRating((String) entry.getValue());
                     break;
-                case "RoomDescription":
+                case "roomDescription":
                     offer.setRoomDescription((String) entry.getValue());
                     break;
-                case "RoomType":
+                case "roomType":
                     offer.setRoomType((String) entry.getValue());
                     break;
-                case "RoomsAvailable":
+                case "roomsAvailable":
                     offer.setRoomsAvailable((String) entry.getValue());
                     break;
-                case "Size":
+                case "size":
                     offer.setSize((String) entry.getValue());
                     break;
-                case "Latitude":
+                case "latitude":
                     offer.setLatitude((String) entry.getValue());
                     break;
-                case "Longitude":
+                case "longitude":
                     offer.setLongitude((String) entry.getValue());
                 default:
                     break;
