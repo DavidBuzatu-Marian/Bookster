@@ -265,7 +265,7 @@ public class DisplayOfferFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Reservation reservation = new Reservation(mOffer.getDateStart(), mOffer.getDateEnd(), mOffer.getPrice(), mOffer.getCityName(), mOffer.getOfferID());
+                    Reservation reservation = new Reservation(mOffer.getDateStart(), mOffer.getDateEnd(), mOffer.getPrice(), mOffer.getCityName(), mOffer.getOfferID(), mOffer.getPresentationURL());
                     saveReservationToFirebase(reservation);
                 } else {
                     mDialog.dismiss();
@@ -283,7 +283,9 @@ public class DisplayOfferFragment extends Fragment {
 
     private void saveReservationToFirebase(Reservation reservation) {
         Map<String, Object> reservationMap = new HashMap<>();
-        reservationMap.put(reservation.getStartDate().toString(), reservation);
+        Map<String, Object> currentReservation = new HashMap<>();
+        currentReservation.put(reservation.getOfferID(), reservation);
+        reservationMap.put(reservation.getStartDate().toString(), currentReservation);
         FirebaseFirestore.getInstance()
                 .collection("reservations")
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid())

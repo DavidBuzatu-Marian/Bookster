@@ -1,54 +1,69 @@
 package com.davidmarian_buzatu.bookster.model;
 
-public class Reservation {
-    private Long mStartDate, mEndDate;
-    private String mPrice, mLocation, mOfferID;
+import java.util.Map;
 
-    public Reservation(Long startDate, Long endDate, String price, String location, String offerID) {
-        mStartDate = startDate;
-        mEndDate = endDate;
-        mPrice = price;
-        mLocation = location;
-        mOfferID = offerID;
+public class Reservation {
+    private String mLocation, mOfferID, mPrice, mPresentationURL;
+    private Long mStartDate, mEndDate;
+
+    public Reservation(Map<String, Object> values) {
+        for(Map.Entry<String, Object> entry: values.entrySet()) {
+            switch(entry.getKey()) {
+                case "endDate":
+                    mEndDate = (Long) entry.getValue();
+                    break;
+                case "startDate":
+                    mStartDate = (Long) entry.getValue();
+                    break;
+                case "location":
+                    mLocation = (String) entry.getValue();
+                    break;
+                case "offerID":
+                    mOfferID = (String) entry.getValue();
+                    break;
+                case "price":
+                    mPrice = (String) entry.getValue();
+                    break;
+                case "presentationURL":
+                    mPresentationURL = (String) entry.getValue();
+                    break;
+                default:
+                    break;
+            }
+
+        }
     }
 
-    public void setStartDate(Long date) {
-        mStartDate = date;
+    public Reservation(Long dateStart, Long dateEnd, String price, String cityName, String offerID, String presentationURL) {
+        mStartDate = dateStart;
+        mEndDate = dateEnd;
+        mPrice = price;
+        mLocation = cityName;
+        mOfferID = offerID;
+        mPresentationURL = presentationURL;
     }
 
     public Long getStartDate() {
         return mStartDate;
     }
 
-    public void setEndDate(Long date) {
-        mEndDate = date;
-    }
-
     public Long getEndDate() {
         return mEndDate;
-    }
-
-    public String getPrice() {
-        return mPrice;
-    }
-
-    public void setPrice(String mPrice) {
-        this.mPrice = mPrice;
     }
 
     public String getLocation() {
         return mLocation;
     }
 
-    public void setLocation(String mLocation) {
-        this.mLocation = mLocation;
-    }
-
     public String getOfferID() {
         return mOfferID;
     }
 
-    public void setmOfferID(String mOfferID) {
-        this.mOfferID = mOfferID;
+    public String getPrice() {
+        return mPrice;
+    }
+
+    public String getPresentationURL() {
+        return mPresentationURL;
     }
 }
