@@ -53,4 +53,5 @@
     <string name="frag_displayOffer_TV_pictures">Pictures</string>
     <string name="frag_listOffers_dialog_message">Filtering for your needs</string>
     <string name="frag_displayOffer_TV_header_distance">See directions</string>
+    <string name="frag_home_TV_header">Reservations</string>
 </resources>
