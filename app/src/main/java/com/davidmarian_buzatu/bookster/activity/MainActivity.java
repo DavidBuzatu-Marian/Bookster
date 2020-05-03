@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
            try {
                showLoadingDialog();
                signInUser(email, password);
-           } catch (IllegalArgumentException ex) {
+           } catch (IllegalArgumentException | FirebaseAuthInvalidCredentialsException ex) {
                mDialog.dismiss();
                email.setError("Invalid Credentials");
            }
