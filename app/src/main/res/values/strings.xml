@@ -56,4 +56,6 @@
     <string name="frag_home_TV_header">Reservations</string>
     <string name="frag_home_TV_details">Select a reservation to see more details</string>
     <string name="frag_home_dialog_reservations_message">Getting your reservations</string>
+    <string name="adapter_listReservation_TV_period_start">Start Date</string>
+    <string name="adapter_listReservation_TV_period_end">End Date</string>
 </resources>

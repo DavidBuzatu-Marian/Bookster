@@ -2,6 +2,7 @@ package com.davidmarian_buzatu.bookster.activity.ui.home;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +10,29 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
+import com.davidmarian_buzatu.bookster.adapter.ListReservationsAdapter;
 import com.davidmarian_buzatu.bookster.model.Client;
 import com.davidmarian_buzatu.bookster.model.Manager;
+import com.davidmarian_buzatu.bookster.model.Reservation;
 import com.davidmarian_buzatu.bookster.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class HomeFragment extends Fragment {
     private User mCurrentUser;
     private ProgressDialog mDialog;
+    private ListReservationsAdapter mAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,12 +46,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void displayUserReservations(View root) {
+        List<Reservation> reservationsList = new ArrayList<>();
         showLoadingDialog();
         getUserReservations(mCurrentUser).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
-                    setUpRecyclerView(task.getResult());
+                    Map<String, Object> reservationsMap = task.getResult().getData();
+                    for(Map.Entry<String, Object> entry: reservationsMap.entrySet()) {
+                        // Its a map in the database
+                        Reservation reservation = new Reservation((Map<String, Object>) entry.getValue());
+                        Log.d("TEST", reservation.getLocation() + reservation.getOfferID());
+                        reservationsList.add(reservation);
+                    }
+                    setUpRecyclerView(root, reservationsList);
+
                 } else {
                     Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
                 }
@@ -50,7 +69,14 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setUpRecyclerView(DocumentSnapshot result) {
+    private void setUpRecyclerView(View root, List<Reservation> reservationsList) {
+        RecyclerView recyclerView = root.findViewById(R.id.frag_home_RV_reservations);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new ListReservationsAdapter(reservationsList, getContext(), getActivity());
+        recyclerView.setAdapter(mAdapter);
     }
 
     private void showLoadingDialog() {
