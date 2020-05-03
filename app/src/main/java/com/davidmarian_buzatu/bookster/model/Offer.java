@@ -6,16 +6,15 @@ public class Offer {
 
     private String mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating, mLongitude, mLatitude, mID;
     private List<String> mFacilities, mPictures, mPopularFacilities;
-    private String mNrPersons, mPrice, mRoomsAvailable, mSize;
+    private String mNrPersons, mPrice, mRoomsAvailable, mSize, mCityName, mCountry;
     private Long mDateStart, mDateEnd;
-    private City mCity;
 
-    public void setCity(City city) {
-        mCity = city;
+    public void setCityName(String cityName) {
+        mCityName = cityName;
     }
 
-    public City getCity() {
-        return mCity;
+    public String getCityName() {
+        return mCityName;
     }
 
     public String getPrice() {
@@ -168,5 +167,13 @@ public class Offer {
 
     public String getOfferID() {
         return mID;
+    }
+
+    public String getCountry() {
+        return mCountry;
+    }
+
+    public void setCountry(String country) {
+        this.mCountry = country;
     }
 }

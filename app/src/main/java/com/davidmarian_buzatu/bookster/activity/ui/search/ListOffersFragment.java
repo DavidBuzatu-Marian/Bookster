@@ -2,7 +2,6 @@ package com.davidmarian_buzatu.bookster.activity.ui.search;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
-import com.davidmarian_buzatu.bookster.model.City;
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +26,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +85,7 @@ public class ListOffersFragment extends Fragment {
         mOffers = new ArrayList<>();
         FirebaseFirestore.getInstance()
                 .collection("offers")
-                .whereEqualTo("city", mCity)
+                .whereEqualTo("cityName", mCity)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -118,7 +115,10 @@ public class ListOffersFragment extends Fragment {
         for (Map.Entry<String, Object> entry : mapOffer.entrySet()) {
             switch (entry.getKey()) {
                 case "country":
-                    offer.setCity(new City(mCity, (String) entry.getValue()));
+                    offer.setCountry((String) entry.getValue());
+                    break;
+                case "cityName":
+                    offer.setCityName((String) entry.getValue());
                     break;
                 case "dateEnd":
                     offer.setDateEnd((Long) entry.getValue());

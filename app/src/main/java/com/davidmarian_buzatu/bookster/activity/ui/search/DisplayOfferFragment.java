@@ -222,9 +222,9 @@ public class DisplayOfferFragment extends Fragment {
         TextView textViewCity = root.findViewById(R.id.frag_displayOffer_TV_header_city);
         ImageView imageViewMap = root.findViewById(R.id.frag_displayOffer_IV_header_map);
         textViewCity.setText(new StringBuilder()
-                .append(mOffer.getCity().getCityName())
+                .append(mOffer.getCityName())
                 .append(", ")
-                .append(mOffer.getCity().getCountry()).toString());
+                .append(mOffer.getCountry()).toString());
 
         imageViewMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,7 +265,7 @@ public class DisplayOfferFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Reservation reservation = new Reservation(mOffer.getDateStart(), mOffer.getDateEnd(), mOffer.getPrice(), mOffer.getCity().getCityName(), mOffer.getOfferID());
+                    Reservation reservation = new Reservation(mOffer.getDateStart(), mOffer.getDateEnd(), mOffer.getPrice(), mOffer.getCityName(), mOffer.getOfferID());
                     saveReservationToFirebase(reservation);
                 } else {
                     mDialog.dismiss();
