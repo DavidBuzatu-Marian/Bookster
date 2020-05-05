@@ -13,6 +13,7 @@ public class Client implements User {
     private static Client user = null;
     private static DocumentSnapshot userInfo;
     private FirebaseUser firebaseUser;
+    private String userID;
 
     private Client(FirebaseUser currentUser) {
         firebaseUser = currentUser;
@@ -20,6 +21,7 @@ public class Client implements User {
 
 
     public Task<DocumentSnapshot> getUserInfo() {
+        userID = FirebaseAuth.getInstance().getUid();
         Task<DocumentSnapshot> task = FirebaseFirestore.getInstance().collection("users").document(firebaseUser.getUid()).get();
         task.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -52,6 +54,11 @@ public class Client implements User {
             name = (String) userInfo.get("Name");
         }
         return name;
+    }
+
+    @Override
+    public String getUserID() {
+        return userID;
     }
 
 

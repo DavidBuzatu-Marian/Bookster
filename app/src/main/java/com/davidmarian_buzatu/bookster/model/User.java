@@ -11,4 +11,5 @@ public interface User {
     }
     public String getUserPhoneNumber();
     public String getUserName();
+    public String getUserID();
 }

@@ -42,7 +42,6 @@ public class Reservation {
         mOfferID = offerID;
         mPresentationURL = presentationURL;
     }
-
     public Long getStartDate() {
         return mStartDate;
     }
@@ -66,4 +65,3 @@ public class Reservation {
     public String getPresentationURL() {
         return mPresentationURL;
     }
-}
