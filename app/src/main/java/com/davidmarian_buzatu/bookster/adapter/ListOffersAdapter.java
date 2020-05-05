@@ -1,6 +1,5 @@
 package com.davidmarian_buzatu.bookster.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,12 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.DisplayOfferFragment;
+import com.davidmarian_buzatu.bookster.fragment.DisplayOfferFragment;
 import com.davidmarian_buzatu.bookster.model.Offer;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.ListOfferViewHolder> {
@@ -101,6 +97,7 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
 
             String offerStringified = new GsonBuilder().create().toJson(offer);
             bundle.putString("Offer", offerStringified);
+            bundle.putString("displayOfferType", "ViewOfferClient");
             nextFragment.setArguments(bundle);
             mActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment, nextFragment)
