@@ -29,7 +29,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hbb20.CountryCodePicker;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -200,8 +202,26 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("REG_TEST", "SAVED USER INFO");
+                        createUserReservationDocument();
+                    }
+                });
+    }
+
+    private void createUserReservationDocument() {
+        Map<String, Object> reservations = new HashMap<>();
+        reservations.put("reservations", new ArrayList<>());
+        FirebaseFirestore.getInstance()
+                .collection("reservations")
+                .document(mAuth.getCurrentUser().getUid())
+                .set(reservations)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+
+                            redirectToUI("Client");
+                        }
                         mDialog.dismiss();
-                        redirectToUI("Client");
                     }
                 });
     }
