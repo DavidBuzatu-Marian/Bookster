@@ -58,4 +58,8 @@
     <string name="frag_home_dialog_reservations_message">Getting your reservations</string>
     <string name="adapter_listReservation_TV_period_start">Start Date</string>
     <string name="adapter_listReservation_TV_period_end">End Date</string>
+    <string name="frag_displayOffer_dialog_message">Making reservation</string>
+    <string name="frag_displayOffer_BTN_cancel_reservation">Cancel Reservation</string>
+    <string name="frag_displayOffer_BTN_cancel_offer">Cancel Offer</string>
+    <string name="frag_displayOffer_dialog_delete_offer_message">Deleting offer</string>
 </resources>

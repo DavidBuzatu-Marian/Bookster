@@ -34,6 +34,14 @@ public class Reservation {
         }
     }
 
+    public Reservation(Long dateStart, Long dateEnd, String price, String cityName, String offerID, String presentationURL) {
+        mStartDate = dateStart;
+        mEndDate = dateEnd;
+        mPrice = price;
+        mLocation = cityName;
+        mOfferID = offerID;
+        mPresentationURL = presentationURL;
+    }
     public Long getStartDate() {
         return mStartDate;
     }
@@ -57,4 +65,3 @@ public class Reservation {
     public String getPresentationURL() {
         return mPresentationURL;
     }
-}

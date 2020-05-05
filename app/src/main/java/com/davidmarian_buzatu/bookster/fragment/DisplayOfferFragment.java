@@ -1,4 +1,5 @@
-package com.davidmarian_buzatu.bookster.activity.ui.search;
+package com.davidmarian_buzatu.bookster.fragment;
+
 
 import android.content.Intent;
 import android.net.Uri;
@@ -25,6 +26,9 @@ import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
 import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.model.Offer;
+
+import com.davidmarian_buzatu.bookster.services.OfferActions;
+
 import com.google.gson.GsonBuilder;
 
 
@@ -32,10 +36,12 @@ import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.List;
 
+
 public class DisplayOfferFragment extends Fragment {
 
     private ViewPager2 mViewPager2;
     private Offer mOffer;
+    private String mDisplayOfferType;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,6 +64,7 @@ public class DisplayOfferFragment extends Fragment {
         if (bundle != null) {
             String offerStringified = bundle.getString("Offer");
             mOffer = new GsonBuilder().create().fromJson(offerStringified, Offer.class);
+            mDisplayOfferType = bundle.getString("displayOfferType");
         }
     }
 
@@ -80,13 +87,44 @@ public class DisplayOfferFragment extends Fragment {
     }
 
     private void setUpButtonListener(View root) {
-        Button buttonSubmit = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
-        buttonSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reserveOffer();
-            }
-        });
+        Button buttonCancelReservation = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation);
+        Button buttonReserve = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
+        Button buttonCancelOffer = root.findViewById(R.id.frag_displayOffer_BTN_cancel_offer);
+        switch (mDisplayOfferType) {
+            case "ViewReservation":
+                buttonReserve.setVisibility(View.GONE);
+                buttonCancelOffer.setVisibility(View.GONE);
+                buttonCancelReservation.setVisibility(View.VISIBLE);
+                buttonCancelReservation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        OfferActions.getInstance().cancelOffer(mOffer, getContext());
+                    }
+                });
+                break;
+            case "ViewOfferClient":
+                buttonCancelOffer.setVisibility(View.GONE);
+                buttonCancelReservation.setVisibility(View.GONE);
+                buttonReserve.setVisibility(View.VISIBLE);
+                buttonReserve.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        OfferActions.getInstance().reserveOffer(mOffer, getContext(), getTotalPrice(mOffer.getPrice()));
+                    }
+                });
+                break;
+            case "ViewOfferManager":
+                buttonCancelReservation.setVisibility(View.GONE);
+                buttonReserve.setVisibility(View.GONE);
+                buttonCancelOffer.setVisibility(View.VISIBLE);
+                buttonCancelOffer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        OfferActions.getInstance().cancelOffer(mOffer, getContext());
+                    }
+                });
+                break;
+        }
     }
 
 
@@ -210,9 +248,9 @@ public class DisplayOfferFragment extends Fragment {
         TextView textViewCity = root.findViewById(R.id.frag_displayOffer_TV_header_city);
         ImageView imageViewMap = root.findViewById(R.id.frag_displayOffer_IV_header_map);
         textViewCity.setText(new StringBuilder()
-                .append(mOffer.getCity().getCityName())
+                .append(mOffer.getCityName())
                 .append(", ")
-                .append(mOffer.getCity().getCountry()).toString());
+                .append(mOffer.getCountry()).toString());
 
         imageViewMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,24 +277,7 @@ public class DisplayOfferFragment extends Fragment {
 
     private void setPresentationImage(View root) {
         ImageView imageViewPresentation = root.findViewById(R.id.frag_displayOffer_IV_presentation);
-        Glide.with(getContext()).load(mOffer.getPresentaion()).into(imageViewPresentation);
-    }
-
-    private void reserveOffer() {
-        int nrRoomsAvailable = Integer.parseInt(mOffer.getRoomsAvailable()) ;
-        if(nrRoomsAvailable> 0) {
-            mOffer.setRoomsAvailable(--nrRoomsAvailable + "");
-        }
-
-
-        updateOfferInFirebase();
-        saveReservationToFirebase();
-    }
-
-    private void saveReservationToFirebase() {
-    }
-
-    private void updateOfferInFirebase() {
+        Glide.with(getContext()).load(mOffer.getPresentationURL()).into(imageViewPresentation);
     }
 
 }

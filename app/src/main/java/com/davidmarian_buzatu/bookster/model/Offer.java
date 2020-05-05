@@ -4,18 +4,17 @@ import java.util.List;
 
 public class Offer {
 
-    private String mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating, mLongitude, mLatitude;
+    private String mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating, mLongitude, mLatitude, mID;
     private List<String> mFacilities, mPictures, mPopularFacilities;
-    private String mNrPersons, mPrice, mRoomsAvailable,  mSize;
+    private String mNrPersons, mPrice, mRoomsAvailable, mSize, mCityName, mCountry;
     private Long mDateStart, mDateEnd;
-    private City mCity;
 
-    public void setCity(City city) {
-        mCity = city;
+    public void setCityName(String cityName) {
+        mCityName = cityName;
     }
 
-    public City getCity() {
-        return mCity;
+    public String getCityName() {
+        return mCityName;
     }
 
     public String getPrice() {
@@ -38,7 +37,7 @@ public class Offer {
         return mFacilities;
     }
 
-    public String getPresentaion() {
+    public String getPresentationURL() {
         return mPresentationURL;
     }
 
@@ -62,7 +61,7 @@ public class Offer {
         this.mPresentationURL = mPresentationURL;
     }
 
-    public void setFacilities(List<String>  mFacilities) {
+    public void setFacilities(List<String> mFacilities) {
         this.mFacilities = mFacilities;
     }
 
@@ -114,25 +113,26 @@ public class Offer {
         this.mSize = mSize;
     }
 
-    public List<String>  getPictures() {
+    public List<String> getPictures() {
         return mPictures;
     }
 
-    public void setPictures(List<String>  mPictures) {
+    public void setPictures(List<String> mPictures) {
         this.mPictures = mPictures;
     }
 
-    public List<String>  getPopularFacilities() {
+    public List<String> getPopularFacilities() {
         return mPopularFacilities;
     }
 
-    public void setPopularFacilities(List<String>  mPopularFacilities) {
+    public void setPopularFacilities(List<String> mPopularFacilities) {
         this.mPopularFacilities = mPopularFacilities;
     }
 
     public void setManagerID(String value) {
         this.mManagerID = value;
     }
+
     public String getManagerID() {
         return mManagerID;
     }
@@ -159,5 +159,21 @@ public class Offer {
 
     public void setLatitude(String mLatitude) {
         this.mLatitude = mLatitude;
+    }
+
+    public void setOfferID(String id) {
+        mID = id;
+    }
+
+    public String getOfferID() {
+        return mID;
+    }
+
+    public String getCountry() {
+        return mCountry;
+    }
+
+    public void setCountry(String country) {
+        this.mCountry = country;
     }
 }
