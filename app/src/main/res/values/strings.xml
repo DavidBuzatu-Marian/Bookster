@@ -54,4 +54,7 @@
     <string name="frag_listOffers_dialog_message">Filtering for your needs</string>
     <string name="frag_displayOffer_TV_header_distance">See directions</string>
     <string name="frag_displayOffer_dialog_message">Making reservation</string>
+    <string name="frag_displayOffer_BTN_cancel_reservation">Cancel Reservation</string>
+    <string name="frag_displayOffer_BTN_cancel_offer">Cancel Offer</string>
+    <string name="frag_displayOffer_dialog_delete_offer_message">Deleting offer</string>
 </resources>

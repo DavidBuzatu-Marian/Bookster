@@ -1,6 +1,6 @@
-package com.davidmarian_buzatu.bookster.activity.ui.search;
+package com.davidmarian_buzatu.bookster.fragment;
 
-import android.app.ProgressDialog;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,30 +23,25 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.model.Offer;
-import com.davidmarian_buzatu.bookster.model.Reservation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+
+import com.davidmarian_buzatu.bookster.services.OfferActions;
+
 import com.google.gson.GsonBuilder;
 
 
 import org.threeten.bp.temporal.ChronoUnit;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class DisplayOfferFragment extends Fragment {
 
     private ViewPager2 mViewPager2;
     private Offer mOffer;
-    private ProgressDialog mDialog;
+    private String mDisplayOfferType;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -70,6 +64,7 @@ public class DisplayOfferFragment extends Fragment {
         if (bundle != null) {
             String offerStringified = bundle.getString("Offer");
             mOffer = new GsonBuilder().create().fromJson(offerStringified, Offer.class);
+            mDisplayOfferType = bundle.getString("displayOfferType");
         }
     }
 
@@ -92,13 +87,44 @@ public class DisplayOfferFragment extends Fragment {
     }
 
     private void setUpButtonListener(View root) {
-        Button buttonSubmit = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
-        buttonSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reserveOffer();
-            }
-        });
+        Button buttonCancelReservation = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation);
+        Button buttonReserve = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
+        Button buttonCancelOffer = root.findViewById(R.id.frag_displayOffer_BTN_cancel_offer);
+        switch (mDisplayOfferType) {
+            case "ViewReservation":
+                buttonReserve.setVisibility(View.GONE);
+                buttonCancelOffer.setVisibility(View.GONE);
+                buttonCancelReservation.setVisibility(View.VISIBLE);
+                buttonCancelReservation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        OfferActions.getInstance().cancelOffer(mOffer, getContext());
+                    }
+                });
+                break;
+            case "ViewOfferClient":
+                buttonCancelOffer.setVisibility(View.GONE);
+                buttonCancelReservation.setVisibility(View.GONE);
+                buttonReserve.setVisibility(View.VISIBLE);
+                buttonReserve.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        OfferActions.getInstance().reserveOffer(mOffer, getContext(), getTotalPrice(mOffer.getPrice()));
+                    }
+                });
+                break;
+            case "ViewOfferManager":
+                buttonCancelReservation.setVisibility(View.GONE);
+                buttonReserve.setVisibility(View.GONE);
+                buttonCancelOffer.setVisibility(View.VISIBLE);
+                buttonCancelOffer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        OfferActions.getInstance().cancelOffer(mOffer, getContext());
+                    }
+                });
+                break;
+        }
     }
 
 
@@ -252,62 +278,6 @@ public class DisplayOfferFragment extends Fragment {
     private void setPresentationImage(View root) {
         ImageView imageViewPresentation = root.findViewById(R.id.frag_displayOffer_IV_presentation);
         Glide.with(getContext()).load(mOffer.getPresentationURL()).into(imageViewPresentation);
-    }
-
-    private void reserveOffer() {
-        int nrRoomsAvailable = Integer.parseInt(mOffer.getRoomsAvailable());
-        if (nrRoomsAvailable > 0) {
-            mOffer.setRoomsAvailable(--nrRoomsAvailable + "");
-        }
-
-        displayLoadingDialog();
-        updateOfferInFirebase().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Reservation reservation = new Reservation(mOffer.getDateStart(), mOffer.getDateEnd(), mOffer.getPrice(), mOffer.getCityName(), mOffer.getOfferID(), mOffer.getPresentationURL());
-                    saveReservationToFirebase(reservation);
-                } else {
-                    mDialog.dismiss();
-                    Toast.makeText(getContext(), "Error while making reservation", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-    }
-
-    private void displayLoadingDialog() {
-        mDialog = DialogShow.getInstance().getDisplayDialog(getContext(), R.string.frag_displayOffer_dialog_message);
-        mDialog.show();
-    }
-
-    private void saveReservationToFirebase(Reservation reservation) {
-        Map<String, Object> reservationMap = new HashMap<>();
-        Map<String, Object> currentReservation = new HashMap<>();
-        currentReservation.put(reservation.getOfferID(), reservation);
-        reservationMap.put(reservation.getStartDate().toString(), currentReservation);
-        FirebaseFirestore.getInstance()
-                .collection("reservations")
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .set(reservationMap, SetOptions.merge())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        mDialog.dismiss();
-                        if(task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Reservation Made!", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getContext(), "Reservation Error!", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-    }
-
-    private Task<Void> updateOfferInFirebase() {
-        return FirebaseFirestore.getInstance()
-                .collection("offers")
-                .document(mOffer.getOfferID())
-                .set(mOffer);
     }
 
 }
