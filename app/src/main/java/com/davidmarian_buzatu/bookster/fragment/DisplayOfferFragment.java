@@ -291,7 +291,7 @@ public class DisplayOfferFragment extends Fragment {
         textViewMail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageActions.sendEmail(root);
+                messageActions.sendEmail(root,mOffer.getManagerID());
             }
         });
 
