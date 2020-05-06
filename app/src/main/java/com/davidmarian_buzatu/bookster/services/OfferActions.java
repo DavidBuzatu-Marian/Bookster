@@ -102,12 +102,7 @@ public class OfferActions {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Reservation reservation = new Reservation(offer.getDateStart(),
-                            offer.getDateEnd(),
-                            String.valueOf(totalPrice),
-                            offer.getCityName(),
-                            offer.getOfferID(),
-                            offer.getPresentationURL());
+                    Reservation reservation = createReservation(offer, totalPrice);
                     saveReservationToFirebase(reservation, context);
                 } else {
                     mDialog.dismiss();
@@ -116,6 +111,17 @@ public class OfferActions {
             }
         });
 
+    }
+
+    private Reservation createReservation(Offer offer, double totalPrice) {
+        Reservation reservation = new Reservation();
+        reservation.setEndDate(offer.getDateEnd());
+        reservation.setStartDate(offer.getDateStart());
+        reservation.setLocation(offer.getCityName());
+        reservation.setOfferID(offer.getOfferID());
+        reservation.setPresentationURL(offer.getPresentationURL());
+        reservation.setPrice(String.valueOf(totalPrice));
+        return reservation;
     }
 
     private void displayLoadingDialog(Context context, int messageResource) {
