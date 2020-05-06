@@ -2,6 +2,7 @@ package com.davidmarian_buzatu.bookster.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
+import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
+import com.davidmarian_buzatu.bookster.fragment.DisplayOfferFragment;
+import com.davidmarian_buzatu.bookster.model.Offer;
 import com.davidmarian_buzatu.bookster.model.Reservation;
+import com.davidmarian_buzatu.bookster.services.FragmentActions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
@@ -90,22 +99,22 @@ public class ListReservationsAdapter extends RecyclerView.Adapter<ListReservatio
             mOpenOfferButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    startDisplayOfferFragment(reservation);
+                    getOfferFromFirebase(offerID).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Offer offer = new Offer();
+                                offer.setOfferFromMap(task.getResult().getData());
+                                FragmentActions.startDisplayOfferFragment(offer, mActivity, DisplayOfferTypes.OFFER_RESERVATION.name());
+                            }
+                        }
+                    });
                 }
             });
         }
 
-//    private void startDisplayOfferFragment(Reservation offer) {
-//        DisplayOfferFragment nextFragment = new DisplayOfferFragment();
-//        Bundle bundle = new Bundle();
-//
-//        String offerStringified = new GsonBuilder().create().toJson(offer);
-//        bundle.putString("Offer", offerStringified);
-//        nextFragment.setArguments(bundle);
-//        mActivity.getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.nav_host_fragment, nextFragment)
-//                .addToBackStack(null)
-//                .commit();
-//    }
+        private Task<DocumentSnapshot> getOfferFromFirebase(String offerID) {
+            return FirebaseFirestore.getInstance().collection("offers").document(offerID).get();
+        }
     }
 }

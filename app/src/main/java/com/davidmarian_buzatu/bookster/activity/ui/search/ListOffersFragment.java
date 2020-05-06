@@ -93,7 +93,8 @@ public class ListOffersFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot doc : task.getResult()) {
                                 Map<String, Object> mapOffer = doc.getData();
-                                Offer offer = getOfferFromMap(mapOffer);
+                                Offer offer = new Offer();
+                                offer.setOfferFromMap(mapOffer);
                                 offer.setOfferID(doc.getId());
                                 if (isValid(offer, mStartDate, mEndDate)) {
                                     mOffers.add(offer);
@@ -110,76 +111,6 @@ public class ListOffersFragment extends Fragment {
         return (offer.getDateStart() <= mStartDate && offer.getDateEnd() >= mEndDate && Integer.parseInt(offer.getRoomsAvailable()) > 0);
     }
 
-    private Offer getOfferFromMap(Map<String, Object> mapOffer) {
-        Offer offer = new Offer();
-        for (Map.Entry<String, Object> entry : mapOffer.entrySet()) {
-            switch (entry.getKey()) {
-                case "country":
-                    offer.setCountry((String) entry.getValue());
-                    break;
-                case "cityName":
-                    offer.setCityName((String) entry.getValue());
-                    break;
-                case "dateEnd":
-                    offer.setDateEnd((Long) entry.getValue());
-                    break;
-                case "dateStart":
-                    offer.setDateStart((Long) entry.getValue());
-                    break;
-                case "description":
-                    offer.setDescription((String) entry.getValue());
-                    break;
-                case "facilities":
-                    offer.setFacilities((ArrayList<String>) entry.getValue());
-                    break;
-                case "name":
-                    offer.setName((String) entry.getValue());
-                    break;
-                case "managerID":
-                    offer.setManagerID((String) entry.getValue());
-                    break;
-                case "nrPerson":
-                    offer.setNrPersons((String) entry.getValue());
-                    break;
-                case "pictures":
-                    offer.setPictures((ArrayList<String>) entry.getValue());
-                    break;
-                case "popularFacilities":
-                    offer.setPopularFacilities((ArrayList<String>) entry.getValue());
-                    break;
-                case "presentationURL":
-                    offer.setPresentationURL((String) entry.getValue());
-                    break;
-                case "price":
-                    offer.setPrice((String) entry.getValue());
-                    break;
-                case "rating":
-                    offer.setRating((String) entry.getValue());
-                    break;
-                case "roomDescription":
-                    offer.setRoomDescription((String) entry.getValue());
-                    break;
-                case "roomType":
-                    offer.setRoomType((String) entry.getValue());
-                    break;
-                case "roomsAvailable":
-                    offer.setRoomsAvailable((String) entry.getValue());
-                    break;
-                case "size":
-                    offer.setSize((String) entry.getValue());
-                    break;
-                case "latitude":
-                    offer.setLatitude((String) entry.getValue());
-                    break;
-                case "longitude":
-                    offer.setLongitude((String) entry.getValue());
-                default:
-                    break;
-            }
-        }
-
-        return offer;
-    }
 
     private void setUpRecyclerView(View root) {
         RecyclerView recyclerView = root.findViewById(R.id.frag_listOffers_RV_offers);

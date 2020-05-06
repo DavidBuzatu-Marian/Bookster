@@ -82,7 +82,7 @@ public class Reservation {
         mPresentationURL = presentationURL;
     }
 
-    public void getReservationFromMap(Map.Entry<String, Object> entry) {
+    public void setReservationFromMap(Map.Entry<String, Object> entry) {
         Map<String, Object> mapResevation = (Map<String, Object>) entry.getValue();
         for (Map.Entry<String, Object> reservationEntry : mapResevation.entrySet()) {
             switch (reservationEntry.getKey()) {

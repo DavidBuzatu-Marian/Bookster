@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
 import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
+import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.model.Offer;
 
@@ -90,8 +92,9 @@ public class DisplayOfferFragment extends Fragment {
         Button buttonCancelReservation = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation);
         Button buttonReserve = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
         Button buttonCancelOffer = root.findViewById(R.id.frag_displayOffer_BTN_cancel_offer);
-        switch (mDisplayOfferType) {
-            case "ViewReservation":
+        DisplayOfferTypes displayOfferTypes = DisplayOfferTypes.valueOf(mDisplayOfferType);
+        switch (displayOfferTypes) {
+            case OFFER_RESERVATION:
                 buttonReserve.setVisibility(View.GONE);
                 buttonCancelOffer.setVisibility(View.GONE);
                 buttonCancelReservation.setVisibility(View.VISIBLE);
@@ -102,7 +105,7 @@ public class DisplayOfferFragment extends Fragment {
                     }
                 });
                 break;
-            case "ViewOfferClient":
+            case OFFER_CLIENT:
                 buttonCancelOffer.setVisibility(View.GONE);
                 buttonCancelReservation.setVisibility(View.GONE);
                 buttonReserve.setVisibility(View.VISIBLE);
@@ -113,7 +116,7 @@ public class DisplayOfferFragment extends Fragment {
                     }
                 });
                 break;
-            case "ViewOfferManager":
+            case OFFER_MANAGER:
                 buttonCancelReservation.setVisibility(View.GONE);
                 buttonReserve.setVisibility(View.GONE);
                 buttonCancelOffer.setVisibility(View.VISIBLE);

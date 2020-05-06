@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
                         // Its a map in the database
                         Map.Entry<String, Object> entry = mapReservation.entrySet().iterator().next();
                         Reservation reservation = new Reservation();
-                        reservation.getReservationFromMap(entry);
+                        reservation.setReservationFromMap(entry);
                         reservationsList.add(reservation);
                     }
                     setUpRecyclerView(root, reservationsList);
