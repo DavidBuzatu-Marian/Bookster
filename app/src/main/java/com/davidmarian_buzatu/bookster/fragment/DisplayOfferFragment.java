@@ -285,16 +285,22 @@ public class DisplayOfferFragment extends Fragment {
         Glide.with(getContext()).load(mOffer.getPresentationURL()).into(imageViewPresentation);
     }
 
-    private void setContactManager(View root){
-        MessageActions messageActions=new MessageActions();
-        TextView textViewMail=root.findViewById(R.id.frag_displayOffer_TV_message);
+    private void setContactManager(View root) {
+        MessageActions messageActions = new MessageActions();
+        TextView textViewMail = root.findViewById(R.id.frag_displayOffer_TV_message);
         textViewMail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageActions.sendEmail(root,mOffer.getManagerID());
+                messageActions.sendEmail(root, mOffer.getManagerID(), getActivity());
             }
         });
 
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        //TODO: IMPLEMENT ON RESULT FROM GMAIL
+        Log.d("TEST", "Resulted in" + resultCode);
+    }
 }

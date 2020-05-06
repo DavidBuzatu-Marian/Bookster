@@ -1,12 +1,15 @@
 package com.davidmarian_buzatu.bookster.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 
 import com.davidmarian_buzatu.bookster.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -39,6 +42,14 @@ public class MenuActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("TEST", "Called");
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        fragment.onActivityResult(requestCode, resultCode, data);
     }
 
 

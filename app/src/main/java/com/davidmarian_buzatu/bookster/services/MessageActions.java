@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,8 +21,9 @@ import org.w3c.dom.Document;
 
 public class MessageActions {
     private String mManagerMail;
+
     @SuppressLint("IntentReset")
-    public void sendEmail(View root,String managerId) {
+    public void sendEmail(View root, String managerId, FragmentActivity activity) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 
         FirebaseFirestore.getInstance()
@@ -32,27 +34,30 @@ public class MessageActions {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            DocumentSnapshot doc=task.getResult();
-                            if(doc!=null) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc != null) {
                                 mManagerMail = (String) doc.getData().get("Email");
+                                sendEmailToManager(emailIntent, root, activity);
                             }
                         } else {
-                            Log.d("EMAIL","Failed to get manager email");
+                            Log.d("EMAIL", "Failed to get manager email:" + managerId + task.getException());
                         }
                     }
                 });
 
 
-        emailIntent.setData(Uri.parse("mailto:"));
+    }
+
+    private void sendEmailToManager(Intent emailIntent, View root, FragmentActivity activity) {
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, mManagerMail);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT,"");
-        emailIntent.putExtra(Intent.EXTRA_TEXT,"Hello, ...");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, ...");
 
-        try{
-            root.getContext().startActivity(Intent.createChooser(emailIntent,"Send mail"));
-        }catch(android.content.ActivityNotFoundException e){
-            Toast.makeText(root.getContext(),"There is no email client installed",Toast.LENGTH_SHORT).show();
+        try {
+            activity.startActivityForResult(emailIntent, 1);
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(root.getContext(), "There is no email client installed", Toast.LENGTH_SHORT).show();
         }
     }
 
