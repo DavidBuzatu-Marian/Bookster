@@ -7,8 +7,8 @@ public class Reservation {
     private Long mStartDate, mEndDate;
 
     public Reservation(Map<String, Object> values) {
-        for(Map.Entry<String, Object> entry: values.entrySet()) {
-            switch(entry.getKey()) {
+        for (Map.Entry<String, Object> entry : values.entrySet()) {
+            switch (entry.getKey()) {
                 case "endDate":
                     mEndDate = (Long) entry.getValue();
                     break;
@@ -42,6 +42,7 @@ public class Reservation {
         mOfferID = offerID;
         mPresentationURL = presentationURL;
     }
+
     public Long getStartDate() {
         return mStartDate;
     }
@@ -65,3 +66,4 @@ public class Reservation {
     public String getPresentationURL() {
         return mPresentationURL;
     }
+}

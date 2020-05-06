@@ -477,6 +477,20 @@
                 </LinearLayout>
 
                 <TextView
+                    android:layout_marginTop="12dp"
+                    android:id="@+id/frag_displayOffer_TV_message"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/frag_displayOffer_LL_room_facilities"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/frag_displayOffer_TV_message"
+                    android:drawableTop="@drawable/ic_gmail"
+                    android:fontFamily="@font/roboto_lightitalic"
+                    android:textSize="14sp"
+                    android:drawablePadding="6dp"
+                    />
+
+                <TextView
                     android:id="@+id/frag_displayOffer_TV_price_bottom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

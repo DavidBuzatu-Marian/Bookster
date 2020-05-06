@@ -62,4 +62,5 @@
     <string name="frag_displayOffer_BTN_cancel_reservation">Cancel Reservation</string>
     <string name="frag_displayOffer_BTN_cancel_offer">Cancel Offer</string>
     <string name="frag_displayOffer_dialog_delete_offer_message">Deleting offer</string>
+    <string name="frag_displayOffer_TV_message">Contact manager</string>
 </resources>
