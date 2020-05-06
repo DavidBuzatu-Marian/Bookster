@@ -29,6 +29,7 @@ import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.model.Offer;
 
+import com.davidmarian_buzatu.bookster.services.MessageActions;
 import com.davidmarian_buzatu.bookster.services.OfferActions;
 
 import com.google.gson.GsonBuilder;
@@ -86,6 +87,7 @@ public class DisplayOfferFragment extends Fragment {
         setRoomInfo(root);
         createAndSetFacilities(root, R.id.frag_displayOffer_LL_room_facilities, mOffer.getFacilities(), false);
         setUpButtonListener(root);
+        setContactManager(root);
     }
 
     private void setUpButtonListener(View root) {
@@ -281,6 +283,18 @@ public class DisplayOfferFragment extends Fragment {
     private void setPresentationImage(View root) {
         ImageView imageViewPresentation = root.findViewById(R.id.frag_displayOffer_IV_presentation);
         Glide.with(getContext()).load(mOffer.getPresentationURL()).into(imageViewPresentation);
+    }
+
+    private void setContactManager(View root){
+        MessageActions messageActions=new MessageActions();
+        TextView textViewMail=root.findViewById(R.id.frag_displayOffer_TV_message);
+        textViewMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                messageActions.sendEmail(root);
+            }
+        });
+
     }
 
 }
