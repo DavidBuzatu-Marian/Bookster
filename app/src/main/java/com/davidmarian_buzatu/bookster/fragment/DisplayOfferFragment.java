@@ -1,6 +1,7 @@
 package com.davidmarian_buzatu.bookster.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,9 +40,10 @@ import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.List;
 
+import static com.davidmarian_buzatu.bookster.services.MessageActions.LAUNCH_MAIL_ACTIVITY;
+
 
 public class DisplayOfferFragment extends Fragment {
-
     private ViewPager2 mViewPager2;
     private Offer mOffer;
     private String mDisplayOfferType;
@@ -301,6 +303,15 @@ public class DisplayOfferFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         //TODO: IMPLEMENT ON RESULT FROM GMAIL
+        if(requestCode==LAUNCH_MAIL_ACTIVITY){
+            if(resultCode==Activity.RESULT_OK){
+                Log.d("EMAIL_TEST", "Return value is RESULT_OK");
+            }
+            else{
+                Log.d("EMAIL_TEST","Return value  is RESULT_CANCELED");
+            }
+        }
+
         Log.d("TEST", "Resulted in" + resultCode);
     }
 }

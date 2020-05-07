@@ -1,6 +1,7 @@
 package com.davidmarian_buzatu.bookster.services;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -21,6 +22,7 @@ import org.w3c.dom.Document;
 
 public class MessageActions {
     private String[] mManagerMail=new String[1];
+    public static final int LAUNCH_MAIL_ACTIVITY=1;
 
     @SuppressLint("IntentReset")
     public void sendEmail(View root, String managerId, FragmentActivity activity) {
@@ -54,9 +56,11 @@ public class MessageActions {
         emailIntent.putExtra(Intent.EXTRA_EMAIL, mManagerMail);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
         emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, ...");
+        //emailIntent.putExtra("result",1);
+        emailIntent.setFlags(0);
 
         try {
-            activity.startActivityForResult(emailIntent, 1);
+            activity.startActivityForResult(emailIntent, LAUNCH_MAIL_ACTIVITY);
         } catch (android.content.ActivityNotFoundException e) {
             Toast.makeText(root.getContext(), "There is no email client installed", Toast.LENGTH_SHORT).show();
         }
