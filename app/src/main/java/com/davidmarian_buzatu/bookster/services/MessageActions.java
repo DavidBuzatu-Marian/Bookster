@@ -20,7 +20,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import org.w3c.dom.Document;
 
 public class MessageActions {
-    private String mManagerMail;
+    private String[] mManagerMail=new String[1];
 
     @SuppressLint("IntentReset")
     public void sendEmail(View root, String managerId, FragmentActivity activity) {
@@ -36,7 +36,8 @@ public class MessageActions {
                         if (task.isSuccessful()) {
                             DocumentSnapshot doc = task.getResult();
                             if (doc != null) {
-                                mManagerMail = (String) doc.getData().get("Email");
+                                mManagerMail[0] = (String) doc.getData().get("Email");
+                                Log.d("EMAIL","Manager mail is "+mManagerMail[0]);
                                 sendEmailToManager(emailIntent, root, activity);
                             }
                         } else {
