@@ -28,11 +28,14 @@ import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
 import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
+import com.davidmarian_buzatu.bookster.model.Message;
 import com.davidmarian_buzatu.bookster.model.Offer;
 
 import com.davidmarian_buzatu.bookster.services.MessageActions;
 import com.davidmarian_buzatu.bookster.services.OfferActions;
 
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.GsonBuilder;
 
 
@@ -304,12 +307,11 @@ public class DisplayOfferFragment extends Fragment {
 
         //TODO: IMPLEMENT ON RESULT FROM GMAIL
         if(requestCode==LAUNCH_MAIL_ACTIVITY){
-            if(resultCode==Activity.RESULT_OK){
-                Log.d("EMAIL_TEST", "Return value is RESULT_OK");
-            }
-            else{
-                Log.d("EMAIL_TEST","Return value  is RESULT_CANCELED");
-            }
+            Message message=new Message(mOffer.getOfferID());
+            FirebaseFirestore.getInstance()
+                    .collection("messages")
+                    .document(mOffer.getManagerID())
+                    .update("messages", FieldValue.arrayUnion(message));
         }
 
         Log.d("TEST", "Resulted in" + resultCode);

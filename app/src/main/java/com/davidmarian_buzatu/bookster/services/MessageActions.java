@@ -56,8 +56,6 @@ public class MessageActions {
         emailIntent.putExtra(Intent.EXTRA_EMAIL, mManagerMail);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
         emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, ...");
-        //emailIntent.putExtra("result",1);
-        emailIntent.setFlags(0);
 
         try {
             activity.startActivityForResult(emailIntent, LAUNCH_MAIL_ACTIVITY);
