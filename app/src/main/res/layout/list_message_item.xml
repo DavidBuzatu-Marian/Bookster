@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="240dp"
     android:padding="8dp"
     app:cornerRadius="28dp">
 
@@ -23,7 +24,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="174dp"
             android:orientation="horizontal">
 
             <TextView
@@ -41,12 +42,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+
+                android:id="@+id/adapter_listMessages_TV_offerId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_italic"
+                android:text="OfferID: "
+                android:textColor="@color/colorBlackHeader"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toTopOf="@id/adapter_listMessages_TV_info"
+                app:layout_constraintTop_toBottomOf="@id/adapter_listMessages_TV_info"
+                tools:layout_editor_absoluteX="18dp"
+                tools:ignore="MissingConstraints" />
+
             <Button
                 android:id="@+id/adapter_listMessages_BTN_mail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="44dp"
+                android:layout_marginBottom="16dp"
                 android:backgroundTint="@color/colorAccent"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/adapter_listMessage_BTN_mail"
