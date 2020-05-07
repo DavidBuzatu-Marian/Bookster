@@ -157,13 +157,31 @@ public class RegisterActivity extends AppCompatActivity {
                 .collection("users")
                 .document(mAuth.getCurrentUser().getUid())
                 .set(userInfo)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        // TODO: GET USER INSTANCE
-                        Log.d("REG_TEST", "SAVED USER INFO");
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            createManagerMessagesDocument();
+                        }
                         mDialog.dismiss();
-                        redirectToUI("Manager");
+                    }
+                });
+    }
+
+    private void createManagerMessagesDocument() {
+        Map<String, Object> messages = new HashMap<>();
+        messages.put("messages", new ArrayList<>());
+        FirebaseFirestore.getInstance()
+                .collection("messages")
+                .document(mAuth.getCurrentUser().getUid())
+                .set(messages)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            redirectToUI("Manager");
+                        }
+                        mDialog.dismiss();
                     }
                 });
     }
@@ -198,11 +216,13 @@ public class RegisterActivity extends AppCompatActivity {
                 .collection("users")
                 .document(mAuth.getCurrentUser().getUid())
                 .set(userInfo)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("REG_TEST", "SAVED USER INFO");
-                        createUserReservationDocument();
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            createUserReservationDocument();
+                        }
+                        mDialog.dismiss();
                     }
                 });
     }
@@ -218,7 +238,6 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-
                             redirectToUI("Client");
                         }
                         mDialog.dismiss();
