@@ -30,13 +30,19 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.w3c.dom.Document;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 public class MessagesFragment extends Fragment {
 
     private MessagesViewModel notificationsViewModel;
     private RecyclerView.Adapter mAdapter;
     private List<Message> mMessages;
+    private List<Map<String,Object>> mMapList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +63,8 @@ public class MessagesFragment extends Fragment {
 
     private void getNotifications(View root){
         mMessages=new ArrayList<>();
+        mMapList = new ArrayList<>();
+
         String userId=FirebaseAuth.getInstance().getUid();
         FirebaseFirestore.getInstance()
                 .collection("messages")
@@ -67,7 +75,11 @@ public class MessagesFragment extends Fragment {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot doc = task.getResult();
-                            mMessages= (List<Message>) doc.get("messages");
+                            mMapList = (List<Map<String, Object>>) doc.getData().get("messages");
+                            for(Map entry : ){
+                                Message message=new Message((String) entry.get("mOfferID"));
+                                mMessages.add(message);
+                            }
                             setUpRecyclerView(root);
                         }
                     }
