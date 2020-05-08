@@ -1,6 +1,7 @@
 package com.davidmarian_buzatu.bookster.activity.ui.messages;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,34 +39,23 @@ import java.util.ListIterator;
 import java.util.Map;
 
 public class MessagesFragment extends Fragment {
-
-    private MessagesViewModel notificationsViewModel;
     private RecyclerView.Adapter mAdapter;
     private List<Message> mMessages;
-    private List<Map<String,Object>> mMapList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(MessagesViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_messages, container, false);
-        final TextView textView = root.findViewById(R.id.text_messages);
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
 
         getNotifications(root);
         return root;
     }
 
-    private void getNotifications(View root){
-        mMessages=new ArrayList<>();
-        mMapList = new ArrayList<>();
+    private void getNotifications(View root) {
+        mMessages = new ArrayList<>();
 
-        String userId=FirebaseAuth.getInstance().getUid();
+        String userId = FirebaseAuth.getInstance().getUid();
         FirebaseFirestore.getInstance()
                 .collection("messages")
                 .document(userId)
@@ -75,10 +65,10 @@ public class MessagesFragment extends Fragment {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot doc = task.getResult();
-                            mMapList = (List<Map<String, Object>>) doc.getData().get("messages");
-                            for(Map entry : ){
-                                Message message=new Message((String) entry.get("mOfferID"));
-                                mMessages.add(message);
+                            List<Map<String, Object>> mapList;
+                            mapList = (List<Map<String, Object>>) doc.getData().get("messages");
+                            for (Map<String, Object> map : mapList) {
+                                mMessages.add(new Message((String) map.get("offerID")));
                             }
                             setUpRecyclerView(root);
                         }
@@ -87,12 +77,12 @@ public class MessagesFragment extends Fragment {
 
     }
 
-    private void setUpRecyclerView(View root){
-        RecyclerView recyclerView=root.findViewById(R.id.frag_messages_RV);
+    private void setUpRecyclerView(View root) {
+        RecyclerView recyclerView = root.findViewById(R.id.frag_messages_RV);
 
-        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter=new ListMessagesAdapter(mMessages,getContext(),getActivity());
+        mAdapter = new ListMessagesAdapter(mMessages, getContext(), getActivity());
         recyclerView.setAdapter(mAdapter);
     }
 }

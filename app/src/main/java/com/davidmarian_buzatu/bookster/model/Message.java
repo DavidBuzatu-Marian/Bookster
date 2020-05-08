@@ -7,11 +7,11 @@ public class Message {
         this.mOfferID = mOfferID;
     }
 
-    public String getmOfferID() {
+    public String getOfferID() {
         return mOfferID;
     }
 
-    public void setmOfferID(String mOfferID) {
+    public void setOfferID(String mOfferID) {
         this.mOfferID = mOfferID;
     }
 }

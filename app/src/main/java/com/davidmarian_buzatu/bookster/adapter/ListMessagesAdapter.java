@@ -28,26 +28,26 @@ public class ListMessagesAdapter extends RecyclerView.Adapter<ListMessagesAdapte
     private List<Message> mDataSet;
     private Context mContext;
 
-    public ListMessagesAdapter(List<Message> dataset, Context context, FragmentActivity activity){
+    public ListMessagesAdapter(List<Message> dataset, Context context, FragmentActivity activity) {
         this.mActivity = activity;
-        this.mDataSet=dataset;
-        this.mContext=context;
+        this.mDataSet = dataset;
+        this.mContext = context;
     }
 
 
     @NonNull
     @Override
     public ListMessagesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ConstraintLayout _viewGroup=(ConstraintLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.list_message_item,parent,false);
+        ConstraintLayout _viewGroup = (ConstraintLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.list_message_item, parent, false);
 
-        ListMessagesViewHolder _vh= new ListMessagesViewHolder(_viewGroup,parent);
+        ListMessagesViewHolder _vh = new ListMessagesViewHolder(_viewGroup, parent);
         return _vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ListMessagesAdapter.ListMessagesViewHolder holder, int position) {
-            Message message = mDataSet.get(position);
-            holder.setInfoInViews(message,mContext);
+        Message message = mDataSet.get(position);
+        holder.setInfoInViews(message, mContext);
     }
 
     @Override
@@ -55,32 +55,32 @@ public class ListMessagesAdapter extends RecyclerView.Adapter<ListMessagesAdapte
         return mDataSet.size();
     }
 
-    public class ListMessagesViewHolder extends RecyclerView.ViewHolder{
+    public class ListMessagesViewHolder extends RecyclerView.ViewHolder {
         private Button mCheckEmailsButton;
         private TextView mOfferID;
 
         public ListMessagesViewHolder(@NonNull View itemView, @Nullable final ViewGroup parent) {
             super(itemView);
 
-            mOfferID=itemView.findViewById(R.id.adapter_listMessages_TV_offerId);
-            mCheckEmailsButton=itemView.findViewById(R.id.adapter_listMessages_BTN_mail);
+            mOfferID = itemView.findViewById(R.id.adapter_listMessages_TV_offerId);
+            mCheckEmailsButton = itemView.findViewById(R.id.adapter_listMessages_BTN_mail);
         }
 
-        private void setInfoInViews(Message message,Context context){
+        private void setInfoInViews(Message message, Context context) {
             mOfferID.setText(new StringBuilder()
-                    .append("You received this notification for: ")
-                    .append(message.getmOfferID())
+                    .append("Offer ID is: ")
+                    .append(message.getOfferID())
             );
             setButtonListener(message);
         }
 
-        private void setButtonListener(Message message){
+        private void setButtonListener(Message message) {
             mCheckEmailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CardView cv=itemView.findViewById(R.id.adapter_listMessages_CV);
+                    CardView cv = itemView.findViewById(R.id.adapter_listMessages_CV);
                     cv.setVisibility(View.GONE);
-                    Log.d("MESSAGE_TEST","Pressed 'Check emails' button");
+                    Log.d("MESSAGE_TEST", "Pressed 'Check emails' button");
                 }
             });
         }
