@@ -1,6 +1,7 @@
 package com.davidmarian_buzatu.bookster.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.opengl.Visibility;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.model.Message;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -78,8 +83,21 @@ public class ListMessagesAdapter extends RecyclerView.Adapter<ListMessagesAdapte
             mCheckEmailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent mailIntent=mActivity.getPackageManager().getLaunchIntentForPackage("com.google.android.gm");
+
+                    try {
+                        mActivity.startActivity(mailIntent);
+                    }
+                    catch (android.content.ActivityNotFoundException e){
+                        Toast.makeText(mContext, "There is no email client installed", Toast.LENGTH_SHORT).show();
+                    }
                     CardView cv = itemView.findViewById(R.id.adapter_listMessages_CV);
                     cv.setVisibility(View.GONE);
+
+                    FirebaseFirestore.getInstance()
+                            .collection("messages")
+                            .document(FirebaseAuth.getInstance().getUid())
+                            .update("messages", FieldValue.arrayRemove(message));
                     Log.d("MESSAGE_TEST", "Pressed 'Check emails' button");
                 }
             });
