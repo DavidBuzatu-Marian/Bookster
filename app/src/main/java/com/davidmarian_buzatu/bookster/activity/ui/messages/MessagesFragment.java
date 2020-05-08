@@ -11,12 +11,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.adapter.ListMessagesAdapter;
+import com.davidmarian_buzatu.bookster.model.Message;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.w3c.dom.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessagesFragment extends Fragment {
 
     private MessagesViewModel notificationsViewModel;
+    private RecyclerView.Adapter mAdapter;
+    private List<Message> mMessages;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +50,37 @@ public class MessagesFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        getNotifications(root);
         return root;
+    }
+
+    private void getNotifications(View root){
+        mMessages=new ArrayList<>();
+        String userId=FirebaseAuth.getInstance().getUid();
+        FirebaseFirestore.getInstance()
+                .collection("messages")
+                .document(userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            mMessages= (List<Message>) doc.get("messages");
+                            setUpRecyclerView(root);
+                        }
+                    }
+                });
+
+    }
+
+    private void setUpRecyclerView(View root){
+        RecyclerView recyclerView=root.findViewById(R.id.frag_messages_RV);
+
+        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter=new ListMessagesAdapter(mMessages,getContext(),getActivity());
+        recyclerView.setAdapter(mAdapter);
     }
 }

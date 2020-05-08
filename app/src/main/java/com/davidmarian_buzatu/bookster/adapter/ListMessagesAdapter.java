@@ -1,6 +1,7 @@
 package com.davidmarian_buzatu.bookster.adapter;
 
 import android.content.Context;
+import android.opengl.Visibility;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,7 +67,10 @@ public class ListMessagesAdapter extends RecyclerView.Adapter<ListMessagesAdapte
         }
 
         private void setInfoInViews(Message message,Context context){
-            mOfferID.setText(message.getmOfferID());
+            mOfferID.setText(new StringBuilder()
+                    .append("You received this notification for: ")
+                    .append(message.getmOfferID())
+            );
             setButtonListener(message);
         }
 
@@ -73,6 +78,8 @@ public class ListMessagesAdapter extends RecyclerView.Adapter<ListMessagesAdapte
             mCheckEmailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    CardView cv=itemView.findViewById(R.id.adapter_listMessages_CV);
+                    cv.setVisibility(View.GONE);
                     Log.d("MESSAGE_TEST","Pressed 'Check emails' button");
                 }
             });
