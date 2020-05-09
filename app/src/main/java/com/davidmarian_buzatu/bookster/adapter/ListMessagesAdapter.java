@@ -83,12 +83,11 @@ public class ListMessagesAdapter extends RecyclerView.Adapter<ListMessagesAdapte
             mCheckEmailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent mailIntent=mActivity.getPackageManager().getLaunchIntentForPackage("com.google.android.gm");
+                    Intent mailIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.google.android.gm");
 
                     try {
                         mActivity.startActivity(mailIntent);
-                    }
-                    catch (android.content.ActivityNotFoundException e){
+                    } catch (android.content.ActivityNotFoundException e) {
                         Toast.makeText(mContext, "There is no email client installed", Toast.LENGTH_SHORT).show();
                     }
                     CardView cv = itemView.findViewById(R.id.adapter_listMessages_CV);

@@ -65,4 +65,7 @@
     <string name="frag_displayOffer_TV_message">Contact manager</string>
     <string name="adapter_listMessage_BTN_mail">Check your emails</string>
     <string name="adapter_listMessages_TV_info">You have received a new message</string>
+    <string name="frag_messages_TV_header">Messages</string>
+    <string name="frag_messages_TV_details">These are notifications. They will open gmail for you</string>
+    <string name="frag_messages_TV_empty">No messages from your clients</string>
 </resources>

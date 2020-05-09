@@ -80,9 +80,15 @@ public class MessagesFragment extends Fragment {
     private void setUpRecyclerView(View root) {
         RecyclerView recyclerView = root.findViewById(R.id.frag_messages_RV);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ListMessagesAdapter(mMessages, getContext(), getActivity());
-        recyclerView.setAdapter(mAdapter);
+        if(mMessages.size() > 0) {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+            mAdapter = new ListMessagesAdapter(mMessages, getContext(), getActivity());
+            recyclerView.setAdapter(mAdapter);
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            root.findViewById(R.id.frag_messages_CV_messages).setVisibility(View.GONE);
+            root.findViewById(R.id.frag_messages_TV_empty).setVisibility(View.VISIBLE);
+        }
     }
 }
