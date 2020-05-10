@@ -100,6 +100,7 @@ public class DisplayOfferFragment extends Fragment {
         Button buttonReserve = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
         Button buttonCancelOffer = root.findViewById(R.id.frag_displayOffer_BTN_cancel_offer);
         DisplayOfferTypes displayOfferTypes = DisplayOfferTypes.valueOf(mDisplayOfferType);
+        final Fragment reference = this;
         switch (displayOfferTypes) {
             case OFFER_RESERVATION:
                 buttonReserve.setVisibility(View.GONE);
@@ -108,7 +109,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservation.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        OfferActions.getInstance().cancelOffer(mOffer, getContext());
+                        OfferActions.getInstance().deleteReservationsForOffer(mOffer, getContext());
                     }
                 });
                 break;
@@ -130,7 +131,8 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelOffer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        OfferActions.getInstance().cancelOfferManager(mOffer, getContext());
+                        OfferActions.getInstance().deleteOffer(mOffer, getContext());
+                        getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
                     }
                 });
                 break;
