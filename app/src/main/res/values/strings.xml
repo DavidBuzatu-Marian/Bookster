@@ -68,4 +68,11 @@
     <string name="frag_messages_TV_header">Messages</string>
     <string name="frag_messages_TV_details">These are notifications. They will open gmail for you</string>
     <string name="frag_messages_TV_empty">No messages from your clients</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="account_header">Account</string>
+    <string name="email_title">Email</string>
+    <string name="email_summary">Change your email</string>
+    <string name="password_title">Password</string>
+    <string name="password_summary">Change your password</string>
+    <string name="logOut_title">Log Out</string>
 </resources>
