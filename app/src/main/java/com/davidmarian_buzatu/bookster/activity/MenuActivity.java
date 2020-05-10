@@ -6,6 +6,9 @@ import android.util.Log;
 
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.model.Client;
+import com.davidmarian_buzatu.bookster.model.Manager;
+import com.davidmarian_buzatu.bookster.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,22 +20,52 @@ import androidx.navigation.ui.NavigationUI;
 
 
 public class MenuActivity extends AppCompatActivity {
-
+    private User mCurrentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(navView, navController);
 
         Bundle extras = getIntent().getExtras();
-        navController.navigate(R.id.navigation_home, extras);
-        navController.navigate(R.id.navigation_messages, extras);
-        navController.navigate(R.id.navigation_profile, extras);
-        navController.navigate(R.id.navigation_search, extras);
+        getUserInstance(extras.getString("Type"));
+        setContentViewOnType(mCurrentUser.getClass().getName(), extras);
+    }
 
+    private void getUserInstance(String type) {
+        switch (type) {
+            case "Client":
+                mCurrentUser = Client.getInstance();
+                break;
+            case "Manager":
+                mCurrentUser = Manager.getInstance();
+                break;
+            default:
+                mCurrentUser = null;
+        }
+    }
+
+    private void setContentViewOnType(String type, Bundle extras) {
+        if(type.contains("Client")) {
+            setContentView(R.layout.activity_menu_user);
+            BottomNavigationView navView = findViewById(R.id.nav_view);
+
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            NavigationUI.setupWithNavController(navView, navController);
+
+            navController.navigate(R.id.navigation_home, extras);
+            navController.navigate(R.id.navigation_profile, extras);
+            navController.navigate(R.id.navigation_search, extras);
+        } else {
+            setContentView(R.layout.activity_menu);
+            BottomNavigationView navView = findViewById(R.id.nav_view);
+
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            NavigationUI.setupWithNavController(navView, navController);
+
+            navController.navigate(R.id.navigation_home, extras);
+            navController.navigate(R.id.navigation_messages, extras);
+            navController.navigate(R.id.navigation_profile, extras);
+            navController.navigate(R.id.navigation_search, extras);
+        }
     }
 
     @Override
