@@ -1,10 +1,12 @@
 package com.davidmarian_buzatu.bookster.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +26,16 @@ import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
 import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
+import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
+import com.davidmarian_buzatu.bookster.model.Message;
 import com.davidmarian_buzatu.bookster.model.Offer;
 
+import com.davidmarian_buzatu.bookster.services.MessageActions;
 import com.davidmarian_buzatu.bookster.services.OfferActions;
 
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.GsonBuilder;
 
 
@@ -36,9 +43,10 @@ import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.List;
 
+import static com.davidmarian_buzatu.bookster.services.MessageActions.LAUNCH_MAIL_ACTIVITY;
+
 
 public class DisplayOfferFragment extends Fragment {
-
     private ViewPager2 mViewPager2;
     private Offer mOffer;
     private String mDisplayOfferType;
@@ -84,14 +92,16 @@ public class DisplayOfferFragment extends Fragment {
         setRoomInfo(root);
         createAndSetFacilities(root, R.id.frag_displayOffer_LL_room_facilities, mOffer.getFacilities(), false);
         setUpButtonListener(root);
+        setContactManager(root);
     }
 
     private void setUpButtonListener(View root) {
         Button buttonCancelReservation = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation);
         Button buttonReserve = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
         Button buttonCancelOffer = root.findViewById(R.id.frag_displayOffer_BTN_cancel_offer);
-        switch (mDisplayOfferType) {
-            case "ViewReservation":
+        DisplayOfferTypes displayOfferTypes = DisplayOfferTypes.valueOf(mDisplayOfferType);
+        switch (displayOfferTypes) {
+            case OFFER_RESERVATION:
                 buttonReserve.setVisibility(View.GONE);
                 buttonCancelOffer.setVisibility(View.GONE);
                 buttonCancelReservation.setVisibility(View.VISIBLE);
@@ -102,7 +112,7 @@ public class DisplayOfferFragment extends Fragment {
                     }
                 });
                 break;
-            case "ViewOfferClient":
+            case OFFER_CLIENT:
                 buttonCancelOffer.setVisibility(View.GONE);
                 buttonCancelReservation.setVisibility(View.GONE);
                 buttonReserve.setVisibility(View.VISIBLE);
@@ -113,7 +123,7 @@ public class DisplayOfferFragment extends Fragment {
                     }
                 });
                 break;
-            case "ViewOfferManager":
+            case OFFER_MANAGER:
                 buttonCancelReservation.setVisibility(View.GONE);
                 buttonReserve.setVisibility(View.GONE);
                 buttonCancelOffer.setVisibility(View.VISIBLE);
@@ -280,4 +290,30 @@ public class DisplayOfferFragment extends Fragment {
         Glide.with(getContext()).load(mOffer.getPresentationURL()).into(imageViewPresentation);
     }
 
+    private void setContactManager(View root) {
+        MessageActions messageActions = new MessageActions();
+        TextView textViewMail = root.findViewById(R.id.frag_displayOffer_TV_message);
+        textViewMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                messageActions.sendEmail(root, mOffer.getManagerID(), getActivity());
+            }
+        });
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //TODO: IMPLEMENT ON RESULT FROM GMAIL
+        if(requestCode==LAUNCH_MAIL_ACTIVITY){
+            Message message=new Message(mOffer.getOfferID());
+            FirebaseFirestore.getInstance()
+                    .collection("messages")
+                    .document(mOffer.getManagerID())
+                    .update("messages", FieldValue.arrayUnion(message));
+        }
+
+        Log.d("TEST", "Resulted in" + resultCode);
+    }
 }

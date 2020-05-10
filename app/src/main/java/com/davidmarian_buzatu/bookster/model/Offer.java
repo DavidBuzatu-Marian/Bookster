@@ -1,6 +1,8 @@
 package com.davidmarian_buzatu.bookster.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Offer {
 
@@ -8,6 +10,74 @@ public class Offer {
     private List<String> mFacilities, mPictures, mPopularFacilities;
     private String mNrPersons, mPrice, mRoomsAvailable, mSize, mCityName, mCountry;
     private Long mDateStart, mDateEnd;
+
+    public void setOfferFromMap(Map<String, Object> mapOffer) {
+        for (Map.Entry<String, Object> entry : mapOffer.entrySet()) {
+            switch (entry.getKey()) {
+                case "country":
+                    setCountry((String) entry.getValue());
+                    break;
+                case "cityName":
+                    setCityName((String) entry.getValue());
+                    break;
+                case "dateEnd":
+                    setDateEnd((Long) entry.getValue());
+                    break;
+                case "dateStart":
+                    setDateStart((Long) entry.getValue());
+                    break;
+                case "description":
+                    setDescription((String) entry.getValue());
+                    break;
+                case "facilities":
+                    setFacilities((ArrayList<String>) entry.getValue());
+                    break;
+                case "name":
+                    setName((String) entry.getValue());
+                    break;
+                case "managerID":
+                    setManagerID((String) entry.getValue());
+                    break;
+                case "nrPerson":
+                    setNrPersons((String) entry.getValue());
+                    break;
+                case "pictures":
+                    setPictures((ArrayList<String>) entry.getValue());
+                    break;
+                case "popularFacilities":
+                    setPopularFacilities((ArrayList<String>) entry.getValue());
+                    break;
+                case "presentationURL":
+                    setPresentationURL((String) entry.getValue());
+                    break;
+                case "price":
+                    setPrice((String) entry.getValue());
+                    break;
+                case "rating":
+                    setRating((String) entry.getValue());
+                    break;
+                case "roomDescription":
+                    setRoomDescription((String) entry.getValue());
+                    break;
+                case "roomType":
+                    setRoomType((String) entry.getValue());
+                    break;
+                case "roomsAvailable":
+                    setRoomsAvailable((String) entry.getValue());
+                    break;
+                case "size":
+                    setSize((String) entry.getValue());
+                    break;
+                case "latitude":
+                    setLatitude((String) entry.getValue());
+                    break;
+                case "longitude":
+                    setLongitude((String) entry.getValue());
+                default:
+                    break;
+            }
+        }
+    }
 
     public void setCityName(String cityName) {
         mCityName = cityName;

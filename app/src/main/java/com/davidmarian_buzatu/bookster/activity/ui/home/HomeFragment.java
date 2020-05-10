@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +52,13 @@ public class HomeFragment extends Fragment {
         getUserReservations(mCurrentUser).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    Map<String, Object> reservationsMap = task.getResult().getData();
-                    for(Map.Entry<String, Object> entry: reservationsMap.entrySet()) {
+                if (task.isSuccessful()) {
+                    final List<Map<String, Object>> reservationsMapList = (List<Map<String, Object>>) task.getResult().get("reservations");
+                    for (Map<String, Object> mapReservation: reservationsMapList) {
                         // Its a map in the database
-                        Reservation reservation = new Reservation((Map<String, Object>) entry.getValue());
-                        Log.d("TEST", reservation.getLocation() + reservation.getOfferID());
+                        Map.Entry<String, Object> entry = mapReservation.entrySet().iterator().next();
+                        Reservation reservation = new Reservation();
+                        reservation.setReservationFromMap(entry);
                         reservationsList.add(reservation);
                     }
                     setUpRecyclerView(root, reservationsList);
@@ -101,4 +103,6 @@ public class HomeFragment extends Fragment {
                 mCurrentUser = null;
         }
     }
+
+
 }

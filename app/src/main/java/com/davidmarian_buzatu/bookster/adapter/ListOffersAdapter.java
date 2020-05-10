@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.fragment.DisplayOfferFragment;
 import com.davidmarian_buzatu.bookster.model.Offer;
+import com.davidmarian_buzatu.bookster.services.FragmentActions;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
@@ -86,23 +88,9 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
             mOpenOfferButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startDisplayOfferFragment(offer);
+                    FragmentActions.startDisplayOfferFragment(offer, mActivity, DisplayOfferTypes.OFFER_CLIENT.name());
                 }
             });
-        }
-
-        private void startDisplayOfferFragment(Offer offer) {
-            DisplayOfferFragment nextFragment = new DisplayOfferFragment();
-            Bundle bundle = new Bundle();
-
-            String offerStringified = new GsonBuilder().create().toJson(offer);
-            bundle.putString("Offer", offerStringified);
-            bundle.putString("displayOfferType", "ViewOfferClient");
-            nextFragment.setArguments(bundle);
-            mActivity.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment, nextFragment)
-                    .addToBackStack(null)
-                    .commit();
         }
     }
 }
