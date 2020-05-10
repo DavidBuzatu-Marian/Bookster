@@ -130,7 +130,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelOffer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        OfferActions.getInstance().cancelOffer(mOffer, getContext());
+                        OfferActions.getInstance().cancelOfferManager(mOffer, getContext());
                     }
                 });
                 break;
@@ -305,7 +305,6 @@ public class DisplayOfferFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //TODO: IMPLEMENT ON RESULT FROM GMAIL
         if(requestCode==LAUNCH_MAIL_ACTIVITY){
             Message message=new Message(mOffer.getOfferID());
             FirebaseFirestore.getInstance()

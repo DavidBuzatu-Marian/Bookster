@@ -29,11 +29,13 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
     private final FragmentActivity mActivity;
     private List<Offer> mDataSet;
     private Context mContext;
+    private String mDisplayOfferType;
 
-    public ListOffersAdapter(List<Offer> dataset, Context context, FragmentActivity activity) {
+    public ListOffersAdapter(List<Offer> dataset, Context context, FragmentActivity activity, String displayOfferType) {
         mDataSet = dataset;
         mContext = context;
         mActivity = activity;
+        mDisplayOfferType = displayOfferType;
     }
 
 
@@ -68,7 +70,6 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
         public ListOfferViewHolder(@NonNull View itemView, @NonNull final ViewGroup parent) {
             super(itemView);
 
-            // TODO: USE itemView TO GET VIEWS
             mName = itemView.findViewById(R.id.adapter_listOffer_TV_name);
             mDescription = itemView.findViewById(R.id.adapter_listOffer_TV_description);
             mRating = itemView.findViewById(R.id.adapter_listOffer_TV_rating);
@@ -88,7 +89,7 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
             mOpenOfferButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FragmentActions.startDisplayOfferFragment(offer, mActivity, DisplayOfferTypes.OFFER_CLIENT.name());
+                    FragmentActions.startDisplayOfferFragment(offer, mActivity, mDisplayOfferType);
                 }
             });
         }

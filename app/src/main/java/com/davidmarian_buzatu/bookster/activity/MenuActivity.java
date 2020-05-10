@@ -2,15 +2,18 @@ package com.davidmarian_buzatu.bookster.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.model.Client;
 import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -64,7 +67,7 @@ public class MenuActivity extends AppCompatActivity {
             navController.navigate(R.id.navigation_home, extras);
             navController.navigate(R.id.navigation_messages, extras);
             navController.navigate(R.id.navigation_profile, extras);
-            navController.navigate(R.id.navigation_search, extras);
+            navController.navigate(R.id.navigation_offers, extras);
         }
     }
 
@@ -80,7 +83,6 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("TEST", "Called");
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         fragment.onActivityResult(requestCode, resultCode, data);
     }

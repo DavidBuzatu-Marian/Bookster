@@ -155,4 +155,8 @@ public class OfferActions {
                 .document(offer.getOfferID())
                 .set(offer);
     }
+
+    public void cancelOfferManager(Offer mOffer, Context context) {
+
+    }
 }

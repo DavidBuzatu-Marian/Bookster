@@ -1,11 +1,10 @@
-package com.davidmarian_buzatu.bookster.activity.ui.search;
+package com.davidmarian_buzatu.bookster.activity.ui.offers;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,66 +13,43 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
+import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.Offer;
+import com.davidmarian_buzatu.bookster.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ListOffersFragment extends Fragment {
-
+public class OffersFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
-    private View mRoot;
-    private String mCity;
-    private Long mStartDate, mEndDate;
     private ProgressDialog mDialog;
     private List<Offer> mOffers;
-    private String mLocation;
-
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
-        mRoot = inflater.inflate(R.layout.fragment_list_offers, container, false);
-        setInformationInViews();
-        return mRoot;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_offers, container, false);
+        setInformationInViews(root);
+        return root;
     }
 
-    private void setInformationInViews() {
-        TextView textViewStartDate = mRoot.findViewById(R.id.frag_listOffers_TV_start_date);
-        TextView textViewEndDate = mRoot.findViewById(R.id.frag_listOffers_TV_end_date);
-        TextView textViewLocation = mRoot.findViewById(R.id.frag_listOffers_TV_location);
-        DateFormater df = DateFormater.getInstance();
-
-        textViewStartDate.setText(df.getFormattedDate(mStartDate, "EEE dd MMMM YYYY"));
-        textViewEndDate.setText(df.getFormattedDate(mEndDate, "EEE dd MMMM YYYY"));
-        textViewLocation.setText(mLocation);
-    }
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            mLocation = bundle.getString("Location");
-            mCity = bundle.getString("City");
-            mStartDate = bundle.getLong("StartDate");
-            mEndDate = bundle.getLong("EndDate");
-        }
+    private void setInformationInViews(View root) {
         displayLoadingDialog();
-        getOffers();
+        Manager.getInstance().getUserInfo().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                getOffers(root);
+            }
+        });
     }
 
     private void displayLoadingDialog() {
@@ -81,12 +57,11 @@ public class ListOffersFragment extends Fragment {
         mDialog.show();
     }
 
-
-    private void getOffers() {
+    private void getOffers(View root) {
         mOffers = new ArrayList<>();
         FirebaseFirestore.getInstance()
                 .collection("offers")
-                .whereEqualTo("cityName", mCity)
+                .whereEqualTo("managerID", Manager.getInstance().getUserID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -97,29 +72,23 @@ public class ListOffersFragment extends Fragment {
                                 Offer offer = new Offer();
                                 offer.setOfferFromMap(mapOffer);
                                 offer.setOfferID(doc.getId());
-                                if (isValid(offer, mStartDate, mEndDate)) {
-                                    mOffers.add(offer);
-                                }
+                                mOffers.add(offer);
                             }
-                            setUpRecyclerView(mRoot);
+                            setUpRecyclerView(root);
                         }
                         mDialog.dismiss();
                     }
                 });
     }
 
-    private boolean isValid(Offer offer, Long mStartDate, Long mEndDate) {
-        return (offer.getDateStart() <= mStartDate && offer.getDateEnd() >= mEndDate && Integer.parseInt(offer.getRoomsAvailable()) > 0);
-    }
-
-
     private void setUpRecyclerView(View root) {
-        RecyclerView recyclerView = root.findViewById(R.id.frag_listOffers_RV_offers);
+        RecyclerView recyclerView = root.findViewById(R.id.frag_listOffersAdmin_RV_offers);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ListOffersAdapter(mOffers, getContext(), getActivity(),  DisplayOfferTypes.OFFER_CLIENT.name());
+        mAdapter = new ListOffersAdapter(mOffers, getContext(), getActivity(),  DisplayOfferTypes.OFFER_MANAGER.name());
         recyclerView.setAdapter(mAdapter);
     }
+
 }
