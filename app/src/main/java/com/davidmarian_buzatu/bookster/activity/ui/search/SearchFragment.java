@@ -26,6 +26,7 @@ import com.davidmarian_buzatu.bookster.model.ListCities;
 import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.User;
 
+import com.davidmarian_buzatu.bookster.services.CalendarActions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,7 +41,7 @@ public class SearchFragment extends Fragment {
 
     private User mCurrentUser;
     private String mCitySearched;
-    private Long mStartDate, mEndDate;
+    private CalendarActions mCalendarActions;
     private String mLocation;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -57,6 +58,11 @@ public class SearchFragment extends Fragment {
         setUpSubmitButton(root);
         return root;
     }
+
+    private void setUpCalendarPicker(View root) {
+        mCalendarActions = new CalendarActions();
+        mCalendarActions.setUpCalendarPicker(root, getContext());
+    }
 //
 //    private void addCitiesToFirebase() {
 //        UploadCities uploadCities = new UploadCities();
@@ -68,7 +74,7 @@ public class SearchFragment extends Fragment {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mCitySearched != null && mStartDate > 0 && mEndDate > 0) {
+                if (mCitySearched != null && mCalendarActions.getStartDate() > 0 && mCalendarActions.getEndDate() > 0) {
                     startListOffersFragment(root);
                 } else {
                     Toast.makeText(getContext(), "Please complete all fields", Toast.LENGTH_LONG).show();
@@ -171,67 +177,16 @@ public class SearchFragment extends Fragment {
     }
 
 
-    private void setUpCalendarPicker(View container) {
-        final Calendar calendarStart = Calendar.getInstance();
-        final Calendar calendarEnd = Calendar.getInstance();
 
-        EditText edittextStart = container.findViewById(R.id.frag_search_ET_start_date);
-        EditText edittextEnd = container.findViewById(R.id.frag_search_ET_end_date);
-        DatePickerDialog.OnDateSetListener dateStart = new DatePickerDialog.OnDateSetListener() {
 
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                calendarStart.set(Calendar.YEAR, year);
-                calendarStart.set(Calendar.MONTH, monthOfYear);
-                calendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel(calendarStart, edittextStart);
-                mStartDate = calendarStart.getTimeInMillis();
-            }
-
-        };
-        DatePickerDialog.OnDateSetListener dateEnd = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                calendarEnd.set(Calendar.YEAR, year);
-                calendarEnd.set(Calendar.MONTH, monthOfYear);
-                calendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel(calendarEnd, edittextEnd);
-                mEndDate = calendarEnd.getTimeInMillis();
-            }
-
-        };
-        setEditOnClick(edittextStart, dateStart, calendarStart);
-        setEditOnClick(edittextEnd, dateEnd, calendarEnd);
-    }
-
-    private void setEditOnClick(EditText edittextEnd, DatePickerDialog.OnDateSetListener dateEnd, Calendar calendarEnd) {
-        edittextEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(getContext(), dateEnd, calendarEnd
-                        .get(Calendar.YEAR), calendarEnd.get(Calendar.MONTH),
-                        calendarEnd.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-    }
-
-    private void updateLabel(Calendar calendar, EditText edittext) {
-        String myFormat = "dd/MM/yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        edittext.setText(sdf.format(calendar.getTime()));
-    }
 
     private void startListOffersFragment(View view) {
         ListOffersFragment nextFragment = new ListOffersFragment();
         Bundle bundle = new Bundle();
         bundle.putString("Location", mLocation);
         bundle.putString("City", mCitySearched);
-        bundle.putLong("StartDate", mStartDate);
-        bundle.putLong("EndDate", mEndDate);
+        bundle.putLong("StartDate", mCalendarActions.getStartDate());
+        bundle.putLong("EndDate", mCalendarActions.getEndDate());
         nextFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)
