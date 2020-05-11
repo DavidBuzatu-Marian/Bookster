@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.UploadCities;
+import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.services.CalendarActions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +38,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -54,9 +58,11 @@ import java.util.UUID;
 public class AddOfferFragment extends Fragment {
     private static final int SELECT_PICTURES = 1001;
     private List<Bitmap> mPicturesList = new ArrayList<>();
-    private List<String> mPicturesLink, mFacilities, mPopularFacilities;
+    private List<String> mPicturesLink = new ArrayList<>(), mFacilities, mPopularFacilities;
     private CalendarActions mCalendarActions;
     private List<TextInputEditText> mTIETList;
+    private final Facilities[] mFacilitiesArray = {Facilities.BREAKFAST, Facilities.GYM, Facilities.INTERNET,
+            Facilities.POOL, Facilities.BAR, Facilities.NON_SMOKING, Facilities.SPA};
     private final int[] mTIETResIds = {R.id.frag_addOffer_TIET_name, R.id.frag_addOffer_TIET_description, R.id.frag_addOffer_TIET_latitude,
             R.id.frag_addOffer_TIET_longitude, R.id.frag_addOffer_TIET_room_description, R.id.frag_addOffer_TIET_room_facilities,
             R.id.frag_addOffer_TIET_room_price, R.id.frag_addOffer_TIET_room_rating, R.id.frag_addOffer_TIET_room_size};
@@ -106,17 +112,51 @@ public class AddOfferFragment extends Fragment {
                 if (fieldsAreValid()) {
                     mFacilities = getFacilities();
                     mPopularFacilities = getPopularFacilities();
-//                    mDialog = DialogShow.getInstance().getDisplayDialog(getContext(), R.string.frag_addOffer_dialog_message);
-//                    saveImagesToStorage();
-//                    // not sure about this
-//                    // this blocks the main thread
-//                    while(mPicturesLink.size() != mPicturesList.size() && !mErrorFound);
-//                    if(!mErrorFound) {
-//                        saveOfferToFirebase();
-//                    }
+                    mDialog = DialogShow.getInstance().getDisplayDialog(getContext(), R.string.frag_addOffer_dialog_message);
+                    mDialog.show();
+                    saveOfferAndImages();
                 }
             }
         });
+    }
+
+    private void saveOfferToFirebase() {
+        Fragment reference = this;
+        Map<String, Object> offerMap = getMappedObject();
+        FirebaseFirestore.getInstance().collection("offers").add(offerMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()) {
+                    getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
+                }
+                mDialog.dismiss();
+            }
+        });
+    }
+
+    private Map<String, Object> getMappedObject() {
+        Map<String, Object> offerMap = new HashMap<>();
+        new HashMap<>();
+        int counter = 0;
+        // put tiet fields
+        for(String key : mTIETKeys) {
+            offerMap.put(key, mTIETList.get(counter++).getText().toString());
+        }
+        // put individual things
+        offerMap.put("dateStart", mCalendarActions.getStartDate());
+        offerMap.put("dateEnd", mCalendarActions.getEndDate());
+        offerMap.put("facilities", mFacilities);
+        offerMap.put("popularFacilities", mPopularFacilities);
+        // save first picture as presentation
+        offerMap.put("presentationURL", mPicturesLink.get(0));
+        offerMap.put("managerID", FirebaseAuth.getInstance().getUid());
+        // get info from spinners
+        offerMap.put("country",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_country)).getSelectedItem().toString());
+        offerMap.put("city",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_city)).getSelectedItem().toString());
+        offerMap.put("roomType",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_room_type)).getSelectedItem().toString());
+        offerMap.put("roomsAvailable", String.valueOf(((NumberPicker) mRoot.findViewById(R.id.frag_addOffer_NP_available)).getValue()));
+        offerMap.put("pictures", mPicturesLink);
+        return offerMap;
     }
 
     private List<String> getFacilities() {
@@ -135,7 +175,7 @@ public class AddOfferFragment extends Fragment {
         for(int resId: mCBResIds) {
             CheckBox cb = mRoot.findViewById(resId);
             if(cb.isChecked()) {
-                popFacilities.add(popularFacilities[counter]);
+                popFacilities.add(mFacilitiesArray[counter].name());
             }
             ++counter;
         }
@@ -225,7 +265,7 @@ public class AddOfferFragment extends Fragment {
         }
     }
 
-    private void saveImagesToStorage() {
+    private void saveOfferAndImages() {
         for (Bitmap bitmap : mPicturesList) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -245,7 +285,10 @@ public class AddOfferFragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
-                        mPicturesLink.add(task.toString());
+                        mPicturesLink.add(task.getResult().toString());
+                        if(mPicturesLink.size() == mPicturesList.size()) {
+                            saveOfferToFirebase();
+                        }
                     }
                 }
             });
