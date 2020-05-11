@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class CalendarActions {
-    private Long mStartDate, mEndDate;
+    private Long mStartDate = 0L, mEndDate = 0L;
 
     public void setUpCalendarPicker(View container, Context context, int resIDStart, int resIDEnd) {
 

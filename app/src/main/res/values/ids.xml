@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="frag_addOffer_CB_1" type="id" />
+    <item name="frag_addOffer_CB_breakfast" type="id" />
+    <item name="frag_addOffer_CB_gym" type="id" />
+    <item name="frag_addOffer_CB_internet" type="id" />
+    <item name="frag_addOffer_CB_pool" type="id" />
+    <item name="frag_addOffer_CB_bar" type="id" />
+    <item name="frag_addOffer_CB_non_smoking" type="id" />
+    <item name="frag_addOffer_CB_spa" type="id" />
+</resources>
