@@ -10,26 +10,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:drawableStart="@drawable/ic_gmail"
+        android:drawablePadding="12dp"
         android:fontFamily="@font/roboto_bold"
         android:text="@string/frag_messages_TV_header"
         android:textSize="28sp"
-        android:drawableStart="@drawable/ic_gmail"
-        android:drawablePadding="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-    android:id="@+id/frag_messages_TV_details"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="12dp"
-    android:fontFamily="@font/roboto_italic"
-    android:text="@string/frag_messages_TV_details"
-    android:textColor="@color/colorBlackHeader"
-    android:textSize="16sp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/frag_messages_TV_header" />
+        android:id="@+id/frag_messages_TV_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/roboto_italic"
+        android:text="@string/frag_messages_TV_details"
+        android:textColor="@color/colorBlackHeader"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_messages_TV_header" />
 
     <TextView
         android:id="@+id/frag_messages_TV_empty"
@@ -42,9 +43,9 @@
         android:text="@string/frag_messages_TV_empty"
         android:textColor="@color/colorBlackHeader"
         android:textSize="24sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frag_messages_TV_details"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@id/frag_messages_TV_details" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/frag_messages_CV_messages"
@@ -58,7 +59,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frag_messages_TV_header">
-
 
 
         <androidx.recyclerview.widget.RecyclerView

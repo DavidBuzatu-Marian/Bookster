@@ -26,16 +26,42 @@
             android:textSize="28sp" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/frag_listOffersAdmin_TV_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center"
+        android:text="@string/frag_listOffersAdmin_TV_empty"
+        android:textColor="@color/colorBlackHeader"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_listOffersAdmin_RL_header" />
+
+    <Button
+        android:id="@+id/frag_listOffersAdmin_BTN_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/frag_listOffersAdmin_BTN_add"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_listOffersAdmin_RL_header" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/frag_listOffersAdmin_CV_offers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="160dp"
         android:layout_marginBottom="60dp"
         android:backgroundTint="@color/colorWhite"
         app:cardCornerRadius="36dp"
-
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

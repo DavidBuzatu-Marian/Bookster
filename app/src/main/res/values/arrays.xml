@@ -9,4 +9,24 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+
+    <!--
+        Room type spinner
+     -->
+
+    <string-array name="room_type_array">
+        <item>King</item>
+        <item>Twin</item>
+    </string-array>
+
+    <string-array name="room_popular_facilities">
+        <item>Delicious breakfast</item>
+        <item>Fully equipped gym</item>
+        <item>Wi-fi</item>
+        <item>Swimming pool</item>
+        <item>Bar</item>
+        <item>Non-smoking rooms</item>
+        <item>Spa &amp; wellness center</item>
+    </string-array>
 </resources>
