@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frag_addOffer_CL_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp">
 
         <TextView
             android:id="@+id/frag_addOffer_TV_header"
@@ -555,5 +556,19 @@
 
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/frag_addOffer_BTN_add_images"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            app:layout_constraintTop_toBottomOf="@id/frag_addOffer_CV_room_facilities"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/frag_addOffer_BTN_add_images"
+            style="@style/ButtonSubmit"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
