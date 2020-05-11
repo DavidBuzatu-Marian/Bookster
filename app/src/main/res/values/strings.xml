@@ -96,6 +96,7 @@
     <string name="hint_add_offer_room_facilities">Room facilities (separated by comma)</string>
     <string name="frag_displayOffer_TV_popular_facilities">Popular facilities</string>
     <string name="frag_addOffer_BTN_add_images">Select images</string>
+    <string name="frag_addOffer_BTN_submit">Upload Offer</string>
 
 
 </resources>
