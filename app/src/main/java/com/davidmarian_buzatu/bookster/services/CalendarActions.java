@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import com.davidmarian_buzatu.bookster.R;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -15,13 +13,13 @@ import java.util.Locale;
 public class CalendarActions {
     private Long mStartDate, mEndDate;
 
-    public void setUpCalendarPicker(View container, Context context) {
+    public void setUpCalendarPicker(View container, Context context, int resIDStart, int resIDEnd) {
 
         final Calendar calendarStart = Calendar.getInstance();
         final Calendar calendarEnd = Calendar.getInstance();
 
-        EditText edittextStart = container.findViewById(R.id.frag_search_ET_start_date);
-        EditText edittextEnd = container.findViewById(R.id.frag_search_ET_end_date);
+        EditText edittextStart = container.findViewById(resIDStart);
+        EditText edittextEnd = container.findViewById(resIDEnd);
         DatePickerDialog.OnDateSetListener dateStart = new DatePickerDialog.OnDateSetListener() {
 
             @Override

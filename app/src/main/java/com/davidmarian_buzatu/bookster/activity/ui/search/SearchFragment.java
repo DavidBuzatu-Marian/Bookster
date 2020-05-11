@@ -61,7 +61,7 @@ public class SearchFragment extends Fragment {
 
     private void setUpCalendarPicker(View root) {
         mCalendarActions = new CalendarActions();
-        mCalendarActions.setUpCalendarPicker(root, getContext());
+        mCalendarActions.setUpCalendarPicker(root, getContext(), R.id.frag_search_ET_start_date, R.id.frag_search_ET_end_date);
     }
 //
 //    private void addCitiesToFirebase() {

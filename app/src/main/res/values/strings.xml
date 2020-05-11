@@ -93,6 +93,8 @@
     <string name="hint_add_offer_room_latitude">Latitude</string>
     <string name="hint_add_offer_room_longitude">Longitude</string>
     <string name="hint_add_offer_room_rating">Rating</string>
+    <string name="hint_add_offer_room_facilities">Room facilities (separated by comma)</string>
+    <string name="frag_displayOffer_TV_popular_facilities">Popular facilities</string>
 
 
 </resources>

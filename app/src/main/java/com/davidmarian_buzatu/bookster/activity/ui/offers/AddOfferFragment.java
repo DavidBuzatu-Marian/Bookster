@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,10 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.services.CalendarActions;
 
 public class AddOfferFragment extends Fragment {
+    private CalendarActions mCalendarActions;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -29,18 +32,31 @@ public class AddOfferFragment extends Fragment {
     private void setUpView(View root) {
         setSpinnerRoomType(root);
         setCheckBoxFacilities(root);
+        setUpCalendarPicker(root);
+        setUpNumberPicker(root);
+    }
+
+    private void setUpNumberPicker(View root) {
+        NumberPicker np = root.findViewById(R.id.frag_addOffer_NP_available);
+
+        np.setMinValue(1);
+        np.setMaxValue(100);
+    }
+
+    private void setUpCalendarPicker(View root) {
+        mCalendarActions = new CalendarActions();
+        mCalendarActions.setUpCalendarPicker(root, getContext(), R.id.frag_addOffer_ET_start_date, R.id.frag_addOffer_ET_end_date);
     }
 
     private void setCheckBoxFacilities(View root) {
-        CardView cvPopularFacilities = root.findViewById(R.id.frag_addOffer_CV_room_popular_facilities);
         String[] popularFacilities = getResources().getStringArray(R.array.room_popular_facilities);
-        LinearLayout parentLL = new LinearLayout(getContext());
-        parentLL.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        parentLL.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout parentLL = root.findViewById(R.id.frag_addOffer_LL_popular_facilities);
         for(int i = 0; i < popularFacilities.length; i += 2) {
             // create linear layout
             LinearLayout parentCBs = new LinearLayout(getContext());
-            parentCBs.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 6, 0, 6);
+            parentCBs.setLayoutParams(params);
             // create checkbox
             CheckBox checkbox1 = new CheckBox(getContext());
             checkbox1.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
@@ -56,8 +72,6 @@ public class AddOfferFragment extends Fragment {
             parentLL.addView(parentCBs);
 
         }
-        parentLL.setPadding(24, 24, 24, 24);
-        cvPopularFacilities.addView(parentLL);
     }
 
     private void setSpinnerRoomType(View root) {
