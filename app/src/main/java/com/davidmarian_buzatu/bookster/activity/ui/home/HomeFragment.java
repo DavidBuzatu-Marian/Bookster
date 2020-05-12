@@ -47,13 +47,25 @@ public class HomeFragment extends Fragment {
         getUserInstance(getArguments().getString("Type"));
 
 
+
         displayUserReservations(root);
+        mCurrentUser.getUserInfo().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    displayUserReservations(root);
+                }
+            }
+        });
+
+
         return root;
     }
 
     private void displayUserReservations(View root) {
         List<Reservation> reservationsList = new ArrayList<>();
         showLoadingDialog();
+        Log.d("TEST_DT", mCurrentUser.getUserID());
         getUserReservations(mCurrentUser).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
