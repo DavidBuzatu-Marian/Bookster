@@ -36,11 +36,13 @@ public class ListReservationsAdapter extends RecyclerView.Adapter<ListReservatio
     private final FragmentActivity mActivity;
     private List<Reservation> mDataSet;
     private Context mContext;
+    private DisplayOfferTypes mType;
 
-    public ListReservationsAdapter(List<Reservation> dataset, Context context, FragmentActivity activity) {
+    public ListReservationsAdapter(List<Reservation> dataset,DisplayOfferTypes type, Context context, FragmentActivity activity) {
         mDataSet = dataset;
         mContext = context;
         mActivity = activity;
+        mType=type;
     }
 
 
@@ -105,7 +107,7 @@ public class ListReservationsAdapter extends RecyclerView.Adapter<ListReservatio
                             if (task.isSuccessful()) {
                                 Offer offer = new Offer();
                                 offer.setOfferFromMap(task.getResult().getData());
-                                FragmentActions.startDisplayOfferFragment(offer, mActivity, DisplayOfferTypes.OFFER_RESERVATION.name());
+                                FragmentActions.startDisplayOfferFragment(offer, mActivity, mType.name());
                             }
                         }
                     });
