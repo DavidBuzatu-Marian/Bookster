@@ -99,16 +99,22 @@ public class DisplayOfferFragment extends Fragment {
         Button buttonCancelReservation = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation);
         Button buttonReserve = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
         Button buttonCancelOffer = root.findViewById(R.id.frag_displayOffer_BTN_cancel_offer);
+        Button buttonCancelReservationManager = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation_manager);
         DisplayOfferTypes displayOfferTypes = DisplayOfferTypes.valueOf(mDisplayOfferType);
         final Fragment reference = this;
         switch (displayOfferTypes) {
             case OFFER_RESERVATION:
                 buttonReserve.setVisibility(View.GONE);
                 buttonCancelOffer.setVisibility(View.GONE);
+                buttonCancelReservationManager.setVisibility(View.GONE);
                 buttonCancelReservation.setVisibility(View.VISIBLE);
                 buttonCancelReservation.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        /*TODO: in the method deleteReservationsForOffer
+                                after deleting the reservation
+                                send email to manager (notification)
+                        * */
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
                         OfferActions.getInstance().deleteReservationsForOffer(mOffer, getContext());
                     }
@@ -117,10 +123,13 @@ public class DisplayOfferFragment extends Fragment {
             case OFFER_CLIENT:
                 buttonCancelOffer.setVisibility(View.GONE);
                 buttonCancelReservation.setVisibility(View.GONE);
+                buttonCancelReservationManager.setVisibility(View.GONE);
                 buttonReserve.setVisibility(View.VISIBLE);
                 buttonReserve.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        //TODO: add reservation to reserveManager as well! ( + field userID!!!!)
                         OfferActions.getInstance().reserveOffer(mOffer, getContext(), getTotalPrice(mOffer.getPrice()));
                     }
                 });
@@ -128,6 +137,7 @@ public class DisplayOfferFragment extends Fragment {
             case OFFER_MANAGER:
                 buttonCancelReservation.setVisibility(View.GONE);
                 buttonReserve.setVisibility(View.GONE);
+                buttonCancelReservationManager.setVisibility(View.GONE);
                 buttonCancelOffer.setVisibility(View.VISIBLE);
                 buttonCancelOffer.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -136,6 +146,24 @@ public class DisplayOfferFragment extends Fragment {
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
                     }
                 });
+                break;
+            case OFFER_MANAGER_RESERVATION:
+                buttonCancelReservation.setVisibility(View.GONE);
+                buttonReserve.setVisibility(View.GONE);
+                buttonCancelOffer.setVisibility(View.GONE);
+                buttonCancelReservationManager.setVisibility(View.VISIBLE);
+                buttonCancelOffer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        /*TODO:
+                           1. Delete reservation from reservation collection for the
+                            user that has this reservation (keep userID in reservationManager collection)
+                           2. Delete reservation from reservationManager collection
+                        * */
+                    }
+                });
+                break;
+            default:
                 break;
         }
     }

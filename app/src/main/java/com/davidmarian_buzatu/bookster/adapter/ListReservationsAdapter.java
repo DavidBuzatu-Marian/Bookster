@@ -38,11 +38,11 @@ public class ListReservationsAdapter extends RecyclerView.Adapter<ListReservatio
     private Context mContext;
     private DisplayOfferTypes mType;
 
-    public ListReservationsAdapter(List<Reservation> dataset,DisplayOfferTypes type, Context context, FragmentActivity activity) {
+    public ListReservationsAdapter(List<Reservation> dataset, DisplayOfferTypes type, Context context, FragmentActivity activity) {
         mDataSet = dataset;
         mContext = context;
         mActivity = activity;
-        mType=type;
+        mType = type;
     }
 
 

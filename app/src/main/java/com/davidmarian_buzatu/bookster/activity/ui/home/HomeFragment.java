@@ -44,8 +44,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         getUserInstance(getArguments().getString("Type"));
-
-
+        displayUserReservations(root);
         return root;
     }
 
@@ -57,7 +56,7 @@ public class HomeFragment extends Fragment {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     final List<Map<String, Object>> reservationsMapList = (List<Map<String, Object>>) task.getResult().get("reservations");
-                    for (Map<String, Object> mapReservation: reservationsMapList) {
+                    for (Map<String, Object> mapReservation : reservationsMapList) {
                         // Its a map in the database
                         Map.Entry<String, Object> entry = mapReservation.entrySet().iterator().next();
                         Reservation reservation = new Reservation();
@@ -80,10 +79,11 @@ public class HomeFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        if(mCurrentUser.getClass() == Client.class) {
+        if (mCurrentUser.getClass() == Client.class) {
             mAdapter = new ListReservationsAdapter(reservationsList, DisplayOfferTypes.OFFER_RESERVATION, getContext(), getActivity());
+        } else {
+            mAdapter = new ListReservationsAdapter(reservationsList, DisplayOfferTypes.OFFER_MANAGER_RESERVATION, getContext(), getActivity());
         }
-        else mAdapter = new ListReservationsAdapter(reservationsList,DisplayOfferTypes.OFFER_MANAGER_RESERVATION,getContext(),getActivity());
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -93,14 +93,12 @@ public class HomeFragment extends Fragment {
     }
 
     private Task<DocumentSnapshot> getUserReservations(User mCurrentUser) {
-        if(mCurrentUser.getClass() == Manager.class){
+        if (mCurrentUser.getClass() == Manager.class) {
             return FirebaseFirestore.getInstance().collection("reservationsManager").document(mCurrentUser.getUserID()).get();
         }
-        else{
-            return FirebaseFirestore.getInstance().collection("reservations").document(mCurrentUser.getUserID()).get();
-        }
-    }
+        return FirebaseFirestore.getInstance().collection("reservations").document(mCurrentUser.getUserID()).get();
 
+    }
 
 
     private void getUserInstance(String type) {
