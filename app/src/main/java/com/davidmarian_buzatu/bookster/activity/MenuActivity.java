@@ -54,7 +54,7 @@ public class MenuActivity extends AppCompatActivity {
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
             NavigationUI.setupWithNavController(navView, navController);
 
-            navController.navigate(R.id.navigation_home, extras);
+            navController.navigate(R.id.navigation_home_user, extras);
             navController.navigate(R.id.navigation_profile, extras);
             navController.navigate(R.id.navigation_search, extras);
         } else {
