@@ -5,7 +5,8 @@ import androidx.annotation.NonNull;
 public enum DisplayOfferTypes {
     OFFER_CLIENT("ViewOfferClient"),
     OFFER_MANAGER("ViewOfferManager"),
-    OFFER_RESERVATION("ViewOfferReservation");
+    OFFER_RESERVATION("ViewOfferReservation"),
+    OFFER_MANAGER_RESERVATION("ViewManagerReservation");
 
     private final String mText;
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ListReservationsAdapter;
+import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.model.Client;
 import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.Reservation;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.grpc.CallCredentials;
+
 public class HomeFragment extends Fragment {
     private User mCurrentUser;
     private ProgressDialog mDialog;
@@ -42,7 +45,6 @@ public class HomeFragment extends Fragment {
 
         getUserInstance(getArguments().getString("Type"));
         displayUserReservations(root);
-
         return root;
     }
 
@@ -54,7 +56,7 @@ public class HomeFragment extends Fragment {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     final List<Map<String, Object>> reservationsMapList = (List<Map<String, Object>>) task.getResult().get("reservations");
-                    for (Map<String, Object> mapReservation: reservationsMapList) {
+                    for (Map<String, Object> mapReservation : reservationsMapList) {
                         // Its a map in the database
                         Map.Entry<String, Object> entry = mapReservation.entrySet().iterator().next();
                         Reservation reservation = new Reservation();
@@ -77,7 +79,11 @@ public class HomeFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ListReservationsAdapter(reservationsList, getContext(), getActivity());
+        if (mCurrentUser.getClass() == Client.class) {
+            mAdapter = new ListReservationsAdapter(reservationsList, DisplayOfferTypes.OFFER_RESERVATION, getContext(), getActivity());
+        } else {
+            mAdapter = new ListReservationsAdapter(reservationsList, DisplayOfferTypes.OFFER_MANAGER_RESERVATION, getContext(), getActivity());
+        }
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -87,7 +93,11 @@ public class HomeFragment extends Fragment {
     }
 
     private Task<DocumentSnapshot> getUserReservations(User mCurrentUser) {
+        if (mCurrentUser.getClass() == Manager.class) {
+            return FirebaseFirestore.getInstance().collection("reservationsManager").document(mCurrentUser.getUserID()).get();
+        }
         return FirebaseFirestore.getInstance().collection("reservations").document(mCurrentUser.getUserID()).get();
+
     }
 
 

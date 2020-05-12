@@ -3,7 +3,7 @@ package com.davidmarian_buzatu.bookster.model;
 import java.util.Map;
 
 public class Reservation {
-    private String mLocation, mOfferID, mPrice, mPresentationURL;
+    private String mLocation, mOfferID, mPrice, mPresentationURL,clientID;
     private Long mStartDate, mEndDate;
 
 //    public Reservation(Map<String, Object> values) {
@@ -72,6 +72,14 @@ public class Reservation {
 
     public void setPrice(String price) {
         mPrice = price;
+    }
+
+    public void setClientID(String clientID) {
+        this.clientID = clientID;
+    }
+
+    public String getClientID(){
+        return clientID;
     }
 
     public String getPresentationURL() {
