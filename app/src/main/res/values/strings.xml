@@ -77,4 +77,27 @@
     <string name="logOut_title">Log Out</string>
     <string name="title_offers">Offers</string>
     <string name="frag_listOffersAdmin_TV_header">Your business offers</string>
+    <string name="frag_listOffersAdmin_TV_empty">No offers yet</string>
+    <string name="frag_listOffersAdmin_BTN_add">Add</string>
+    <string name="frag_addOffer_TV_header">Add Offer</string>
+    <string name="hint_add_offer_name">Hotel name</string>
+    <string name="hint_add_offer_description">Hotel description</string>
+    <string name="hint_add_offer_city_name">City name</string>
+    <string name="hint_add_offer_country">Country</string>
+    <string name="frag_addOffer_TV_general">General information</string>
+    <string name="frag_addOffer_TV_offer">Offer information</string>
+    <string name="hint_add_offer_room_description">Room description</string>
+    <string name="frag_addOffer_TV_room_available">Nr. of available rooms</string>
+    <string name="hint_add_offer_room_size">Size of the room (in squared meters)</string>
+    <string name="hint_add_offer_room_price">Price for 1 night (in €)</string>
+    <string name="hint_add_offer_room_latitude">Latitude</string>
+    <string name="hint_add_offer_room_longitude">Longitude</string>
+    <string name="hint_add_offer_room_rating">Rating</string>
+    <string name="hint_add_offer_room_facilities">Room facilities (separated by comma)</string>
+    <string name="frag_displayOffer_TV_popular_facilities">Popular facilities</string>
+    <string name="frag_addOffer_BTN_add_images">Select images</string>
+    <string name="frag_addOffer_BTN_submit">Upload Offer</string>
+    <string name="frag_addOffer_dialog_message">Saving offer</string>
+
+
 </resources>

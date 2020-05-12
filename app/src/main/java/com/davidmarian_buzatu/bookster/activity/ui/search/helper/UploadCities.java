@@ -14,22 +14,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UploadCities {
-    public UploadCities() {
 
+    private static final String[] mCities = {"Rome", "Madrid", "Paris", "London", "Berlin", "Lisbon", "Milan", "Lyon", "Münich",
+            "Barcelona", "Turin", "Marseille", "Amsterdam", "Brussels", "Manchester", "Birmingham",
+            "Dublin", "Athens", "Bucharest", "Budapest", "Timisoara", "Prague", "Vienna", "Cologne", "Venice",
+            "Warsaw", "Zürich", "Moscow", "Istanbul"};
+    private static final String[] mCountries = {"Italy", "Spain", "France", "United Kingdom", "Germany", "Portugal", "Italy",
+            "France", "Germany", "Spain", "Italy", "France", "Netherlands", "Belgium", "United Kingdom",
+            "United Kingdom", "Ireland", "Greece", "Romania", "Hungary", "Romania", "Czech Republic", "Austria",
+            "Germany", "Italy", "Poland", "Germany", "Russia", "Turkey"};
+
+    public String[] getCities() {
+        return mCities;
+    }
+
+    public String[] getCountries() {
+        return mCountries;
     }
 
     public void uploadCitiesToDatabase() {
-        String[] cities = {"Rome", "Madrid", "Paris", "London", "Berlin", "Lisbon", "Milan", "Lyon", "Münich",
-                "Barcelona", "Turin", "Marseille", "Amsterdam", "Brussels", "Manchester", "Birmingham",
-                "Dublin", "Athens", "Bucharest", "Budapest", "Timisoara", "Prague", "Vienna", "Cologne", "Venice",
-                "Warsaw", "Zürich", "Moscow", "Istanbul"};
-        String[] countries = {"Italy", "Spain", "France", "United Kingdom", "Germany", "Portugal", "Italy",
-                "France", "Germany", "Spain", "Italy", "France", "Netherlands", "Belgium", "United Kingdom",
-                "United Kingdom", "Ireland", "Greece", "Romania", "Hungary", "Romania", "Czech Republic", "Austria",
-                "Germany", "Italy", "Poland", "Germany", "Russia", "Turkey"};
-
-        for(int i = 0; i < cities.length; ++i) {
-            saveToFirebase(countries[i], cities[i]);
+        for (int i = 0; i < mCities.length; ++i) {
+            saveToFirebase(mCountries[i], mCities[i]);
         }
 
     }
@@ -38,7 +43,7 @@ public class UploadCities {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Map<String, String> city30 = new HashMap<>();
         city30.put("Country", country);
-        if(auth.getCurrentUser() != null) {
+        if (auth.getCurrentUser() != null) {
             FirebaseFirestore.getInstance()
                     .collection("cities")
                     .document(city)

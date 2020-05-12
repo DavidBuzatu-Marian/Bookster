@@ -109,6 +109,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservation.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
                         OfferActions.getInstance().deleteReservationsForOffer(mOffer, getContext());
                     }
                 });

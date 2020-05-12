@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +40,21 @@ public class OffersFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_offers, container, false);
         setInformationInViews(root);
+        setAddButtonListener(root);
         return root;
+    }
+
+    private void setAddButtonListener(View root) {
+        Button addButton = root.findViewById(R.id.frag_listOffersAdmin_BTN_add);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.nav_host_fragment, new AddOfferFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
     private void setInformationInViews(View root) {
@@ -84,11 +99,16 @@ public class OffersFragment extends Fragment {
     private void setUpRecyclerView(View root) {
         RecyclerView recyclerView = root.findViewById(R.id.frag_listOffersAdmin_RV_offers);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        if(mOffers.size() > 0) {
+            root.findViewById(R.id.frag_listOffersAdmin_TV_empty).setVisibility(View.GONE);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ListOffersAdapter(mOffers, getContext(), getActivity(),  DisplayOfferTypes.OFFER_MANAGER.name());
-        recyclerView.setAdapter(mAdapter);
+            mAdapter = new ListOffersAdapter(mOffers, getContext(), getActivity(),  DisplayOfferTypes.OFFER_MANAGER.name());
+            recyclerView.setAdapter(mAdapter);
+        } else {
+            root.findViewById(R.id.frag_listOffersAdmin_CV_offers).setVisibility(View.GONE);
+        }
     }
 
 }
