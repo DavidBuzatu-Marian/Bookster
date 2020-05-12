@@ -31,6 +31,7 @@ import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.model.Message;
 import com.davidmarian_buzatu.bookster.model.Offer;
 
+import com.davidmarian_buzatu.bookster.model.Reservation;
 import com.davidmarian_buzatu.bookster.services.MessageActions;
 import com.davidmarian_buzatu.bookster.services.OfferActions;
 
@@ -49,6 +50,7 @@ import static com.davidmarian_buzatu.bookster.services.MessageActions.LAUNCH_MAI
 public class DisplayOfferFragment extends Fragment {
     private ViewPager2 mViewPager2;
     private Offer mOffer;
+    private Reservation mReservation;
     private String mDisplayOfferType;
 
     @Override
@@ -71,8 +73,10 @@ public class DisplayOfferFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             String offerStringified = bundle.getString("Offer");
+            String reservationStringified = bundle.getString("Reservation");
             mOffer = new GsonBuilder().create().fromJson(offerStringified, Offer.class);
             mDisplayOfferType = bundle.getString("displayOfferType");
+            mReservation=new GsonBuilder().create().fromJson(reservationStringified,Reservation.class);
         }
     }
 
@@ -152,7 +156,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonReserve.setVisibility(View.GONE);
                 buttonCancelOffer.setVisibility(View.GONE);
                 buttonCancelReservationManager.setVisibility(View.VISIBLE);
-                buttonCancelOffer.setOnClickListener(new View.OnClickListener() {
+                buttonCancelReservationManager.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         /*TODO:

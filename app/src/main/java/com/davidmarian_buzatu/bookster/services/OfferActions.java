@@ -98,6 +98,7 @@ public class OfferActions {
                         }
                     }
                     saveNewReservationList(newListReservation, context, FirebaseAuth.getInstance().getUid());
+
                 }
             }
         });
@@ -136,7 +137,7 @@ public class OfferActions {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Reservation reservation = createReservation(offer, totalPrice);
-                    saveReservationToFirebase(reservation, context);
+                    saveReservationToFirebase(reservation, context,offer.getManagerID());
                 } else {
                     mDialog.dismiss();
                     Toast.makeText(context, "Error while making reservation", Toast.LENGTH_LONG).show();
@@ -162,21 +163,46 @@ public class OfferActions {
         mDialog.show();
     }
 
-    private void saveReservationToFirebase(Reservation reservation, Context context) {
+    private void saveReservationToFirebase(Reservation reservation, Context context,String managerID) {
         Map<String, Object> currentReservation = new HashMap<>();
+        String userID=FirebaseAuth.getInstance().getCurrentUser().getUid();
         currentReservation.put(String.valueOf(UUID.randomUUID()), reservation);
         FirebaseFirestore.getInstance()
                 .collection("reservations")
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .document(userID)
                 .update("reservations", FieldValue.arrayUnion(currentReservation))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        mDialog.dismiss();
+
                         if (task.isSuccessful()) {
-                            Toast.makeText(context, "Reservation Made!", Toast.LENGTH_LONG).show();
+                            addReservationToManager(reservation,managerID,userID,context);
+                            Toast.makeText(context, "Reservation Made!", Toast.LENGTH_LONG).show();// move lower
                         } else {
                             Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    private void addReservationToManager(Reservation reservation,String managerID,String UserID,Context context){
+        Map<String,Object> currentReservation=new HashMap<>();
+        reservation.setClientID(UserID);
+        currentReservation.put(reservation.getOfferID(),reservation);
+        FirebaseFirestore.getInstance()
+                .collection("reservationsManager")
+                .document(managerID)
+                .update("reservations",FieldValue.arrayUnion(currentReservation))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        mDialog.dismiss();
+                        if(task.isSuccessful()){
+                            Log.d("ADD_RESERV_MANAGER","Reservation was added succesfully");
+                        }
+                        else{
+                            Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
+                            Log.d("ADD_RESERV_MANGER","Failed to add reservation");
                         }
                     }
                 });
