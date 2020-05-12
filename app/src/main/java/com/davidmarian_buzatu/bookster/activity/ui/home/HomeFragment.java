@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ListReservationsAdapter;
+import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.model.Client;
 import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.Reservation;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.grpc.CallCredentials;
+
 public class HomeFragment extends Fragment {
     private User mCurrentUser;
     private ProgressDialog mDialog;
@@ -41,7 +44,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         getUserInstance(getArguments().getString("Type"));
-        displayUserReservations(root);
+
 
         return root;
     }
@@ -77,7 +80,10 @@ public class HomeFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ListReservationsAdapter(reservationsList, getContext(), getActivity());
+        if(mCurrentUser.getClass() == Client.class) {
+            mAdapter = new ListReservationsAdapter(reservationsList, DisplayOfferTypes.OFFER_RESERVATION, getContext(), getActivity());
+        }
+        else mAdapter = new ListReservationsAdapter(reservationsList,DisplayOfferTypes.OFFER_MANAGER_RESERVATION,getContext(),getActivity());
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -87,8 +93,14 @@ public class HomeFragment extends Fragment {
     }
 
     private Task<DocumentSnapshot> getUserReservations(User mCurrentUser) {
-        return FirebaseFirestore.getInstance().collection("reservations").document(mCurrentUser.getUserID()).get();
+        if(mCurrentUser.getClass() == Manager.class){
+            return FirebaseFirestore.getInstance().collection("reservationsManager").document(mCurrentUser.getUserID()).get();
+        }
+        else{
+            return FirebaseFirestore.getInstance().collection("reservations").document(mCurrentUser.getUserID()).get();
+        }
     }
+
 
 
     private void getUserInstance(String type) {
