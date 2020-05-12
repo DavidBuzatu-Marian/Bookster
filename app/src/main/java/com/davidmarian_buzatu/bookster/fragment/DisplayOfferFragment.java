@@ -35,6 +35,7 @@ import com.davidmarian_buzatu.bookster.model.Reservation;
 import com.davidmarian_buzatu.bookster.services.MessageActions;
 import com.davidmarian_buzatu.bookster.services.OfferActions;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.GsonBuilder;
@@ -120,7 +121,7 @@ public class DisplayOfferFragment extends Fragment {
                                 send email to manager (notification)
                         * */
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
-                        OfferActions.getInstance().deleteReservationsForOffer(mOffer, getContext());
+                        OfferActions.getInstance().deleteReservationsForOffer(mOffer, getContext(), "reservation", FirebaseAuth.getInstance().getUid());
                     }
                 });
                 break;
