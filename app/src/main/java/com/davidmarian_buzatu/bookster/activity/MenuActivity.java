@@ -2,6 +2,7 @@ package com.davidmarian_buzatu.bookster.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 
 import com.davidmarian_buzatu.bookster.R;

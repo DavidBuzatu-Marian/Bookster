@@ -127,8 +127,26 @@ public class OfferActions {
     //TODO: Use getListOfReservations to delete reservations
     // for manager and client
 
+    public void deleteReservation(Reservation reservation){
+        FirebaseFirestore.getInstance()
+                .collection("reservations")
+                .document(reservation.getClientID())
+                .update("reservations",FieldValue.arrayRemove(reservation))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Log.d("REMOVE","Removed reservation succesfully");
+                        }
+                        else{
+                            Log.d("REMOVE","Failed to remove reservation");
+                        }
+                    }
+                });
+    }
+
     private Task<DocumentSnapshot> getListOfReservations(String collection, String document) {
-        return FirebaseFirestore.getInstance().collection("reservations").document(FirebaseAuth.getInstance().getUid()).get();
+        return FirebaseFirestore.getInstance().collection(collection).document(document).get();
     }
 
     private Task<Void> deleteOffer(Offer offer) {
@@ -176,19 +194,20 @@ public class OfferActions {
 
     private void saveReservationToFirebase(Reservation reservation, Context context, String managerID) {
         Map<String, Object> currentReservation = new HashMap<>();
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        currentReservation.put(String.valueOf(UUID.randomUUID()), reservation);
+        reservation.setClientID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        reservation.setID(String.valueOf(UUID.randomUUID()));
+        currentReservation.put(reservation.getID(), reservation);
         FirebaseFirestore.getInstance()
                 .collection("reservations")
-                .document(userID)
+                .document(reservation.getClientID())
                 .update("reservations", FieldValue.arrayUnion(currentReservation))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
-                            addReservationToManager(reservation, managerID, userID, context);
-                            Toast.makeText(context, "Reservation Made!", Toast.LENGTH_LONG).show();// move lower
+                            addReservationToManager(reservation, managerID, context);
+
                         } else {
                             Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
                         }
@@ -196,10 +215,9 @@ public class OfferActions {
                 });
     }
 
-    private void addReservationToManager(Reservation reservation, String managerID, String UserID, Context context) {
+    private void addReservationToManager(Reservation reservation, String managerID,Context context) {
         Map<String, Object> currentReservation = new HashMap<>();
-        reservation.setClientID(UserID);
-        currentReservation.put(reservation.getOfferID(), reservation);
+        currentReservation.put(reservation.getID(), reservation);
         FirebaseFirestore.getInstance()
                 .collection("reservationsManager")
                 .document(managerID)
@@ -209,10 +227,9 @@ public class OfferActions {
                     public void onComplete(@NonNull Task<Void> task) {
                         mDialog.dismiss();
                         if (task.isSuccessful()) {
-                            Log.d("ADD_RESERV_MANAGER", "Reservation was added succesfully");
+                            Toast.makeText(context, "Reservation Made!", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
-                            Log.d("ADD_RESERV_MANGER", "Failed to add reservation");
                         }
                     }
                 });

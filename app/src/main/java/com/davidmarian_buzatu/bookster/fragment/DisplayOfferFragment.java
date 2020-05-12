@@ -160,6 +160,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservationManager.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        OfferActions.getInstance().deleteReservation(mReservation);
                         /*TODO:
                            1. Delete reservation from reservation collection for the
                             user that has this reservation (keep userID in reservationManager collection)
