@@ -10,12 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.activity.MenuActivity;
 import com.davidmarian_buzatu.bookster.adapter.ListMessagesAdapter;
 import com.davidmarian_buzatu.bookster.model.Message;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +47,7 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        getActivity().getSupportFragmentManager().popBackStack(MenuActivity.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         View root = inflater.inflate(R.layout.fragment_messages, container, false);
 
 

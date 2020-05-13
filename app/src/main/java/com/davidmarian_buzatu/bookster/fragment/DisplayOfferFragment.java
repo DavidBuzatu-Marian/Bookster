@@ -346,4 +346,5 @@ public class DisplayOfferFragment extends Fragment {
 
         Log.d("TEST", "Resulted in" + resultCode);
     }
+
 }

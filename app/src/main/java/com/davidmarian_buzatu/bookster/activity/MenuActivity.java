@@ -15,9 +15,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import androidx.navigation.ui.NavigationUI;
@@ -25,6 +28,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MenuActivity extends AppCompatActivity {
     private User mCurrentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +52,11 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void setContentViewOnType(String type, Bundle extras) {
-        if(type.contains("Client")) {
+        if (type.contains("Client")) {
             setContentView(R.layout.activity_menu_user);
             BottomNavigationView navView = findViewById(R.id.nav_view);
-
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
             NavigationUI.setupWithNavController(navView, navController);
-
             navController.navigate(R.id.navigation_home_user, extras);
             navController.navigate(R.id.navigation_profile, extras);
             navController.navigate(R.id.navigation_search, extras);
@@ -65,10 +67,10 @@ public class MenuActivity extends AppCompatActivity {
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
             NavigationUI.setupWithNavController(navView, navController);
 
-            navController.navigate(R.id.navigation_home, extras);
-            navController.navigate(R.id.navigation_messages, extras);
-            navController.navigate(R.id.navigation_profile, extras);
-            navController.navigate(R.id.navigation_offers, extras);
+            navController.navigate(R.id.navigation_home, extras, new NavOptions.Builder().setPopUpTo(R.id.navigation_home, false).build());
+            navController.navigate(R.id.navigation_messages, extras, new NavOptions.Builder().setPopUpTo(R.id.navigation_messages, false).build());
+            navController.navigate(R.id.navigation_profile, extras, new NavOptions.Builder().setPopUpTo(R.id.navigation_profile, false).build());
+            navController.navigate(R.id.navigation_offers, extras, new NavOptions.Builder().setPopUpTo(R.id.navigation_offers, false).build());
         }
     }
 

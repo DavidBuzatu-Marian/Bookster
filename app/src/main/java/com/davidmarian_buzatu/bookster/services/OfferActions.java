@@ -125,27 +125,22 @@ public class OfferActions {
         return FirebaseFirestore.getInstance().collection(collection).document(docID).update("reservations", newListReservation);
     }
 
-    //TODO: Use getListOfReservations to delete reservations
-    // for manager and client
 
-    public void deleteReservation(Reservation reservation){
-        Log.d("RESERV_DELETE","I ENTERED DELETION");
+    public void deleteReservation(Reservation reservation) {
         FirebaseFirestore.getInstance()
                 .collection("reservationsManager")
                 .document(reservation.getClientID())
-                .update("reservations",FieldValue.arrayRemove(reservation))
+                .update("reservations", FieldValue.arrayRemove(reservation))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            Log.d("REMOVE","Removed reservation succesfully");
-                        }
-                        else{
-                            Log.d("REMOVE","Failed to remove reservation");
+                        if (task.isSuccessful()) {
+                            Log.d("REMOVE", "Removed reservation succesfully");
+                        } else {
+                            Log.d("REMOVE", "Failed to remove reservation");
                         }
                     }
                 });
-        Log.d("RESERV_DELETE","I EXITED DELETION");
     }
 
     private Task<DocumentSnapshot> getListOfReservations(String collection, String document) {
@@ -218,7 +213,7 @@ public class OfferActions {
                 });
     }
 
-    private void addReservationToManager(Reservation reservation, String managerID,Context context) {
+    private void addReservationToManager(Reservation reservation, String managerID, Context context) {
         Map<String, Object> currentReservation = new HashMap<>();
         currentReservation.put(reservation.getID(), reservation);
         FirebaseFirestore.getInstance()
