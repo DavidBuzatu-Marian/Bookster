@@ -11,27 +11,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.RegisterAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hbb20.CountryCodePicker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -132,12 +127,9 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //Success
                         if (task.isSuccessful()) {
-                            //TODO: SAVE INFO IN FIRESTORE
-                            Log.d("REG_TEST", "Registered user");
 
                             saveUserInfo(email.getText().toString(), CCP.getFullNumberWithPlus(), name.getText().toString(), address.getText().toString(), type);
-                        } else {
-                            Log.d("REG_TEST", "Registered user failed");
+                        } else { ;
                             Toast.makeText(RegisterActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
                             mDialog.dismiss();
                         }
@@ -161,29 +153,28 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            createManagerMessagesDocument();
+                            createManagerMessagesDocument().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        createUserReservationDocument("reservationsManager", "Manager");
+                                    }
+                                }
+                            });
+
                         }
                         mDialog.dismiss();
                     }
                 });
     }
 
-    private void createManagerMessagesDocument() {
+    private Task<Void> createManagerMessagesDocument() {
         Map<String, Object> messages = new HashMap<>();
         messages.put("messages", new ArrayList<>());
-        FirebaseFirestore.getInstance()
+        return FirebaseFirestore.getInstance()
                 .collection("messages")
                 .document(mAuth.getCurrentUser().getUid())
-                .set(messages)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
-                            redirectToUI("Manager");
-                        }
-                        mDialog.dismiss();
-                    }
-                });
+                .set(messages);
     }
 
     private void createUser(TextInputEditText email, TextInputEditText password, TextInputEditText name, CountryCodePicker CCP, String type) {
@@ -220,25 +211,25 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            createUserReservationDocument();
+                            createUserReservationDocument("reservations", "Client");
                         }
                         mDialog.dismiss();
                     }
                 });
     }
 
-    private void createUserReservationDocument() {
+    private void createUserReservationDocument(String collection, String type) {
         Map<String, Object> reservations = new HashMap<>();
         reservations.put("reservations", new ArrayList<>());
         FirebaseFirestore.getInstance()
-                .collection("reservations")
+                .collection(collection)
                 .document(mAuth.getCurrentUser().getUid())
                 .set(reservations)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            redirectToUI("Client");
+                            redirectToUI(type);
                         }
                         mDialog.dismiss();
                     }

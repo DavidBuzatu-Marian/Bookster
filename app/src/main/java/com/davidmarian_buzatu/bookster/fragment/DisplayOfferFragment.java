@@ -134,8 +134,6 @@ public class DisplayOfferFragment extends Fragment {
                 buttonReserve.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                        //TODO: add reservation to reserveManager as well! ( + field userID!!!!)
                         OfferActions.getInstance().reserveOffer(mOffer, getContext(), getTotalPrice(mOffer.getPrice()));
                     }
                 });
@@ -162,11 +160,6 @@ public class DisplayOfferFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         OfferActions.getInstance().deleteReservation(mReservation);
-                        /*TODO:
-                           1. Delete reservation from reservation collection for the
-                            user that has this reservation (keep userID in reservationManager collection)
-                           2. Delete reservation from reservationManager collection
-                        * */
                     }
                 });
                 break;
