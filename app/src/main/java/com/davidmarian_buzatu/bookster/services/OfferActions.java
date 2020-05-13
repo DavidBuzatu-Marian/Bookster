@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
@@ -128,8 +129,9 @@ public class OfferActions {
     // for manager and client
 
     public void deleteReservation(Reservation reservation){
+        Log.d("RESERV_DELETE","I ENTERED DELETION");
         FirebaseFirestore.getInstance()
-                .collection("reservations")
+                .collection("reservationsManager")
                 .document(reservation.getClientID())
                 .update("reservations",FieldValue.arrayRemove(reservation))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -143,6 +145,7 @@ public class OfferActions {
                         }
                     }
                 });
+        Log.d("RESERV_DELETE","I EXITED DELETION");
     }
 
     private Task<DocumentSnapshot> getListOfReservations(String collection, String document) {

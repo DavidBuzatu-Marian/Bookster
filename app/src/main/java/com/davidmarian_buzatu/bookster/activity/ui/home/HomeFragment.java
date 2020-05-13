@@ -42,11 +42,7 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
-        Log.d("USER_TYPE","Here type is "+getArguments().getString("Type"));
         getUserInstance(getArguments().getString("Type"));
-
-
 
         displayUserReservations(root);
         mCurrentUser.getUserInfo().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -117,7 +113,6 @@ public class HomeFragment extends Fragment {
 
 
     private void getUserInstance(String type) {
-        Log.d("USER_TYPE","Type is "+type);
         switch (type) {
             case "Client":
                 mCurrentUser = Client.getInstance();
