@@ -48,7 +48,7 @@ public class OfferActions {
         deleteOffer(offer).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                deleteAllReservationsForOffer(offer, context);
+                ReservationActions.getInstance().deleteAllReservationsForOffer(offer, context, mDialog);
             }
         });
 
@@ -66,9 +66,8 @@ public class OfferActions {
                         List<HashMap<String, Object>> reservationMapList = (List<HashMap<String, Object>>) reservationMap.get("reservations");
                         for (Map<String, Object> mapReservation : reservationMapList) {
                             // Its a map in the database
-                            Map.Entry<String, Object> entry = mapReservation.entrySet().iterator().next();
                             Reservation reservation = new Reservation();
-                            reservation.setReservationFromMap(entry);
+                            reservation.setReservationFromMap(mapReservation);
                             if (!reservation.getOfferID().equals(offer.getOfferID())) {
                                 newReservationList.add(reservation);
                             }
@@ -125,9 +124,8 @@ public class OfferActions {
                 if (task.isSuccessful()) {
                     final List<Map<String, Object>> reservationList = (List<Map<String, Object>>) task.getResult().get("reservations");
                     for (Map<String, Object> reservationMap : reservationList) {
-                        Map.Entry<String, Object> entry = reservationMap.entrySet().iterator().next();
                         Reservation reservationCur = new Reservation();
-                        reservationCur.setReservationFromMap(entry);
+                        reservationCur.setReservationFromMap(reservationMap);
                         if (!reservationCur.getID().equals(reservation.getID())) {
                             newListReservation.add(reservationCur);
                         }
@@ -153,9 +151,8 @@ public class OfferActions {
                 if (task.isSuccessful()) {
                     List<HashMap<String, Object>> reservationList = (List<HashMap<String, Object>>) task.getResult().get("reservations");
                     for (HashMap<String, Object> reservationMap : reservationList) {
-                        Map.Entry<String, Object> entry = reservationMap.entrySet().iterator().next();
                         Reservation reservationCur = new Reservation();
-                        reservationCur.setReservationFromMap(entry);
+                        reservationCur.setReservationFromMap(reservationMap);
                         if (!reservationCur.getID().equals(reservation.getID())) {
                             newListReservation.add(reservationCur);
                         }
@@ -189,6 +186,7 @@ public class OfferActions {
         return FirebaseFirestore.getInstance().collection(collection).document(document).get();
     }
 
+
     private Task<Void> deleteOffer(Offer offer) {
         return FirebaseFirestore.getInstance().collection("offers").document(offer.getOfferID()).delete();
     }
@@ -205,8 +203,8 @@ public class OfferActions {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Reservation reservation = createReservation(offer, totalPrice);
-                    saveReservationToFirebase(reservation, context, offer.getManagerID());
+                    Reservation reservation = ReservationActions.getInstance().createReservation(offer, totalPrice);
+                    ReservationActions.getInstance().saveReservationToFirebase(reservation, context, offer.getManagerID(), mDialog);
                 } else {
                     mDialog.dismiss();
                     Toast.makeText(context, "Error while making reservation", Toast.LENGTH_LONG).show();
@@ -216,63 +214,12 @@ public class OfferActions {
 
     }
 
-    private Reservation createReservation(Offer offer, double totalPrice) {
-        Reservation reservation = new Reservation();
-        reservation.setEndDate(offer.getDateEnd());
-        reservation.setStartDate(offer.getDateStart());
-        reservation.setLocation(offer.getCityName());
-        reservation.setOfferID(offer.getOfferID());
-        reservation.setPresentationURL(offer.getPresentationURL());
-        reservation.setPrice(String.valueOf(totalPrice));
-        return reservation;
-    }
 
     private void displayLoadingDialog(Context context, int messageResource) {
         mDialog = DialogShow.getInstance().getDisplayDialog(context, messageResource);
         mDialog.show();
     }
 
-    private void saveReservationToFirebase(Reservation reservation, Context context, String managerID) {
-        Map<String, Object> currentReservation = new HashMap<>();
-        reservation.setClientID(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        reservation.setID(String.valueOf(UUID.randomUUID()));
-        currentReservation.put(reservation.getID(), reservation);
-        FirebaseFirestore.getInstance()
-                .collection("reservations")
-                .document(reservation.getClientID())
-                .update("reservations", FieldValue.arrayUnion(currentReservation))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            addReservationToManager(reservation, managerID, context);
-
-                        } else {
-                            Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-    }
-
-    private void addReservationToManager(Reservation reservation, String managerID, Context context) {
-        Map<String, Object> currentReservation = new HashMap<>();
-        currentReservation.put(reservation.getID(), reservation);
-        FirebaseFirestore.getInstance()
-                .collection("reservationsManager")
-                .document(managerID)
-                .update("reservations", FieldValue.arrayUnion(currentReservation))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        mDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            Toast.makeText(context, "Reservation Made!", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-    }
 
     private Task<Void> updateOfferInFirebase(Offer offer) {
         return FirebaseFirestore.getInstance()
@@ -281,10 +228,10 @@ public class OfferActions {
                 .set(offer);
     }
 
-    public Task<QuerySnapshot> getOffersForCity(String city) {
+    public Task<QuerySnapshot> getOffersForFiled(String field, String value) {
         return FirebaseFirestore.getInstance()
                 .collection("offers")
-                .whereEqualTo("cityName", city)
+                .whereEqualTo(field, value)
                 .get();
     }
 }

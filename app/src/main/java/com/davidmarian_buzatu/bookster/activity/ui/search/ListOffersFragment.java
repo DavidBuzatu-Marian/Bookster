@@ -85,7 +85,7 @@ public class ListOffersFragment extends Fragment {
 
     private void getOffers() {
         mOffers = new ArrayList<>();
-        OfferActions.getInstance().getOffersForCity(mCity)
+        OfferActions.getInstance().getOffersForFiled("cityName", mCity)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

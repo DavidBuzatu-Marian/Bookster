@@ -66,9 +66,8 @@ public class HomeFragment extends Fragment {
                     final List<Map<String, Object>> reservationsMapList = (List<Map<String, Object>>) task.getResult().get("reservations");
                     for (Map<String, Object> mapReservation : reservationsMapList) {
                         // Its a map in the database
-                        Map.Entry<String, Object> entry = mapReservation.entrySet().iterator().next();
                         Reservation reservation = new Reservation();
-                        reservation.setReservationFromMap(entry);
+                        reservation.setReservationFromMap(mapReservation);
                         reservationsList.add(reservation);
                     }
                     setUpRecyclerView(root, reservationsList);
