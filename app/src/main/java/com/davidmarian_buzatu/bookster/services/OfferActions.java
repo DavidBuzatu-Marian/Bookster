@@ -93,10 +93,10 @@ public class OfferActions {
                 .set(offer);
     }
 
-    public Task<QuerySnapshot> getOffersForCity(String city) {
+    public Task<QuerySnapshot> getOffersForFiled(String field, String value) {
         return FirebaseFirestore.getInstance()
                 .collection("offers")
-                .whereEqualTo("cityName", city)
+                .whereEqualTo(field, value)
                 .get();
     }
 }
