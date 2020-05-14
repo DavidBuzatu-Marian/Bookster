@@ -25,7 +25,7 @@ public class MessageActions {
     public static final int LAUNCH_MAIL_ACTIVITY=1;
 
     @SuppressLint("IntentReset")
-    public void sendEmail(View root, String managerId, FragmentActivity activity) {
+    public void sendEmail(View root, String managerId, FragmentActivity activity,String subject) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 
         FirebaseFirestore.getInstance()
@@ -40,7 +40,7 @@ public class MessageActions {
                             if (doc != null) {
                                 mManagerMail[0] = (String) doc.getData().get("Email");
                                 Log.d("EMAIL","Manager mail is "+mManagerMail[0]);
-                                sendEmailToManager(emailIntent, root, activity);
+                                sendEmailToManager(emailIntent, root, activity,subject);
                             }
                         } else {
                             Log.d("EMAIL", "Failed to get manager email:" + managerId + task.getException());
@@ -51,10 +51,10 @@ public class MessageActions {
 
     }
 
-    private void sendEmailToManager(Intent emailIntent, View root, FragmentActivity activity) {
+    private void sendEmailToManager(Intent emailIntent, View root, FragmentActivity activity,String subject) {
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, mManagerMail);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, ...");
 
         try {
@@ -63,5 +63,6 @@ public class MessageActions {
             Toast.makeText(root.getContext(), "There is no email client installed", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }

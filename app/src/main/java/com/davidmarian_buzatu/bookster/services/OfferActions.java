@@ -1,10 +1,13 @@
 package com.davidmarian_buzatu.bookster.services;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
@@ -81,8 +84,9 @@ public class OfferActions {
         return FirebaseFirestore.getInstance().collection("reservations").get();
     }
 
-    public void deleteReservationsForOffer(Offer offer, Context context, String collection, String document) {
+    public void deleteReservationsForOffer(View root, Activity activity, Offer offer, Context context, String collection, String document) {
         List<Reservation> newListReservation = new ArrayList<>();
+        MessageActions messageActions = new MessageActions();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -97,6 +101,7 @@ public class OfferActions {
                         }
                     }
                     saveReservationList(newListReservation, "reservations", FirebaseAuth.getInstance().getUid(), context);
+                    messageActions.sendEmail(root,offer.getManagerID(), (FragmentActivity) activity,"Reservation Canceled");
                 } else {
                     if (mDialog.isShowing()) {
                         mDialog.dismiss();

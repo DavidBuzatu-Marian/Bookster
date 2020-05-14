@@ -122,7 +122,7 @@ public class DisplayOfferFragment extends Fragment {
                                 send email to manager (notification)
                         * */
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
-                        OfferActions.getInstance().deleteReservationsForOffer(mOffer, getContext(), "reservation", FirebaseAuth.getInstance().getUid());
+                        OfferActions.getInstance().deleteReservationsForOffer(root,getActivity(),mOffer, getContext(), "reservation", FirebaseAuth.getInstance().getUid());
                     }
                 });
                 break;
@@ -327,7 +327,7 @@ public class DisplayOfferFragment extends Fragment {
         textViewMail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageActions.sendEmail(root, mOffer.getManagerID(), getActivity());
+                messageActions.sendEmail(root, mOffer.getManagerID(), getActivity(),"");
             }
         });
 
