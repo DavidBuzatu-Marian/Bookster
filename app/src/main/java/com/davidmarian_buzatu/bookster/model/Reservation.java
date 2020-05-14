@@ -82,8 +82,8 @@ public class Reservation {
         return mClientID;
     }
 
-    public void setID(String ID){
-        mID=ID;
+    public void setID(String id){
+        mID=id;
     }
 
     public String getID(){
@@ -120,6 +120,11 @@ public class Reservation {
                 case "offerID":
                     setOfferID((String) reservationEntry.getValue());
                     break;
+                case "clientID":
+                    setClientID((String) reservationEntry.getValue());
+                    break;
+                case "id":
+                    setID((String) reservationEntry.getValue());
                 default:
                     break;
             }

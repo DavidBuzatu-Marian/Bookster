@@ -35,7 +35,7 @@ public class FragmentActions {
         String reservationStringified = new GsonBuilder().create().toJson(reservation);
         bundle.putString("Offer", offerStringified);
         bundle.putString("displayOfferType", displayType);
-        bundle.putString("reservation", reservationStringified);
+        bundle.putString("Reservation", reservationStringified);
         nextFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)

@@ -2,6 +2,7 @@ package com.davidmarian_buzatu.bookster.services;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -72,7 +73,7 @@ public class OfferActions {
                                 newReservationList.add(reservation);
                             }
                         }
-                        saveNewReservationList(newReservationList, context, "reservation", doc.getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        saveNewReservationList(newReservationList, "reservation", doc.getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (!task.isSuccessful()) {
@@ -106,7 +107,7 @@ public class OfferActions {
                             }
                         }
                     }
-                    saveNewReservationList(newListReservation, context, "reservation", FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    saveNewReservationList(newListReservation, "reservations", FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (!task.isSuccessful()) {
@@ -115,32 +116,44 @@ public class OfferActions {
                             mDialog.dismiss();
                         }
                     });
-
                 }
             }
         });
     }
 
-    private Task<Void> saveNewReservationList(List<Reservation> newListReservation, Context context, String collection, String docID) {
+    private Task<Void> saveNewReservationList(List<Reservation> newListReservation, String collection, String docID) {
         return FirebaseFirestore.getInstance().collection(collection).document(docID).update("reservations", newListReservation);
     }
 
 
-    public void deleteReservation(Reservation reservation) {
-        FirebaseFirestore.getInstance()
-                .collection("reservationsManager")
-                .document(reservation.getClientID())
-                .update("reservations", FieldValue.arrayRemove(reservation))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("REMOVE", "Removed reservation succesfully");
-                        } else {
-                            Log.d("REMOVE", "Failed to remove reservation");
+    public void deleteReservation(Reservation reservation,Context context,String collection,String document) {
+        List<Reservation> newListReservation = new ArrayList<>();
+        getListOfReservations(collection,document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    List<HashMap<String, Object>> reservationList = (List<HashMap<String, Object>>) task.getResult().get("reservations");
+                    for (HashMap<String, Object> reservationMap : reservationList) {
+                        for (Map.Entry<String, Object> entry : reservationMap.entrySet()) {
+                            Reservation reservation1 = (Reservation) entry.getValue();
+                            if (!reservation1.getID().equals(reservation.getID())) {
+                                newListReservation.add(reservation1);
+                            }
                         }
                     }
-                });
+                    saveNewReservationList(newListReservation, "reservations", FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(context, "Reservation(s) deleted!", Toast.LENGTH_LONG).show();
+                            }
+                            mDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     private Task<DocumentSnapshot> getListOfReservations(String collection, String document) {

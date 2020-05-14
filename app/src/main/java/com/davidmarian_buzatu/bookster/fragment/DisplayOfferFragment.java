@@ -159,7 +159,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservationManager.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        OfferActions.getInstance().deleteReservation(mReservation);
+                        OfferActions.getInstance().deleteReservation(mReservation,getContext(),"reservationsManager",FirebaseAuth.getInstance().getUid());
                     }
                 });
                 break;
