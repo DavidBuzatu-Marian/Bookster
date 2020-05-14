@@ -53,7 +53,7 @@ public class OffersFragment extends Fragment {
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.nav_host_fragment, new AddOfferFragment())
-                        .addToBackStack(null)
+                        .addToBackStack(AddOfferFragment.class.getName())
                         .commit();
             }
         });
