@@ -19,6 +19,7 @@ import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.model.Offer;
+import com.davidmarian_buzatu.bookster.services.OfferActions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -84,10 +85,7 @@ public class ListOffersFragment extends Fragment {
 
     private void getOffers() {
         mOffers = new ArrayList<>();
-        FirebaseFirestore.getInstance()
-                .collection("offers")
-                .whereEqualTo("cityName", mCity)
-                .get()
+        OfferActions.getInstance().getOffersForCity(mCity)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -119,7 +117,7 @@ public class ListOffersFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ListOffersAdapter(mOffers, getContext(), getActivity(),  DisplayOfferTypes.OFFER_CLIENT.name());
+        mAdapter = new ListOffersAdapter(mOffers, getContext(), getActivity(), DisplayOfferTypes.OFFER_CLIENT.name());
         recyclerView.setAdapter(mAdapter);
     }
 }

@@ -59,7 +59,6 @@ public class HomeFragment extends Fragment {
     private void displayUserReservations(View root) {
         List<Reservation> reservationsList = new ArrayList<>();
         showLoadingDialog();
-        Log.d("TEST_DT", mCurrentUser.getUserID());
         getUserReservations(mCurrentUser).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

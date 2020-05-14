@@ -20,6 +20,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.MainActivity;
 import com.davidmarian_buzatu.bookster.activity.MenuActivity;
+import com.davidmarian_buzatu.bookster.activity.ui.search.ListOffersFragment;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.fragment.DisplayOfferFragment;
 import com.davidmarian_buzatu.bookster.model.User;
@@ -29,7 +30,8 @@ public class ProfileFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
-        getActivity().getSupportFragmentManager().popBackStack(MenuActivity.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getActivity().getSupportFragmentManager().popBackStack(ListOffersFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getActivity().getSupportFragmentManager().popBackStack(DisplayOfferFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
         
         setPreferencesForUser();

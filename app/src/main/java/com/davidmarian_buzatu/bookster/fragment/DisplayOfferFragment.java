@@ -78,7 +78,7 @@ public class DisplayOfferFragment extends Fragment {
             String reservationStringified = bundle.getString("Reservation");
             mOffer = new GsonBuilder().create().fromJson(offerStringified, Offer.class);
             mDisplayOfferType = bundle.getString("displayOfferType");
-            mReservation=new GsonBuilder().create().fromJson(reservationStringified,Reservation.class);
+            mReservation = new GsonBuilder().create().fromJson(reservationStringified, Reservation.class);
         }
     }
 
@@ -159,7 +159,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservationManager.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        OfferActions.getInstance().deleteReservation(mReservation,getContext(),"reservationsManager",FirebaseAuth.getInstance().getUid());
+                        OfferActions.getInstance().deleteReservationManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid());
                     }
                 });
                 break;
@@ -332,12 +332,13 @@ public class DisplayOfferFragment extends Fragment {
         });
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==LAUNCH_MAIL_ACTIVITY){
-            Message message=new Message(mOffer.getOfferID());
+        if (requestCode == LAUNCH_MAIL_ACTIVITY) {
+            Message message = new Message(mOffer.getOfferID());
             FirebaseFirestore.getInstance()
                     .collection("messages")
                     .document(mOffer.getManagerID())

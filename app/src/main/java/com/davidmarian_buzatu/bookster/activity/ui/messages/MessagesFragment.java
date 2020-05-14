@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.MenuActivity;
 import com.davidmarian_buzatu.bookster.adapter.ListMessagesAdapter;
+import com.davidmarian_buzatu.bookster.fragment.DisplayOfferFragment;
 import com.davidmarian_buzatu.bookster.model.Message;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -47,7 +48,7 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        getActivity().getSupportFragmentManager().popBackStack(MenuActivity.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getActivity().getSupportFragmentManager().popBackStack(DisplayOfferFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         View root = inflater.inflate(R.layout.fragment_messages, container, false);
 
 

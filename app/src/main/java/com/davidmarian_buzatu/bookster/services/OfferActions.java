@@ -2,12 +2,9 @@ package com.davidmarian_buzatu.bookster.services;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
@@ -73,15 +70,7 @@ public class OfferActions {
                                 newReservationList.add(reservation);
                             }
                         }
-                        saveNewReservationList(newReservationList, "reservation", doc.getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(context, "Reservation(s) deleted!", Toast.LENGTH_LONG).show();
-                                }
-                                mDialog.dismiss();
-                            }
-                        });
+                        saveReservationList(newReservationList, "reservations", doc.getId(), context);
                     }
                 }
             }
@@ -107,15 +96,11 @@ public class OfferActions {
                             }
                         }
                     }
-                    saveNewReservationList(newListReservation, "reservations", FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(context, "Reservation(s) deleted!", Toast.LENGTH_LONG).show();
-                            }
-                            mDialog.dismiss();
-                        }
-                    });
+                    saveReservationList(newListReservation, "reservations", FirebaseAuth.getInstance().getUid(), context);
+                } else {
+                    if (mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
                 }
             }
         });
@@ -126,34 +111,73 @@ public class OfferActions {
     }
 
 
-    public void deleteReservation(Reservation reservation,Context context,String collection,String document) {
+    public void deleteReservationManager(Reservation reservation, Context context, String collection, String document) {
+        displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
         List<Reservation> newListReservation = new ArrayList<>();
-        getListOfReservations(collection,document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    List<HashMap<String, Object>> reservationList = (List<HashMap<String, Object>>) task.getResult().get("reservations");
-                    for (HashMap<String, Object> reservationMap : reservationList) {
-                        for (Map.Entry<String, Object> entry : reservationMap.entrySet()) {
-                            Reservation reservation1 = (Reservation) entry.getValue();
-                            if (!reservation1.getID().equals(reservation.getID())) {
-                                newListReservation.add(reservation1);
-                            }
+                if (task.isSuccessful()) {
+                    final List<Map<String, Object>> reservationList = (List<Map<String, Object>>) task.getResult().get("reservations");
+                    for (Map<String, Object> reservationMap : reservationList) {
+                        Map.Entry<String, Object> entry = reservationMap.entrySet().iterator().next();
+                        Reservation reservationCur = new Reservation();
+                        reservationCur.setReservationFromMap(entry);
+                        if (!reservationCur.getID().equals(reservation.getID())) {
+                            newListReservation.add(reservationCur);
                         }
+
                     }
-                    saveNewReservationList(newListReservation, "reservations", FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(context, "Reservation(s) deleted!", Toast.LENGTH_LONG).show();
-                            }
-                            mDialog.dismiss();
-                        }
-                    });
+                    saveReservationList(newListReservation, collection, document, context);
+                    deleteReservationUser(reservation, context, "reservations", reservation.getClientID());
+                } else {
+                    if (mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
                 }
             }
         });
 
+    }
+
+    private void deleteReservationUser(Reservation reservation, Context context, String collection, String document) {
+        List<Reservation> newListReservation = new ArrayList<>();
+        getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<HashMap<String, Object>> reservationList = (List<HashMap<String, Object>>) task.getResult().get("reservations");
+                    for (HashMap<String, Object> reservationMap : reservationList) {
+                        Map.Entry<String, Object> entry = reservationMap.entrySet().iterator().next();
+                        Reservation reservationCur = new Reservation();
+                        reservationCur.setReservationFromMap(entry);
+                        if (!reservationCur.getID().equals(reservation.getID())) {
+                            newListReservation.add(reservationCur);
+                        }
+
+                    }
+                    saveReservationList(newListReservation, collection, document, context);
+                } else {
+                    if (mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
+                }
+            }
+        });
+    }
+
+    private void saveReservationList(List<Reservation> newListReservation, String collection, String document, Context context) {
+        saveNewReservationList(newListReservation, collection, document).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(context, "Reservation(s) deleted!", Toast.LENGTH_LONG).show();
+                }
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+            }
+        });
     }
 
     private Task<DocumentSnapshot> getListOfReservations(String collection, String document) {
@@ -215,7 +239,6 @@ public class OfferActions {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                         if (task.isSuccessful()) {
                             addReservationToManager(reservation, managerID, context);
 
@@ -253,4 +276,10 @@ public class OfferActions {
                 .set(offer);
     }
 
+    public Task<QuerySnapshot> getOffersForCity(String city) {
+        return FirebaseFirestore.getInstance()
+                .collection("offers")
+                .whereEqualTo("cityName", city)
+                .get();
+    }
 }

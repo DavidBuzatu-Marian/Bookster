@@ -23,7 +23,7 @@ public class FragmentActions {
         nextFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)
-                .addToBackStack(activity.getClass().getName())
+                .addToBackStack(nextFragment.getClass().getName())
                 .commit();
     }
 
@@ -39,7 +39,7 @@ public class FragmentActions {
         nextFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)
-                .addToBackStack(activity.getClass().getName())
+                .addToBackStack(nextFragment.getClass().getName())
                 .commit();
     }
 }
