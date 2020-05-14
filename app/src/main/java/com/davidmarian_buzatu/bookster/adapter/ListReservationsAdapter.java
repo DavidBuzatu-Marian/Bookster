@@ -94,10 +94,10 @@ public class ListReservationsAdapter extends RecyclerView.Adapter<ListReservatio
                     .append("€")
                     .toString());
             Glide.with(context).load(reservation.getPresentationURL()).into(mPresentationImage);
-            setButtonListener(reservation.getOfferID());
+            setButtonListener(reservation.getOfferID(),reservation);
         }
 
-        private void setButtonListener(String offerID) {
+        private void setButtonListener(String offerID,Reservation reservation) {
             mOpenOfferButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -107,7 +107,7 @@ public class ListReservationsAdapter extends RecyclerView.Adapter<ListReservatio
                             if (task.isSuccessful()) {
                                 Offer offer = new Offer();
                                 offer.setOfferFromMap(task.getResult().getData());
-                                FragmentActions.startDisplayOfferFragment(offer, mActivity, mType.name());
+                                FragmentActions.startDisplayOfferFragment(offer, mActivity, mType.name(),reservation);
                             }
                         }
                     });

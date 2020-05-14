@@ -190,7 +190,7 @@ public class SearchFragment extends Fragment {
         nextFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)
-                .addToBackStack(null)
+                .addToBackStack(ListOffersFragment.class.getName())
                 .commit();
     }
 }

@@ -2,6 +2,7 @@ package com.davidmarian_buzatu.bookster.services;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -16,14 +17,13 @@ public class FragmentActions {
     public static void startDisplayOfferFragment(Offer offer, FragmentActivity activity, String displayType) {
         DisplayOfferFragment nextFragment = new DisplayOfferFragment();
         Bundle bundle = new Bundle();
-
         String offerStringified = new GsonBuilder().create().toJson(offer);
         bundle.putString("Offer", offerStringified);
         bundle.putString("displayOfferType", displayType);
         nextFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)
-                .addToBackStack(null)
+                .addToBackStack(nextFragment.getClass().getName())
                 .commit();
     }
 
@@ -32,13 +32,14 @@ public class FragmentActions {
         Bundle bundle = new Bundle();
 
         String offerStringified = new GsonBuilder().create().toJson(offer);
-        String reservationStringified=new GsonBuilder().create().toJson(reservation);
+        String reservationStringified = new GsonBuilder().create().toJson(reservation);
         bundle.putString("Offer", offerStringified);
         bundle.putString("displayOfferType", displayType);
+        bundle.putString("Reservation", reservationStringified);
         nextFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)
-                .addToBackStack(null)
+                .addToBackStack(nextFragment.getClass().getName())
                 .commit();
     }
 }

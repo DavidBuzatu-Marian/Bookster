@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.Preference;
@@ -18,12 +19,19 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.MainActivity;
+import com.davidmarian_buzatu.bookster.activity.MenuActivity;
+import com.davidmarian_buzatu.bookster.activity.ui.search.ListOffersFragment;
+import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
+import com.davidmarian_buzatu.bookster.fragment.DisplayOfferFragment;
 import com.davidmarian_buzatu.bookster.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+
+        getActivity().getSupportFragmentManager().popBackStack(ListOffersFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getActivity().getSupportFragmentManager().popBackStack(DisplayOfferFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
         
         setPreferencesForUser();

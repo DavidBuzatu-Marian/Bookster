@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -77,7 +78,7 @@ public class DisplayOfferFragment extends Fragment {
             String reservationStringified = bundle.getString("Reservation");
             mOffer = new GsonBuilder().create().fromJson(offerStringified, Offer.class);
             mDisplayOfferType = bundle.getString("displayOfferType");
-            mReservation=new GsonBuilder().create().fromJson(reservationStringified,Reservation.class);
+            mReservation = new GsonBuilder().create().fromJson(reservationStringified, Reservation.class);
         }
     }
 
@@ -133,8 +134,6 @@ public class DisplayOfferFragment extends Fragment {
                 buttonReserve.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                        //TODO: add reservation to reserveManager as well! ( + field userID!!!!)
                         OfferActions.getInstance().reserveOffer(mOffer, getContext(), getTotalPrice(mOffer.getPrice()));
                     }
                 });
@@ -160,11 +159,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservationManager.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        /*TODO:
-                           1. Delete reservation from reservation collection for the
-                            user that has this reservation (keep userID in reservationManager collection)
-                           2. Delete reservation from reservationManager collection
-                        * */
+                        OfferActions.getInstance().deleteReservationManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid());
                     }
                 });
                 break;
@@ -337,12 +332,13 @@ public class DisplayOfferFragment extends Fragment {
         });
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==LAUNCH_MAIL_ACTIVITY){
-            Message message=new Message(mOffer.getOfferID());
+        if (requestCode == LAUNCH_MAIL_ACTIVITY) {
+            Message message = new Message(mOffer.getOfferID());
             FirebaseFirestore.getInstance()
                     .collection("messages")
                     .document(mOffer.getManagerID())
@@ -351,4 +347,5 @@ public class DisplayOfferFragment extends Fragment {
 
         Log.d("TEST", "Resulted in" + resultCode);
     }
+
 }

@@ -152,7 +152,7 @@ public class AddOfferFragment extends Fragment {
         offerMap.put("managerID", FirebaseAuth.getInstance().getUid());
         // get info from spinners
         offerMap.put("country",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_country)).getSelectedItem().toString());
-        offerMap.put("city",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_city)).getSelectedItem().toString());
+        offerMap.put("cityName",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_city)).getSelectedItem().toString());
         offerMap.put("roomType",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_room_type)).getSelectedItem().toString());
         offerMap.put("roomsAvailable", String.valueOf(((NumberPicker) mRoot.findViewById(R.id.frag_addOffer_NP_available)).getValue()));
         offerMap.put("pictures", mPicturesLink);

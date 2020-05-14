@@ -2,7 +2,6 @@ package com.davidmarian_buzatu.bookster.services;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -71,15 +70,7 @@ public class OfferActions {
                                 newReservationList.add(reservation);
                             }
                         }
-                        saveNewReservationList(newReservationList, context, "reservation", doc.getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(context, "Reservation(s) deleted!", Toast.LENGTH_LONG).show();
-                                }
-                                mDialog.dismiss();
-                            }
-                        });
+                        saveReservationList(newReservationList, "reservations", doc.getId(), context);
                     }
                 }
             }
@@ -105,30 +96,92 @@ public class OfferActions {
                             }
                         }
                     }
-                    saveNewReservationList(newListReservation, context, "reservation", FirebaseAuth.getInstance().getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(context, "Reservation(s) deleted!", Toast.LENGTH_LONG).show();
-                            }
-                            mDialog.dismiss();
-                        }
-                    });
-
+                    saveReservationList(newListReservation, "reservations", FirebaseAuth.getInstance().getUid(), context);
+                } else {
+                    if (mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
                 }
             }
         });
     }
 
-    private Task<Void> saveNewReservationList(List<Reservation> newListReservation, Context context, String collection, String docID) {
+    private Task<Void> saveNewReservationList(List<Reservation> newListReservation, String collection, String docID) {
         return FirebaseFirestore.getInstance().collection(collection).document(docID).update("reservations", newListReservation);
     }
 
-    //TODO: Use getListOfReservations to delete reservations
-    // for manager and client
+
+    public void deleteReservationManager(Reservation reservation, Context context, String collection, String document) {
+        displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
+        List<Reservation> newListReservation = new ArrayList<>();
+        getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    final List<Map<String, Object>> reservationList = (List<Map<String, Object>>) task.getResult().get("reservations");
+                    for (Map<String, Object> reservationMap : reservationList) {
+                        Map.Entry<String, Object> entry = reservationMap.entrySet().iterator().next();
+                        Reservation reservationCur = new Reservation();
+                        reservationCur.setReservationFromMap(entry);
+                        if (!reservationCur.getID().equals(reservation.getID())) {
+                            newListReservation.add(reservationCur);
+                        }
+
+                    }
+                    saveReservationList(newListReservation, collection, document, context);
+                    deleteReservationUser(reservation, context, "reservations", reservation.getClientID());
+                } else {
+                    if (mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void deleteReservationUser(Reservation reservation, Context context, String collection, String document) {
+        List<Reservation> newListReservation = new ArrayList<>();
+        getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<HashMap<String, Object>> reservationList = (List<HashMap<String, Object>>) task.getResult().get("reservations");
+                    for (HashMap<String, Object> reservationMap : reservationList) {
+                        Map.Entry<String, Object> entry = reservationMap.entrySet().iterator().next();
+                        Reservation reservationCur = new Reservation();
+                        reservationCur.setReservationFromMap(entry);
+                        if (!reservationCur.getID().equals(reservation.getID())) {
+                            newListReservation.add(reservationCur);
+                        }
+
+                    }
+                    saveReservationList(newListReservation, collection, document, context);
+                } else {
+                    if (mDialog.isShowing()) {
+                        mDialog.dismiss();
+                    }
+                }
+            }
+        });
+    }
+
+    private void saveReservationList(List<Reservation> newListReservation, String collection, String document, Context context) {
+        saveNewReservationList(newListReservation, collection, document).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(context, "Reservation(s) deleted!", Toast.LENGTH_LONG).show();
+                }
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+            }
+        });
+    }
 
     private Task<DocumentSnapshot> getListOfReservations(String collection, String document) {
-        return FirebaseFirestore.getInstance().collection("reservations").document(FirebaseAuth.getInstance().getUid()).get();
+        return FirebaseFirestore.getInstance().collection(collection).document(document).get();
     }
 
     private Task<Void> deleteOffer(Offer offer) {
@@ -176,19 +229,19 @@ public class OfferActions {
 
     private void saveReservationToFirebase(Reservation reservation, Context context, String managerID) {
         Map<String, Object> currentReservation = new HashMap<>();
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        currentReservation.put(String.valueOf(UUID.randomUUID()), reservation);
+        reservation.setClientID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        reservation.setID(String.valueOf(UUID.randomUUID()));
+        currentReservation.put(reservation.getID(), reservation);
         FirebaseFirestore.getInstance()
                 .collection("reservations")
-                .document(userID)
+                .document(reservation.getClientID())
                 .update("reservations", FieldValue.arrayUnion(currentReservation))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                         if (task.isSuccessful()) {
-                            addReservationToManager(reservation, managerID, userID, context);
-                            Toast.makeText(context, "Reservation Made!", Toast.LENGTH_LONG).show();// move lower
+                            addReservationToManager(reservation, managerID, context);
+
                         } else {
                             Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
                         }
@@ -196,10 +249,9 @@ public class OfferActions {
                 });
     }
 
-    private void addReservationToManager(Reservation reservation, String managerID, String UserID, Context context) {
+    private void addReservationToManager(Reservation reservation, String managerID, Context context) {
         Map<String, Object> currentReservation = new HashMap<>();
-        reservation.setClientID(UserID);
-        currentReservation.put(reservation.getOfferID(), reservation);
+        currentReservation.put(reservation.getID(), reservation);
         FirebaseFirestore.getInstance()
                 .collection("reservationsManager")
                 .document(managerID)
@@ -209,10 +261,9 @@ public class OfferActions {
                     public void onComplete(@NonNull Task<Void> task) {
                         mDialog.dismiss();
                         if (task.isSuccessful()) {
-                            Log.d("ADD_RESERV_MANAGER", "Reservation was added succesfully");
+                            Toast.makeText(context, "Reservation Made!", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
-                            Log.d("ADD_RESERV_MANGER", "Failed to add reservation");
                         }
                     }
                 });
@@ -225,4 +276,10 @@ public class OfferActions {
                 .set(offer);
     }
 
+    public Task<QuerySnapshot> getOffersForCity(String city) {
+        return FirebaseFirestore.getInstance()
+                .collection("offers")
+                .whereEqualTo("cityName", city)
+                .get();
+    }
 }
