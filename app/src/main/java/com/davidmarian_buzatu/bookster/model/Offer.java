@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Offer {
 
-    private String mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating, mLongitude, mLatitude, mID;
+    private String mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating, mLongitude, mLatitude, mOfferID;
     private List<String> mFacilities, mPictures, mPopularFacilities;
     private String mNrPersons, mPrice, mRoomsAvailable, mSize, mCityName, mCountry;
     private Long mDateStart, mDateEnd;
@@ -34,6 +34,9 @@ public class Offer {
                     break;
                 case "name":
                     setName((String) entry.getValue());
+                    break;
+                case "offerID":
+                    setOfferID((String) entry.getValue());
                     break;
                 case "managerID":
                     setManagerID((String) entry.getValue());
@@ -232,11 +235,11 @@ public class Offer {
     }
 
     public void setOfferID(String id) {
-        mID = id;
+        mOfferID = id;
     }
 
     public String getOfferID() {
-        return mID;
+        return mOfferID;
     }
 
     public String getCountry() {

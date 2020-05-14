@@ -3,36 +3,8 @@ package com.davidmarian_buzatu.bookster.model;
 import java.util.Map;
 
 public class Reservation {
-    private String mLocation, mOfferID, mPrice, mPresentationURL,mClientID,mID;
+    private String mLocation, mOfferID, mPrice, mPresentationURL, mClientID, mID;
     private Long mStartDate, mEndDate;
-
-//    public Reservation(Map<String, Object> values) {
-//        for (Map.Entry<String, Object> entry : values.entrySet()) {
-//            switch (entry.getKey()) {
-//                case "endDate":
-//                    mEndDate = (Long) entry.getValue();
-//                    break;
-//                case "startDate":
-//                    mStartDate = (Long) entry.getValue();
-//                    break;
-//                case "location":
-//                    mLocation = (String) entry.getValue();
-//                    break;
-//                case "offerID":
-//                    mOfferID = (String) entry.getValue();
-//                    break;
-//                case "price":
-//                    mPrice = (String) entry.getValue();
-//                    break;
-//                case "presentationURL":
-//                    mPresentationURL = (String) entry.getValue();
-//                    break;
-//                default:
-//                    break;
-//            }
-//
-//        }
-//    }
 
     public Long getStartDate() {
         return mStartDate;
@@ -78,15 +50,15 @@ public class Reservation {
         this.mClientID = clientID;
     }
 
-    public String getClientID(){
+    public String getClientID() {
         return mClientID;
     }
 
-    public void setID(String id){
-        mID=id;
+    public void setID(String id) {
+        mID = id;
     }
 
-    public String getID(){
+    public String getID() {
         return mID;
     }
 
@@ -98,9 +70,8 @@ public class Reservation {
         mPresentationURL = presentationURL;
     }
 
-    public void setReservationFromMap(Map.Entry<String, Object> entry) {
-        Map<String, Object> mapResevation = (Map<String, Object>) entry.getValue();
-        for (Map.Entry<String, Object> reservationEntry : mapResevation.entrySet()) {
+    public void setReservationFromMap(Map<String, Object> mapReservation) {
+        for (Map.Entry<String, Object> reservationEntry : mapReservation.entrySet()) {
             switch (reservationEntry.getKey()) {
                 case "endDate":
                     setEndDate((Long) reservationEntry.getValue());
