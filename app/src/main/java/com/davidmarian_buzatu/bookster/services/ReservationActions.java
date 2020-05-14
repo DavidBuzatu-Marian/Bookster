@@ -42,39 +42,55 @@ public class ReservationActions {
 
     public void deleteAllReservationsForOffer(Offer offer, Context context, ProgressDialog dialog) {
         mDialog = dialog;
-        List<Reservation> newReservationList = new ArrayList<>();
-        getAllReservations().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        getAllReservations("reservations").addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && task.getResult() != null) {
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        // we get a map which has a list of reservations
-                        Map<String, Object> reservationMap = doc.getData();
-                        List<HashMap<String, Object>> reservationMapList = (List<HashMap<String, Object>>) reservationMap.get("reservations");
-                        for (Map<String, Object> mapReservation : reservationMapList) {
-                            // Its a map in the database
-                            Reservation reservation = new Reservation();
-                            reservation.setReservationFromMap(mapReservation);
-                            if (!reservation.getOfferID().equals(offer.getOfferID())) {
-                                newReservationList.add(reservation);
-                            }
-                        }
-                        saveReservationList(newReservationList, "reservations", doc.getId(), context);
-                    }
-                } else {
+                    deleteAllReservations(task, offer, context, "reservations");
+                }
+                if(mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+
+            }
+        });
+        getAllReservations("reservationsManager").addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    deleteAllReservations(task, offer, context, "reservationsManager");
+                }
+                if(mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
             }
         });
     }
 
-
-    private Task<QuerySnapshot> getAllReservations() {
-        return FirebaseFirestore.getInstance().collection("reservations").get();
+    private void deleteAllReservations(Task<QuerySnapshot> task, Offer offer, Context context, String collection) {
+        List<Reservation> newReservationList = new ArrayList<>();
+        for (QueryDocumentSnapshot doc : task.getResult()) {
+            // we get a map which has a list of reservations
+            Map<String, Object> reservationMap = doc.getData();
+            List<HashMap<String, Object>> reservationMapList = (List<HashMap<String, Object>>) reservationMap.get("reservations");
+            for (Map<String, Object> mapReservation : reservationMapList) {
+                // Its a map in the database
+                Reservation reservation = new Reservation();
+                reservation.setReservationFromMap(mapReservation);
+                if (!reservation.getOfferID().equals(offer.getOfferID())) {
+                    newReservationList.add(reservation);
+                }
+            }
+            saveReservationList(newReservationList, collection, doc.getId(), context);
+        }
     }
 
-    public void deleteReservationsForOffer(Offer offer, Context context, String collection, String document) {
-        displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
+
+    private Task<QuerySnapshot> getAllReservations(String collection) {
+        return FirebaseFirestore.getInstance().collection(collection).get();
+    }
+
+    private void deleteReservationsForOffer(Offer offer, Context context, String collection, String document) {
         List<Reservation> newListReservation = new ArrayList<>();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -89,11 +105,10 @@ public class ReservationActions {
                         }
                     }
 
-                    saveReservationList(newListReservation, "reservations", FirebaseAuth.getInstance().getUid(), context);
-                } else {
-                    if (mDialog.isShowing()) {
-                        mDialog.dismiss();
-                    }
+                    saveReservationList(newListReservation, collection, document, context);
+                }
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
                 }
             }
         });
@@ -105,8 +120,7 @@ public class ReservationActions {
     }
 
 
-    public void deleteReservationManager(Reservation reservation, Context context, String collection, String document) {
-        displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
+    private void deleteReservationManager(Reservation reservation, Context context, String collection, String document) {
         List<Reservation> newListReservation = new ArrayList<>();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -122,12 +136,11 @@ public class ReservationActions {
 
                     }
                     saveReservationList(newListReservation, collection, document, context);
-                    deleteReservationUser(reservation, context, "reservations", reservation.getClientID());
-                } else {
-                    if (mDialog.isShowing()) {
-                        mDialog.dismiss();
-                    }
                 }
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+
             }
         });
 
@@ -151,11 +164,11 @@ public class ReservationActions {
 
                     }
                     saveReservationList(newListReservation, collection, document, context);
-                } else {
-                    if (mDialog.isShowing()) {
-                        mDialog.dismiss();
-                    }
                 }
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+
             }
         });
     }
@@ -212,8 +225,8 @@ public class ReservationActions {
 
                         } else {
                             Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
-                            mDialog.dismiss();
                         }
+                        mDialog.dismiss();
                     }
                 });
     }
@@ -226,13 +239,27 @@ public class ReservationActions {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        mDialog.dismiss();
                         if (task.isSuccessful()) {
                             Toast.makeText(context, "Reservation Made!", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(context, "Reservation Error!" + task.getException().toString(), Toast.LENGTH_LONG).show();
                         }
+                        if (mDialog.isShowing()) {
+                            mDialog.dismiss();
+                        }
                     }
                 });
+    }
+
+    public void deleteReservationFromManager(Reservation reservation, Context context, String collection, String document) {
+        displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
+        deleteReservationManager(reservation, context, collection, document);
+        deleteReservationUser(reservation, context, "reservations", reservation.getClientID());
+    }
+
+    public void deleteReservationForClient(Offer offer, Context context, String collection, String document) {
+        displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
+        deleteReservationsForOffer(offer, context, collection, document);
+        deleteReservationsForOffer(offer, context, "reservationsManager", offer.getManagerID());
     }
 }

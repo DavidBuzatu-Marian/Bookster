@@ -122,7 +122,7 @@ public class DisplayOfferFragment extends Fragment {
                                 after deleting the reservation
                                 send email to manager (notification)
                         * */
-                        ReservationActions.getInstance().deleteReservationsForOffer(mOffer, getContext(), "reservations", FirebaseAuth.getInstance().getUid());
+                        ReservationActions.getInstance().deleteReservationForClient(mOffer, getContext(), "reservations", FirebaseAuth.getInstance().getUid());
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
                     }
                 });
@@ -160,7 +160,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservationManager.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ReservationActions.getInstance().deleteReservationManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid());
+                        ReservationActions.getInstance().deleteReservationFromManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid());
                     }
                 });
                 break;
