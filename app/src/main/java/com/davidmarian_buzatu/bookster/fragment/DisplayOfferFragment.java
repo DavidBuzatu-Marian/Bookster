@@ -36,6 +36,7 @@ import com.davidmarian_buzatu.bookster.model.Reservation;
 import com.davidmarian_buzatu.bookster.services.MessageActions;
 import com.davidmarian_buzatu.bookster.services.OfferActions;
 
+import com.davidmarian_buzatu.bookster.services.ReservationActions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -121,8 +122,8 @@ public class DisplayOfferFragment extends Fragment {
                                 after deleting the reservation
                                 send email to manager (notification)
                         * */
+                        ReservationActions.getInstance().deleteReservationForClient(mOffer, getContext(), "reservations", FirebaseAuth.getInstance().getUid());
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
-                        OfferActions.getInstance().deleteReservationsForOffer(mOffer, getContext(), "reservation", FirebaseAuth.getInstance().getUid());
                     }
                 });
                 break;
@@ -159,7 +160,7 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservationManager.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        OfferActions.getInstance().deleteReservationManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid());
+                        ReservationActions.getInstance().deleteReservationFromManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid());
                     }
                 });
                 break;
