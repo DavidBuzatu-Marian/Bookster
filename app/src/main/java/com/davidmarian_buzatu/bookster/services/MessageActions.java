@@ -1,12 +1,9 @@
 package com.davidmarian_buzatu.bookster.services;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,11 +12,10 @@ import androidx.fragment.app.FragmentActivity;
 import com.davidmarian_buzatu.bookster.model.Message;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +35,20 @@ public class MessageActions {
         }
 
         return messages;
+    }
+
+    public static void deleteMessage(Message message) {
+        FirebaseFirestore.getInstance()
+                .collection("messages")
+                .document(FirebaseAuth.getInstance().getUid())
+                .update("messages", FieldValue.arrayRemove(message));
+    }
+
+    public static Task<Void> addMessage(Message message, String managerID) {
+        return FirebaseFirestore.getInstance()
+                .collection("messages")
+                .document(managerID)
+                .update("messages", FieldValue.arrayUnion(message));
     }
 
     @SuppressLint("IntentReset")
