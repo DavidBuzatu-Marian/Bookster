@@ -1,7 +1,6 @@
 package com.davidmarian_buzatu.bookster.fragment;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,14 +17,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
+import com.davidmarian_buzatu.bookster.activity.ui.search.services.DateFormatter;
 import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
@@ -190,13 +188,13 @@ public class DisplayOfferFragment extends Fragment {
     }
 
     private double getTotalPrice(String price) {
-        DateFormater df = DateFormater.getInstance();
+        DateFormatter df = DateFormatter.getInstance();
         double numberOfDays = ChronoUnit.DAYS.between(df.getDate(mOffer.getDateStart()), df.getDate(mOffer.getDateEnd()));
         return numberOfDays * Double.parseDouble(price);
     }
 
     private void setAvailability(View root) {
-        DateFormater df = DateFormater.getInstance();
+        DateFormatter df = DateFormatter.getInstance();
         TextView startDate = root.findViewById(R.id.frag_displayOffer_TV_check_in_date);
         TextView endDate = root.findViewById(R.id.frag_displayOffer_TV_check_out_date);
 

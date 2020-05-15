@@ -7,21 +7,8 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class RegisterValidationActions {
 
-    private static RegisterValidationActions mInstance;
-
-    private RegisterValidationActions() {
-
-    }
-
-    public static RegisterValidationActions getInstance() {
-        if(mInstance == null) {
-            mInstance = new RegisterValidationActions();
-        }
-        return mInstance;
-    }
-
     //used for client
-    public boolean validFields(TextInputEditText email, TextInputEditText password, TextInputEditText name, RegisterAdapter regAdapter) {
+    public static boolean validFields(TextInputEditText email, TextInputEditText password, TextInputEditText name, RegisterAdapter regAdapter) {
         if (email.getText() == null || !isEmailValid(email.getText().toString(), email)) {
             return false;
         }
@@ -42,7 +29,7 @@ public class RegisterValidationActions {
     }
 
     //used for manager
-    public boolean validFields(TextInputEditText email, TextInputEditText password, TextInputEditText name, TextInputEditText address, RegisterAdapter regAdapter) {
+    public static boolean validFields(TextInputEditText email, TextInputEditText password, TextInputEditText name, TextInputEditText address, RegisterAdapter regAdapter) {
         if (email.getText() == null || !isEmailValid(email.getText().toString(), email)) {
             return false;
         }
@@ -66,7 +53,7 @@ public class RegisterValidationActions {
         return true;
     }
 
-    private boolean isAddressValid(String address, TextInputEditText addressET) {
+    private static boolean isAddressValid(String address, TextInputEditText addressET) {
         if(address.isEmpty()) {
             addressET.setError("Address cannot be empty");
             return false;
@@ -79,7 +66,7 @@ public class RegisterValidationActions {
     }
 
 
-    private boolean isNameValid(String name, TextInputEditText nameET) {
+    private static boolean isNameValid(String name, TextInputEditText nameET) {
         boolean hasDigit_TRUE = false;
         if(name.isEmpty()) {
             nameET.setError("Name cannot be empty");
@@ -100,7 +87,7 @@ public class RegisterValidationActions {
         return true;
     }
 
-    private boolean isPasswordValid(String password, TextInputEditText passwordET) {
+    private static boolean isPasswordValid(String password, TextInputEditText passwordET) {
         boolean hasDigit_TRUE = false;
         if (password.isEmpty()) {
             passwordET.setError("Field required!");
@@ -131,7 +118,7 @@ public class RegisterValidationActions {
         return true;
     }
 
-    private boolean isEmailValid(String email, TextInputEditText emailET) {
+    private static boolean isEmailValid(String email, TextInputEditText emailET) {
         if (email.isEmpty()) {
             emailET.setError("Field required!");
             return false;

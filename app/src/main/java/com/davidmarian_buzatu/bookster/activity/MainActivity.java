@@ -8,14 +8,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
+import com.davidmarian_buzatu.bookster.services.DialogShow;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -59,13 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (email.getText() != null && password.getText() != null) {
             // Login user
-           try {
-               showLoadingDialog();
-               signInUser(email, password);
-           } catch (IllegalArgumentException | FirebaseAuthInvalidCredentialsException ex) {
-               mDialog.dismiss();
-               email.setError("Invalid Credentials");
-           }
             try {
                 showLoadingDialog();
                 signInUser(email, password);
@@ -84,13 +75,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    // Success
-                    Log.d("Login", "SignInWithEmail: Success");
                     // Redirect
                     getUserTypeAndRedirect();
                 } else {
-                    // Fail
-                    Log.d("Login", "SignInWithEmail: Fail");
                     Toast.makeText(MainActivity.this, "Check your internet connection!", Toast.LENGTH_LONG).show();
                     mDialog.dismiss();
                 }

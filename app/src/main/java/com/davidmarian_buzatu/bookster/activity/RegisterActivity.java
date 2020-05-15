@@ -9,12 +9,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
+import com.davidmarian_buzatu.bookster.services.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.RegisterAdapter;
 import com.davidmarian_buzatu.bookster.services.RegisterValidationActions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -89,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (mPos == 0) {
             // REGISTER CLIENT
             try {
-                if (RegisterValidationActions.getInstance().validFields(email, password, name, mRegAdapter)) {
+                if (RegisterValidationActions.validFields(email, password, name, mRegAdapter)) {
                     showLoadingDialog();
                     createUser(email, password, name, mRegAdapter.getmCCPClient(), "Client");
                 } else if (!mRegAdapter.getIsValidNumberClient()) {
@@ -107,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                 password = findViewById(R.id.act_register_TIET_password_manager);
                 name = findViewById(R.id.act_register_TIET_name_manager);
 
-                if (RegisterValidationActions.getInstance().validFields(email, password, name, address, mRegAdapter)) {
+                if (RegisterValidationActions.validFields(email, password, name, address, mRegAdapter)) {
                     showLoadingDialog();
                     createUser(email, password, name, address, mRegAdapter.getmCCPManager(), "Manager");
                 } else if (!mRegAdapter.getIsValidNumberManager()) {

@@ -1,6 +1,5 @@
 package com.davidmarian_buzatu.bookster.activity.ui.search;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
@@ -8,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.SearchList;
+import com.davidmarian_buzatu.bookster.activity.ui.search.services.SearchList;
 import com.davidmarian_buzatu.bookster.model.Client;
 import com.davidmarian_buzatu.bookster.model.ListCities;
 import com.davidmarian_buzatu.bookster.model.Manager;
@@ -31,11 +28,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class SearchFragment extends Fragment {
 
@@ -63,11 +57,6 @@ public class SearchFragment extends Fragment {
         mCalendarActions = new CalendarActions();
         mCalendarActions.setUpCalendarPicker(root, getContext(), R.id.frag_search_ET_start_date, R.id.frag_search_ET_end_date);
     }
-//
-//    private void addCitiesToFirebase() {
-//        UploadCities uploadCities = new UploadCities();
-//        uploadCities.uploadCitiesToDatabase();
-//    }
 
     private void setUpSubmitButton(View root) {
         Button btnSearch = root.findViewById(R.id.frag_search_BTN_search);
@@ -105,9 +94,7 @@ public class SearchFragment extends Fragment {
 
     private void setUpSearchView(View root) {
         FloatingSearchView searchView = root.findViewById(R.id.frag_search_FSV);
-
         List<SearchList> listCities = ListCities.getInstance().getList();
-
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
@@ -175,9 +162,6 @@ public class SearchFragment extends Fragment {
         np.setMinValue(1);
         np.setMaxValue(10);
     }
-
-
-
 
 
     private void startListOffersFragment(View view) {

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.davidmarian_buzatu.bookster.model.Message;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -20,9 +21,25 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.w3c.dom.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class MessageActions {
     private String[] mManagerMail=new String[1];
     public static final int LAUNCH_MAIL_ACTIVITY=1;
+
+    public static List<Message> getListMessages(Task<DocumentSnapshot> task) {
+        List<Message> messages = new ArrayList<>();
+        DocumentSnapshot doc = task.getResult();
+        List<Map<String, Object>> mapList;
+        mapList = (List<Map<String, Object>>) doc.getData().get("messages");
+        for (Map<String, Object> map : mapList) {
+            messages.add(new Message((String) map.get("offerID")));
+        }
+
+        return messages;
+    }
 
     @SuppressLint("IntentReset")
     public void sendEmail(View root, String managerId, FragmentActivity activity) {
@@ -39,7 +56,6 @@ public class MessageActions {
                             DocumentSnapshot doc = task.getResult();
                             if (doc != null) {
                                 mManagerMail[0] = (String) doc.getData().get("Email");
-                                Log.d("EMAIL","Manager mail is "+mManagerMail[0]);
                                 sendEmailToManager(emailIntent, root, activity);
                             }
                         } else {

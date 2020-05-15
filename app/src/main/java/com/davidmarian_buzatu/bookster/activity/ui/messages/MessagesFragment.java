@@ -22,6 +22,7 @@ import com.davidmarian_buzatu.bookster.activity.ui.offers.AddOfferFragment;
 import com.davidmarian_buzatu.bookster.adapter.ListMessagesAdapter;
 import com.davidmarian_buzatu.bookster.fragment.DisplayOfferFragment;
 import com.davidmarian_buzatu.bookster.model.Message;
+import com.davidmarian_buzatu.bookster.services.MessageActions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,7 +54,6 @@ public class MessagesFragment extends Fragment {
         getActivity().getSupportFragmentManager().popBackStack(AddOfferFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         View root = inflater.inflate(R.layout.fragment_messages, container, false);
 
-
         getNotifications(root);
         return root;
     }
@@ -70,12 +70,7 @@ public class MessagesFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            DocumentSnapshot doc = task.getResult();
-                            List<Map<String, Object>> mapList;
-                            mapList = (List<Map<String, Object>>) doc.getData().get("messages");
-                            for (Map<String, Object> map : mapList) {
-                                mMessages.add(new Message((String) map.get("offerID")));
-                            }
+                            mMessages = MessageActions.getListMessages(task);
                             setUpRecyclerView(root);
                         }
                     }

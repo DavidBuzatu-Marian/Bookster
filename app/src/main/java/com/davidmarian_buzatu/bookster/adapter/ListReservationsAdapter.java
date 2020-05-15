@@ -1,8 +1,6 @@
 package com.davidmarian_buzatu.bookster.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
+import com.davidmarian_buzatu.bookster.activity.ui.search.services.DateFormatter;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
-import com.davidmarian_buzatu.bookster.fragment.DisplayOfferFragment;
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.davidmarian_buzatu.bookster.model.Reservation;
 import com.davidmarian_buzatu.bookster.services.FragmentActions;
@@ -27,7 +24,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -86,8 +82,8 @@ public class ListReservationsAdapter extends RecyclerView.Adapter<ListReservatio
 
         private void setInfoInViews(Reservation reservation, Context context) {
             mName.setText(reservation.getLocation());
-            mStartDate.setText(DateFormater.getInstance().getFormattedDate(reservation.getStartDate(), "EEE dd MMMM YYYY"));
-            mEndDate.setText(DateFormater.getInstance().getFormattedDate(reservation.getEndDate(), "EEE dd MMMM YYYY"));
+            mStartDate.setText(DateFormatter.getInstance().getFormattedDate(reservation.getStartDate(), "EEE dd MMMM YYYY"));
+            mEndDate.setText(DateFormatter.getInstance().getFormattedDate(reservation.getEndDate(), "EEE dd MMMM YYYY"));
             mPrice.setText(new StringBuilder()
                     .append("Price: ")
                     .append(reservation.getPrice())
