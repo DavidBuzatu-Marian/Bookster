@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.RegisterAdapter;
+import com.davidmarian_buzatu.bookster.services.RegisterValidationActions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -82,17 +83,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerUser(View view) {
         TextInputEditText email, password, name, address;
-
         email = findViewById(R.id.act_register_TIET_email);
         password = findViewById(R.id.act_register_TIET_password);
         name = findViewById(R.id.act_register_TIET_name);
         if (mPos == 0) {
             // REGISTER CLIENT
             try {
-                if (validFields(email, password, name) && mRegAdapter.getIsValidNumberClient()) {
+                if (RegisterValidationActions.getInstance().validFields(email, password, name, mRegAdapter)) {
                     showLoadingDialog();
                     createUser(email, password, name, mRegAdapter.getmCCPClient(), "Client");
-                } else if(!mRegAdapter.getIsValidNumberClient())  {
+                } else if (!mRegAdapter.getIsValidNumberClient()) {
                     Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                 }
             } catch (IllegalArgumentException ex) {
@@ -107,10 +107,10 @@ public class RegisterActivity extends AppCompatActivity {
                 password = findViewById(R.id.act_register_TIET_password_manager);
                 name = findViewById(R.id.act_register_TIET_name_manager);
 
-                if (validFields(email, password, name) && mRegAdapter.getIsValidNumberManager() && address.getText() != null) {
+                if (RegisterValidationActions.getInstance().validFields(email, password, name, address, mRegAdapter)) {
                     showLoadingDialog();
                     createUser(email, password, name, address, mRegAdapter.getmCCPManager(), "Manager");
-                } else if(!mRegAdapter.getIsValidNumberManager())  {
+                } else if (!mRegAdapter.getIsValidNumberManager()) {
                     Toast.makeText(this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                 }
             } catch (IllegalArgumentException ex) {
@@ -129,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             saveUserInfo(email.getText().toString(), CCP.getFullNumberWithPlus(), name.getText().toString(), address.getText().toString(), type);
-                        } else { ;
+                        } else {
                             Toast.makeText(RegisterActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
                             mDialog.dismiss();
                         }
@@ -152,11 +152,11 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             createManagerMessagesDocument().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()) {
+                                    if (task.isSuccessful()) {
                                         createUserReservationDocument("reservationsManager", "Manager");
                                     }
                                 }
@@ -210,7 +210,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             createUserReservationDocument("reservations", "Client");
                         }
                         mDialog.dismiss();
@@ -228,7 +228,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             redirectToUI(type);
                         }
                         mDialog.dismiss();
@@ -236,86 +236,6 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    private boolean validFields(TextInputEditText email, TextInputEditText password, TextInputEditText name) {
-        if (email.getText() == null || !emailIsValid(email.getText().toString(), email)) {
-            return false;
-        }
-
-        if(password.getText() == null || !passwordIsValid(password.getText().toString(), password)) {
-            return false;
-        }
-
-        if(name.getText() == null || !isNameValid(name.getText().toString(), name)) {
-            name.setError("Name cannot be empty");
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean isNameValid(String name, TextInputEditText nameET) {
-        boolean hasDigit_TRUE = false;
-        if(name.isEmpty()) {
-            nameET.setError("Name cannot be empty");
-        }
-        /* it has digits */
-        for (char digit : name.toCharArray()) {
-            if (Character.isDigit(digit)) {
-                hasDigit_TRUE = true;
-                break;
-            }
-        }
-        if (hasDigit_TRUE) {
-            nameET.setError("Name must not have digits");
-            return false;
-        }
-        nameET.setError(null);
-        return true;
-    }
-
-    private boolean passwordIsValid(String password, TextInputEditText passwordET) {
-        boolean hasDigit_TRUE = false;
-        if (password.isEmpty()) {
-            passwordET.setError("Field required!");
-            return false;
-        }
-        /* check if length is between limits */
-        if (password.length() < 8 || password.length() > 20) {
-            passwordET.setError("Password must be between 8 and 20 characters");
-            return false;
-        }
-        /* it has digits */
-        for (char digit : password.toCharArray()) {
-            if (Character.isDigit(digit)) {
-                hasDigit_TRUE = true;
-                break;
-            }
-        }
-        if (!hasDigit_TRUE) {
-            passwordET.setError("Password must have digits");
-            return false;
-        }
-        /* it has uppercase/ lowercase letter */
-        if (password.equals(password.toLowerCase()) || password.equals(password.toUpperCase())) {
-            passwordET.setError("Password needs lowercase and uppercase letters");
-            return false;
-        }
-        passwordET.setError(null);
-        return true;
-    }
-
-    private boolean emailIsValid(String email, TextInputEditText emailET) {
-        if (email.isEmpty()) {
-            emailET.setError("Field required!");
-            return false;
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailET.setError("Invalid Email");
-            return false;
-        }
-        emailET.setError(null);
-        return true;
-    }
 
     private void showLoadingDialog() {
         mDialog = DialogShow.getInstance().getDisplayDialog(this, R.string.act_register_dialog_message, R.string.act_register_dialog_title);
