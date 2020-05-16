@@ -81,8 +81,8 @@ public class DisplayOfferFragment extends Fragment {
             mOffer = new GsonBuilder().create().fromJson(offerStringified, Offer.class);
             mDisplayOfferType = bundle.getString("displayOfferType");
             mReservation = new GsonBuilder().create().fromJson(reservationStringified, Reservation.class);
-            mStartDate = bundle.containsKey("startDate") ? bundle.getLong("startDate") : mReservation.getStartDate();
-            mEndDate = bundle.containsKey("endDate") ? bundle.getLong("endDate") : mReservation.getEndDate();
+            mStartDate = bundle.containsKey("startDate") ? bundle.getLong("startDate") : mReservation != null ? mReservation.getStartDate() : mOffer.getDateStart();
+            mEndDate = bundle.containsKey("endDate") ? bundle.getLong("endDate") : mReservation != null ? mReservation.getEndDate() : mOffer.getDateEnd();
         }
     }
 

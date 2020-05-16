@@ -20,8 +20,10 @@ public class FragmentActions {
         String offerStringified = new GsonBuilder().create().toJson(offer);
         bundle.putString("Offer", offerStringified);
         bundle.putString("displayOfferType", displayType);
-        bundle.putLong("startDate", startDate);
-        bundle.putLong("endDate", endDate);
+        if(startDate != null && endDate != null) {
+            bundle.putLong("startDate", startDate);
+            bundle.putLong("endDate", endDate);
+        }
         nextFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)
