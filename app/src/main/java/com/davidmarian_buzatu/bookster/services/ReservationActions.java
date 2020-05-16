@@ -2,6 +2,7 @@ package com.davidmarian_buzatu.bookster.services;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -160,7 +161,7 @@ public class ReservationActions {
 
 
     private void deleteReservationUser(Reservation reservation, Context context, String collection, String document) {
-        List<Reservation> newListReservation = new ArrayList<>();
+        //List<Reservation> newListReservation = new ArrayList<>();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -260,9 +261,9 @@ public class ReservationActions {
         deleteReservationUser(reservation, context, "reservations", reservation.getClientID());
     }
 
-    public void deleteReservationForClient(Offer offer, Context context, String collection, String document) {
+    public void deleteReservationForClient(Reservation reservation, Context context, String collection, String document,String managerID) {
         displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
-        deleteReservationsForOffer(offer, context, collection, document);
-        deleteReservationsForOffer(offer, context, "reservationsManager", offer.getManagerID());
+        deleteReservationUser(reservation, context, collection, document);
+        deleteReservationManager(reservation, context, "reservationsManager", managerID);
     }
 }

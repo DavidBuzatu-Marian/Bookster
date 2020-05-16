@@ -147,7 +147,7 @@ public class DisplayOfferFragment extends Fragment {
                 curButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ReservationActions.getInstance().deleteReservationForClient(mOffer, getContext(), "reservations", FirebaseAuth.getInstance().getUid());
+                        ReservationActions.getInstance().deleteReservationForClient(mReservation, getContext(), "reservations", FirebaseAuth.getInstance().getUid(),mOffer.getManagerID());
                     }
                 });
                 break;
