@@ -53,7 +53,7 @@ public class RegisterValidationActions {
         return true;
     }
 
-    private static boolean isAddressValid(String address, TextInputEditText addressET) {
+    public static boolean isAddressValid(String address, TextInputEditText addressET) {
         if(address.isEmpty()) {
             addressET.setError("Address cannot be empty");
             return false;
@@ -66,7 +66,7 @@ public class RegisterValidationActions {
     }
 
 
-    private static boolean isNameValid(String name, TextInputEditText nameET) {
+    public static boolean isNameValid(String name, TextInputEditText nameET) {
         boolean hasDigit_TRUE = false;
         if(name.isEmpty()) {
             nameET.setError("Name cannot be empty");
@@ -87,7 +87,7 @@ public class RegisterValidationActions {
         return true;
     }
 
-    private static boolean isPasswordValid(String password, TextInputEditText passwordET) {
+    public static boolean isPasswordValid(String password, TextInputEditText passwordET) {
         boolean hasDigit_TRUE = false;
         if (password.isEmpty()) {
             passwordET.setError("Field required!");
@@ -118,7 +118,7 @@ public class RegisterValidationActions {
         return true;
     }
 
-    private static boolean isEmailValid(String email, TextInputEditText emailET) {
+    public static boolean isEmailValid(String email, TextInputEditText emailET) {
         if (email.isEmpty()) {
             emailET.setError("Field required!");
             return false;
