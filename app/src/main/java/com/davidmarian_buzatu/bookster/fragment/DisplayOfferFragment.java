@@ -55,6 +55,7 @@ public class DisplayOfferFragment extends Fragment {
     private Offer mOffer;
     private Reservation mReservation;
     private String mDisplayOfferType;
+    private Long mStartDate, mEndDate;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -80,6 +81,8 @@ public class DisplayOfferFragment extends Fragment {
             mOffer = new GsonBuilder().create().fromJson(offerStringified, Offer.class);
             mDisplayOfferType = bundle.getString("displayOfferType");
             mReservation = new GsonBuilder().create().fromJson(reservationStringified, Reservation.class);
+            mStartDate = bundle.containsKey("startDate") ? bundle.getLong("startDate") : mReservation.getStartDate();
+            mEndDate = bundle.containsKey("endDate") ? bundle.getLong("endDate") : mReservation.getEndDate();
         }
     }
 
@@ -156,7 +159,7 @@ public class DisplayOfferFragment extends Fragment {
                 curButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        OfferActions.getInstance().reserveOffer(mOffer, getContext(), getTotalPrice(mOffer.getPrice()));
+                        OfferActions.getInstance().reserveOffer(mOffer, getContext(), getTotalPrice(mOffer.getPrice()), mStartDate, mEndDate);
                     }
                 });
                 break;
@@ -207,7 +210,7 @@ public class DisplayOfferFragment extends Fragment {
 
     private double getTotalPrice(String price) {
         DateFormatter df = DateFormatter.getInstance();
-        double numberOfDays = ChronoUnit.DAYS.between(df.getDate(mOffer.getDateStart()), df.getDate(mOffer.getDateEnd()));
+        double numberOfDays = ChronoUnit.DAYS.between(df.getDate(mStartDate), df.getDate(mEndDate));
         return numberOfDays * Double.parseDouble(price);
     }
 
@@ -216,8 +219,8 @@ public class DisplayOfferFragment extends Fragment {
         TextView startDate = root.findViewById(R.id.frag_displayOffer_TV_check_in_date);
         TextView endDate = root.findViewById(R.id.frag_displayOffer_TV_check_out_date);
 
-        startDate.setText(df.getFormattedDate(mOffer.getDateStart(), "EEEE dd MMMM YYYY"));
-        endDate.setText(df.getFormattedDate(mOffer.getDateEnd(), "EEEE dd MMMM YYYY"));
+        startDate.setText(df.getFormattedDate(mStartDate, "EEEE dd MMMM YYYY"));
+        endDate.setText(df.getFormattedDate(mEndDate, "EEEE dd MMMM YYYY"));
     }
 
     private void createAndSetFacilities(View root, int parentId, List<String> facilities, boolean isPopularFacility) {

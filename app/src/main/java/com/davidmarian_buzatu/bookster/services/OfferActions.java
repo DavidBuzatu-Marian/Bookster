@@ -57,7 +57,7 @@ public class OfferActions {
     }
 
 
-    public void reserveOffer(Offer offer, Context context, double totalPrice) {
+    public void reserveOffer(Offer offer, Context context, double totalPrice, Long startDate, Long endDate) {
         int nrRoomsAvailable = Integer.parseInt(offer.getRoomsAvailable());
         if (nrRoomsAvailable > 0) {
             offer.setRoomsAvailable(--nrRoomsAvailable + "");
@@ -68,7 +68,7 @@ public class OfferActions {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Reservation reservation = ReservationActions.getInstance().createReservation(offer, totalPrice);
+                    Reservation reservation = ReservationActions.getInstance().createReservation(offer, totalPrice, startDate, endDate);
                     ReservationActions.getInstance().saveReservationToFirebase(reservation, context, offer.getManagerID(), mDialog);
                 } else {
                     mDialog.dismiss();

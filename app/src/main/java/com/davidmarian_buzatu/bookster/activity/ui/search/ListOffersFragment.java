@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class ListOffersFragment extends Fragment {
 
-    private RecyclerView.Adapter mAdapter;
+    private ListOffersAdapter mAdapter;
     private View mRoot;
     private String mCity;
     private Long mStartDate, mEndDate;
@@ -107,6 +107,8 @@ public class ListOffersFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new ListOffersAdapter(mOffers, getContext(), getActivity(), DisplayOfferTypes.OFFER_CLIENT.name());
+        mAdapter.setStartDate(mStartDate);
+        mAdapter.setEndDate(mEndDate);
         recyclerView.setAdapter(mAdapter);
     }
 }

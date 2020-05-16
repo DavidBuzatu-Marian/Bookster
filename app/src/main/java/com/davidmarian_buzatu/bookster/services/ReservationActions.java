@@ -201,10 +201,10 @@ public class ReservationActions {
     }
 
 
-    public Reservation createReservation(Offer offer, double totalPrice) {
+    public Reservation createReservation(Offer offer, double totalPrice, Long startDate, Long endDate) {
         Reservation reservation = new Reservation();
-        reservation.setEndDate(offer.getDateEnd());
-        reservation.setStartDate(offer.getDateStart());
+        reservation.setEndDate(endDate);
+        reservation.setStartDate(startDate);
         reservation.setLocation(offer.getCityName());
         reservation.setOfferID(offer.getOfferID());
         reservation.setPresentationURL(offer.getPresentationURL());
