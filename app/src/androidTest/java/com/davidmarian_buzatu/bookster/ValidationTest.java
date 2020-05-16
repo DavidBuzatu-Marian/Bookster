@@ -27,28 +27,29 @@ import static junit.framework.TestCase.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class ValidationTest {
     @Mock private RegisterValidationActions registerValidationActions;
-    private TextInputEditText email, password, name;
+    private TextInputEditText email, password, name,address;
     private RegisterAdapter registerAdapter;
     private Context mContext = ApplicationProvider.getApplicationContext();
+
     @Mock
-    FirebaseApp firebaseApp;
+    //FirebaseApp firebaseApp;
     private FirebaseFirestore mFirebaseFirestore;
 
     @Before
     public void init(){
-        MockitoAnnotations.initMocks(this);
-        firebaseApp = Mockito.mock(FirebaseApp.class);
-        Mockito.when(firebaseApp.initializeApp(mContext)).thenReturn(firebaseApp);
+        //MockitoAnnotations.initMocks(this);
+        //firebaseApp = Mockito.mock(FirebaseApp.class);
+        //Mockito.when(firebaseApp.initializeApp(mContext)).thenReturn(firebaseApp);
         FirebaseApp.initializeApp(mContext);
     }
 
     @Before
-    public void before() {
-        registerValidationActions = Mockito.mock(RegisterValidationActions.class);
-    }
+    //public void before() {
+      //  registerValidationActions = Mockito.mock(RegisterValidationActions.class);
+    //}
 
     @Test
-    public void registrationValidation() {
+    public void emailValidation() {
         // Here you can try things like this
         registerValidationActions = new RegisterValidationActions();
         email = new TextInputEditText(mContext);
@@ -56,8 +57,8 @@ public class ValidationTest {
     }
 
 
-    @Test
-    public void deleteOffer() {
+
+    /*public void deleteOffer() {
         mFirebaseFirestore = FirebaseFirestore.getInstance();
         mFirebaseFirestore.collection("offers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -65,5 +66,26 @@ public class ValidationTest {
                 //Do something
             }
         });
+    }*/
+
+    @Test
+    public void passwordValidation(){
+        registerValidationActions=new RegisterValidationActions();
+        password = new TextInputEditText(mContext);
+        assertTrue(RegisterValidationActions.isPasswordValid("12345678",password));
+    }
+
+    @Test
+    public void nameValidation(){
+        registerValidationActions=new RegisterValidationActions();
+        name=new TextInputEditText(mContext);
+        assertTrue(RegisterValidationActions.isNameValid("Timotei",name));
+    }
+
+    @Test
+    public void addressValidation(){
+        registerValidationActions=new RegisterValidationActions();
+        address=new TextInputEditText(mContext);
+        assertTrue(RegisterValidationActions.isAddressValid("str.'Closca',nr.10",address));
     }
 }

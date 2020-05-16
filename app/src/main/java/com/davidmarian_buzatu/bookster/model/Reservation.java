@@ -1,6 +1,7 @@
 package com.davidmarian_buzatu.bookster.model;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class Reservation {
     private String mLocation, mOfferID, mPrice, mPresentationURL, mClientID, mID;
@@ -103,4 +104,23 @@ public class Reservation {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return Objects.equals(mLocation, that.mLocation) &&
+                Objects.equals(mOfferID, that.mOfferID) &&
+                Objects.equals(mPrice, that.mPrice) &&
+                Objects.equals(mPresentationURL, that.mPresentationURL) &&
+                Objects.equals(mClientID, that.mClientID) &&
+                Objects.equals(mID, that.mID) &&
+                Objects.equals(mStartDate, that.mStartDate) &&
+                Objects.equals(mEndDate, that.mEndDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mLocation, mOfferID, mPrice, mPresentationURL, mClientID, mID, mStartDate, mEndDate);
+    }
 }
