@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.model.Message;
+
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.davidmarian_buzatu.bookster.model.Reservation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,7 +52,7 @@ public class ReservationActions {
                 if (task.isSuccessful() && task.getResult() != null) {
                     deleteAllReservations(task, offer, context, "reservations");
                 }
-                if(mDialog.isShowing()) {
+                if (mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
 
@@ -63,7 +64,7 @@ public class ReservationActions {
                 if (task.isSuccessful() && task.getResult() != null) {
                     deleteAllReservations(task, offer, context, "reservationsManager");
                 }
-                if(mDialog.isShowing()) {
+                if (mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
             }
@@ -74,18 +75,24 @@ public class ReservationActions {
         List<Reservation> newReservationList = new ArrayList<>();
         for (QueryDocumentSnapshot doc : task.getResult()) {
             // we get a map which has a list of reservations
-            Map<String, Object> reservationMap = doc.getData();
-            List<HashMap<String, Object>> reservationMapList = (List<HashMap<String, Object>>) reservationMap.get("reservations");
-            for (Map<String, Object> mapReservation : reservationMapList) {
-                // Its a map in the database
-                Reservation reservation = new Reservation();
-                reservation.setReservationFromMap(mapReservation);
-                if (!reservation.getOfferID().equals(offer.getOfferID())) {
-                    newReservationList.add(reservation);
-                }
-            }
+            newReservationList = getListReservationsFromQuery(doc, offer);
             saveReservationList(newReservationList, collection, doc.getId(), context);
         }
+    }
+
+    public static List<Reservation> getListReservationsFromQuery(QueryDocumentSnapshot doc, Offer offer) {
+        List<Reservation> newReservationList = new ArrayList<>();
+        Map<String, Object> reservationMap = doc.getData();
+        List<HashMap<String, Object>> reservationMapList = (List<HashMap<String, Object>>) reservationMap.get("reservations");
+        for (Map<String, Object> mapReservation : reservationMapList) {
+            // Its a map in the database
+            Reservation reservation = new Reservation();
+            reservation.setReservationFromMap(mapReservation);
+            if (!reservation.getOfferID().equals(offer.getOfferID())) {
+                newReservationList.add(reservation);
+            }
+        }
+        return newReservationList;
     }
 
 
@@ -94,20 +101,11 @@ public class ReservationActions {
     }
 
     private void deleteReservationsForOffer(Offer offer, Context context, String collection, String document) {
-        List<Reservation> newListReservation = new ArrayList<>();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    List<HashMap<String, Object>> reservationList = (List<HashMap<String, Object>>) task.getResult().get("reservations");
-                    for (HashMap<String, Object> reservationMap : reservationList) {
-                        Reservation reservation = new Reservation();
-                        reservation.setReservationFromMap(reservationMap);
-                        if (!reservation.getOfferID().equals(offer.getOfferID())) {
-                            newListReservation.add(reservation);
-                        }
-                    }
-
+                    final List<Reservation> newListReservation = getListReservationsFromDoc(task, offer);
                     saveReservationList(newListReservation, collection, document, context);
                 }
                 if (mDialog.isShowing()) {
@@ -117,6 +115,32 @@ public class ReservationActions {
         });
     }
 
+    public static List<Reservation> getListReservationsFromDoc(Task<DocumentSnapshot> task, Offer offer) {
+        List<Reservation> newListReservation = new ArrayList<>();
+        List<HashMap<String, Object>> reservationList = (List<HashMap<String, Object>>) task.getResult().get("reservations");
+        for (HashMap<String, Object> reservationMap : reservationList) {
+            Reservation reservation = new Reservation();
+            reservation.setReservationFromMap(reservationMap);
+            if (!reservation.getOfferID().equals(offer.getOfferID())) {
+                newListReservation.add(reservation);
+            }
+        }
+        return newListReservation;
+    }
+
+    public static List<Reservation> getListReservationsFromDoc(Task<DocumentSnapshot> task, Reservation reservation) {
+        List<Reservation> newListReservation = new ArrayList<>();
+        final List<Map<String, Object>> reservationList = (List<Map<String, Object>>) task.getResult().get("reservations");
+        for (Map<String, Object> reservationMap : reservationList) {
+            Reservation reservationCur = new Reservation();
+            reservationCur.setReservationFromMap(reservationMap);
+            if (!reservationCur.getID().equals(reservation.getID())) {
+                newListReservation.add(reservationCur);
+            }
+        }
+        return newListReservation;
+    }
+
 
     private Task<Void> saveNewReservationList(List<Reservation> newListReservation, String collection, String docID) {
         return FirebaseFirestore.getInstance().collection(collection).document(docID).update("reservations", newListReservation);
@@ -124,20 +148,11 @@ public class ReservationActions {
 
 
     private void deleteReservationManager(Reservation reservation, Context context, String collection, String document) {
-        List<Reservation> newListReservation = new ArrayList<>();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    final List<Map<String, Object>> reservationList = (List<Map<String, Object>>) task.getResult().get("reservations");
-                    for (Map<String, Object> reservationMap : reservationList) {
-                        Reservation reservationCur = new Reservation();
-                        reservationCur.setReservationFromMap(reservationMap);
-                        if (!reservationCur.getID().equals(reservation.getID())) {
-                            newListReservation.add(reservationCur);
-                        }
-
-                    }
+                    final List<Reservation> newListReservation = getListReservationsFromDoc(task, reservation);
                     saveReservationList(newListReservation, collection, document, context);
                 }
                 if (mDialog.isShowing()) {
@@ -151,21 +166,12 @@ public class ReservationActions {
 
 
     private void deleteReservationUser(Reservation reservation, Context context, String collection, String document) {
-        List<Reservation> newListReservation = new ArrayList<>();
+        //List<Reservation> newListReservation = new ArrayList<>();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    List<HashMap<String, Object>> reservationList = (List<HashMap<String, Object>>) task.getResult().get("reservations");
-                    for (HashMap<String, Object> reservationMap : reservationList) {
-                        Reservation reservationCur = new Reservation();
-                        reservationCur.setReservationFromMap(reservationMap);
-
-                        if (!reservationCur.getID().equals(reservation.getID())) {
-                            newListReservation.add(reservationCur);
-                        }
-
-                    }
+                    final List<Reservation> newListReservation = getListReservationsFromDoc(task, reservation);
                     saveReservationList(newListReservation, collection, document, context);
                 }
                 if (mDialog.isShowing()) {
@@ -260,11 +266,9 @@ public class ReservationActions {
         deleteReservationUser(reservation, context, "reservations", reservation.getClientID());
     }
 
-    public void deleteReservationForClient(Offer offer, Context context, String collection, String document, FragmentActivity activity) {
-        MessageActions messageActions=new MessageActions();
+    public void deleteReservationForClient(Reservation reservation, Context context, String collection, String document,String managerID) {
         displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
-        deleteReservationsForOffer(offer, context, collection, document);
-        deleteReservationsForOffer(offer, context, "reservationsManager", offer.getManagerID());
-        messageActions.sendEmail(context,offer.getManagerID(),activity,"Reservation Canceled");
+        deleteReservationUser(reservation, context, collection, document);
+        deleteReservationManager(reservation, context, "reservationsManager", managerID);
     }
 }

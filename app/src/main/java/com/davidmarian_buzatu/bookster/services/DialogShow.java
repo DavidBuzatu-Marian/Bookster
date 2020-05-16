@@ -1,9 +1,7 @@
-package com.davidmarian_buzatu.bookster.activity.ui.search.helper;
+package com.davidmarian_buzatu.bookster.services;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-
-import com.davidmarian_buzatu.bookster.R;
 
 public class DialogShow {
     private static DialogShow mDialogShow;

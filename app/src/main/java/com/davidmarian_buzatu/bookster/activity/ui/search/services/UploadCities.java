@@ -1,4 +1,4 @@
-package com.davidmarian_buzatu.bookster.activity.ui.search.helper;
+package com.davidmarian_buzatu.bookster.activity.ui.search.services;
 
 import android.util.Log;
 
@@ -41,13 +41,13 @@ public class UploadCities {
 
     private void saveToFirebase(String country, String city) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        Map<String, String> city30 = new HashMap<>();
-        city30.put("Country", country);
+        Map<String, String> cities = new HashMap<>();
+        cities.put("Country", country);
         if (auth.getCurrentUser() != null) {
             FirebaseFirestore.getInstance()
                     .collection("cities")
                     .document(city)
-                    .set(city30)
+                    .set(cities)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

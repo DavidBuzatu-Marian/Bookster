@@ -3,30 +3,28 @@ package com.davidmarian_buzatu.bookster.services;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+
 import android.view.View;
+
+import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.davidmarian_buzatu.bookster.model.Reservation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class OfferActions {
     private static OfferActions mOfferActions;
@@ -95,10 +93,63 @@ public class OfferActions {
                 .set(offer);
     }
 
-    public Task<QuerySnapshot> getOffersForFiled(String field, String value) {
+    public Task<QuerySnapshot> getOffersForField(String field, String value) {
         return FirebaseFirestore.getInstance()
                 .collection("offers")
                 .whereEqualTo(field, value)
                 .get();
+    }
+
+
+    public static boolean validFields(List<TextInputEditText> TIETList, CalendarActions calendarActions, List<Bitmap> picturesList, Context context) {
+        for (TextInputEditText tiet : TIETList) {
+            if (tiet.getText().toString().length() == 0) {
+                tiet.setError("Field required!");
+                return false;
+            }
+        }
+        if (calendarActions.getEndDate() == 0) {
+            Toast.makeText(context, "A valid period is required!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (calendarActions.getStartDate() == 0) {
+            Toast.makeText(context, "A valid period is required!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (picturesList.size() == 0) {
+            Toast.makeText(context, "At least two images are required!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    public List<Offer> getOffersFromQuery(Task<QuerySnapshot> task) {
+        List<Offer> offers = new ArrayList<>();
+        for (QueryDocumentSnapshot doc : task.getResult()) {
+            Map<String, Object> mapOffer = doc.getData();
+            Offer offer = new Offer();
+            offer.setOfferFromMap(mapOffer);
+            offer.setOfferID(doc.getId());
+            offers.add(offer);
+        }
+        return offers;
+    }
+
+    public List<Offer> getOffersFromQueryWithinDate(Task<QuerySnapshot> task, Long startDate, Long endDate) {
+        List<Offer> offers = new ArrayList<>();
+        for (QueryDocumentSnapshot doc : task.getResult()) {
+            Map<String, Object> mapOffer = doc.getData();
+            Offer offer = new Offer();
+            offer.setOfferFromMap(mapOffer);
+            offer.setOfferID(doc.getId());
+            if (isValid(offer, startDate, endDate)) {
+                offers.add(offer);
+            }
+        }
+        return offers;
+    }
+
+    private boolean isValid(Offer offer, Long startDate, Long endDate) {
+        return (offer.getDateStart() <= startDate && offer.getDateEnd() >= endDate && Integer.parseInt(offer.getRoomsAvailable()) > 0);
     }
 }

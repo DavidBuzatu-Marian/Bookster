@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.SearchList;
+import com.davidmarian_buzatu.bookster.activity.ui.search.services.SearchList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,12 +24,11 @@ public class ListCities {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Log.d("LIST_VIEW", "Task Succesful in list view");
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         mListCities.add(new SearchList(document.getId() + ", " + document.getData().get("Country")));
                     }
                 } else {
-                    Log.d("LIST_FAILED", "Fail to add documents");
+                    Log.d("LIST_FAILED", "Fail to get documents");
                 }
             }
         });

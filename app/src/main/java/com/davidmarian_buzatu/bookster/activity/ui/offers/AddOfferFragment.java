@@ -7,12 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -22,18 +20,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.UploadCities;
+import com.davidmarian_buzatu.bookster.services.DialogShow;
+import com.davidmarian_buzatu.bookster.activity.ui.search.services.UploadCities;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
 import com.davidmarian_buzatu.bookster.services.CalendarActions;
+import com.davidmarian_buzatu.bookster.services.OfferActions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -46,7 +42,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -99,7 +94,7 @@ public class AddOfferFragment extends Fragment {
 
     private void setTIETList(View root) {
         mTIETList = new ArrayList<>();
-        for(Integer resId: mTIETResIds) {
+        for (Integer resId : mTIETResIds) {
             mTIETList.add(root.findViewById(resId));
         }
     }
@@ -109,7 +104,7 @@ public class AddOfferFragment extends Fragment {
         saveOfferBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fieldsAreValid()) {
+                if (OfferActions.validFields(mTIETList, mCalendarActions, mPicturesList, getContext())) {
                     mFacilities = getFacilities();
                     mPopularFacilities = getPopularFacilities();
                     mDialog = DialogShow.getInstance().getDisplayDialog(getContext(), R.string.frag_addOffer_dialog_message);
@@ -126,7 +121,7 @@ public class AddOfferFragment extends Fragment {
         FirebaseFirestore.getInstance().collection("offers").add(offerMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
                 }
                 mDialog.dismiss();
@@ -139,7 +134,7 @@ public class AddOfferFragment extends Fragment {
         new HashMap<>();
         int counter = 0;
         // put tiet fields
-        for(String key : mTIETKeys) {
+        for (String key : mTIETKeys) {
             offerMap.put(key, mTIETList.get(counter++).getText().toString());
         }
         // put individual things
@@ -151,9 +146,9 @@ public class AddOfferFragment extends Fragment {
         offerMap.put("presentationURL", mPicturesLink.get(0));
         offerMap.put("managerID", FirebaseAuth.getInstance().getUid());
         // get info from spinners
-        offerMap.put("country",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_country)).getSelectedItem().toString());
-        offerMap.put("cityName",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_city)).getSelectedItem().toString());
-        offerMap.put("roomType",((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_room_type)).getSelectedItem().toString());
+        offerMap.put("country", ((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_country)).getSelectedItem().toString());
+        offerMap.put("cityName", ((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_city)).getSelectedItem().toString());
+        offerMap.put("roomType", ((Spinner) mRoot.findViewById(R.id.frag_addOffer_SP_room_type)).getSelectedItem().toString());
         offerMap.put("roomsAvailable", String.valueOf(((NumberPicker) mRoot.findViewById(R.id.frag_addOffer_NP_available)).getValue()));
         offerMap.put("pictures", mPicturesLink);
         return offerMap;
@@ -162,19 +157,18 @@ public class AddOfferFragment extends Fragment {
     private List<String> getFacilities() {
         List<String> facilities = new ArrayList<>();
         String facilitiesString = mTIETList.get(5).getText().toString().trim();
-        for(String facility: facilitiesString.split(",")) {
+        for (String facility : facilitiesString.split(",")) {
             facilities.add(facility.trim());
         }
         return facilities;
     }
 
     private List<String> getPopularFacilities() {
-        String[] popularFacilities = getResources().getStringArray(R.array.room_popular_facilities);
         List<String> popFacilities = new ArrayList<>();
         int counter = 0;
-        for(int resId: mCBResIds) {
+        for (int resId : mCBResIds) {
             CheckBox cb = mRoot.findViewById(resId);
-            if(cb.isChecked()) {
+            if (cb.isChecked()) {
                 popFacilities.add(mFacilitiesArray[counter].name());
             }
             ++counter;
@@ -183,27 +177,6 @@ public class AddOfferFragment extends Fragment {
     }
 
 
-    private boolean fieldsAreValid() {
-        for(TextInputEditText tiet: mTIETList) {
-            if(tiet.getText().toString().length() == 0) {
-                tiet.setError("Field required!");
-                return false;
-            }
-        }
-        if(mCalendarActions.getEndDate() == 0) {
-            Toast.makeText(getContext(), "A valid period is required!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if(mCalendarActions.getStartDate() == 0) {
-            Toast.makeText(getContext(), "A valid period is required!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if(mPicturesList.size() == 0) {
-            Toast.makeText(getContext(), "At least two images are required!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        return true;
-    }
 
     private void setSpinner(View root, int resId, String[] arrayOfVals) {
         Spinner countrySpinner = root.findViewById(resId);
@@ -286,7 +259,7 @@ public class AddOfferFragment extends Fragment {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         mPicturesLink.add(task.getResult().toString());
-                        if(mPicturesLink.size() == mPicturesList.size()) {
+                        if (mPicturesLink.size() == mPicturesList.size()) {
                             saveOfferToFirebase();
                         }
                     }
