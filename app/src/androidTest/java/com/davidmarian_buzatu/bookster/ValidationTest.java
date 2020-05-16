@@ -23,8 +23,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static junit.framework.TestCase.assertTrue;
-import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class ValidationTest {
@@ -32,7 +30,8 @@ public class ValidationTest {
     private TextInputEditText email, password, name;
     private RegisterAdapter registerAdapter;
     private Context mContext = ApplicationProvider.getApplicationContext();
-    @Mock FirebaseApp firebaseApp;
+    @Mock
+    FirebaseApp firebaseApp;
     private FirebaseFirestore mFirebaseFirestore;
 
     @Before
@@ -50,6 +49,7 @@ public class ValidationTest {
 
     @Test
     public void registrationValidation() {
+        // Here you can try things like this
         registerValidationActions = new RegisterValidationActions();
         email = new TextInputEditText(mContext);
         assertTrue(RegisterValidationActions.isEmailValid("email@gmail.com", email));
