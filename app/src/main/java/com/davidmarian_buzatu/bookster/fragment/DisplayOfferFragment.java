@@ -114,15 +114,6 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelOffer.setVisibility(View.GONE);
                 buttonCancelReservationManager.setVisibility(View.GONE);
                 buttonCancelReservation.setVisibility(View.VISIBLE);
-                buttonCancelReservation.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ReservationActions.getInstance().deleteReservationForClient(mOffer, getContext(), "reservations", FirebaseAuth.getInstance().getUid(),getActivity());
-                        getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
-
-
-                    }
-                });
                 break;
             case OFFER_CLIENT:
                 buttonCancelOffer.setVisibility(View.GONE);
@@ -156,7 +147,7 @@ public class DisplayOfferFragment extends Fragment {
                 curButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ReservationActions.getInstance().deleteReservationForClient(mReservation, getContext(), "reservations", FirebaseAuth.getInstance().getUid(),mOffer.getManagerID());
+                        ReservationActions.getInstance().deleteReservationForClient(mReservation, getContext(), "reservations", FirebaseAuth.getInstance().getUid(),mOffer.getManagerID(),getActivity());
                     }
                 });
                 break;
@@ -184,7 +175,7 @@ public class DisplayOfferFragment extends Fragment {
                 curButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ReservationActions.getInstance().deleteReservationFromManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid());
+                        ReservationActions.getInstance().deleteReservationFromManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid(),getActivity());
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
                     }
                 });

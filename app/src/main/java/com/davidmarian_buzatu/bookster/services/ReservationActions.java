@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
 import com.davidmarian_buzatu.bookster.model.Message;
 
 import com.davidmarian_buzatu.bookster.model.Offer;
@@ -147,13 +146,15 @@ public class ReservationActions {
     }
 
 
-    private void deleteReservationManager(Reservation reservation, Context context, String collection, String document) {
+    private void deleteReservationManager(Reservation reservation, Context context, String collection, String document,FragmentActivity activity) {
+        MessageActions messageActions=new MessageActions();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     final List<Reservation> newListReservation = getListReservationsFromDoc(task, reservation);
                     saveReservationList(newListReservation, collection, document, context);
+                    messageActions.sendEmail(context,document,activity,"CanceledReservation");
                 }
                 if (mDialog.isShowing()) {
                     mDialog.dismiss();
@@ -166,7 +167,6 @@ public class ReservationActions {
 
 
     private void deleteReservationUser(Reservation reservation, Context context, String collection, String document) {
-        //List<Reservation> newListReservation = new ArrayList<>();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -260,15 +260,15 @@ public class ReservationActions {
                 });
     }
 
-    public void deleteReservationFromManager(Reservation reservation, Context context, String collection, String document) {
+    public void deleteReservationFromManager(Reservation reservation, Context context, String collection, String document,FragmentActivity activity) {
         displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
-        deleteReservationManager(reservation, context, collection, document);
+        deleteReservationManager(reservation, context, collection, document,activity);
         deleteReservationUser(reservation, context, "reservations", reservation.getClientID());
     }
 
-    public void deleteReservationForClient(Reservation reservation, Context context, String collection, String document,String managerID) {
+    public void deleteReservationForClient(Reservation reservation, Context context, String collection, String document,String managerID,FragmentActivity activity) {
         displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
         deleteReservationUser(reservation, context, collection, document);
-        deleteReservationManager(reservation, context, "reservationsManager", managerID);
+        deleteReservationManager(reservation, context, "reservationsManager", managerID,activity);
     }
 }
