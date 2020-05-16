@@ -13,6 +13,15 @@ A mobile application for booking vacations
 <img src="https://i.ibb.co/WVkjYN3/8.jpg" width="200">
 </div>
 
+## Usage
+1. Install apk directly to an Android mobile phone (APK >= 23) (*link soon)
+2. Clone repository
+3. Open project in Android Studio
+4. Connect Android mobile phone (APK >=23) with an USB cable
+5. Enable USB debbuging in Developer Options
+6. Run app in Android Studio using the play button on App
+7. Enjoy the app 
+
 ## Built With
 
 * [Firebase](https://firebase.google.com) - The web services used, such as: Firebase Firestore, Authentication, Storage
