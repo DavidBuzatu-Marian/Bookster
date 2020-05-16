@@ -1,22 +1,22 @@
-package com.davidmarian_buzatu.bookster.activity.ui.search.helper;
+package com.davidmarian_buzatu.bookster.activity.ui.search.services;
 
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.format.DateTimeFormatter;
 
-public class DateFormater {
-    private static DateFormater mDateFormater;
+public class DateFormatter {
+    private static DateFormatter mDateFormatter;
 
-    private DateFormater() {
-        mDateFormater = this;
+    private DateFormatter() {
+        mDateFormatter = this;
     }
 
-    public static DateFormater getInstance() {
-        if (mDateFormater == null) {
-            mDateFormater = new DateFormater();
+    public static DateFormatter getInstance() {
+        if (mDateFormatter == null) {
+            mDateFormatter = new DateFormatter();
         }
-        return mDateFormater;
+        return mDateFormatter;
     }
 
     public String getFormattedDate(Long date, String pattern) {

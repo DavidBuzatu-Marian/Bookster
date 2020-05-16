@@ -1,7 +1,6 @@
 package com.davidmarian_buzatu.bookster.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
-import com.davidmarian_buzatu.bookster.fragment.DisplayOfferFragment;
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.davidmarian_buzatu.bookster.services.FragmentActions;
-import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -53,7 +49,6 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
         Offer offer = mDataSet.get(position);
         holder.setInfoInViews(offer, mContext);
     }
-
 
 
     @Override

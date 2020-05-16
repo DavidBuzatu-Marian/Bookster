@@ -1,4 +1,4 @@
-package com.davidmarian_buzatu.bookster.activity.ui.search.helper;
+package com.davidmarian_buzatu.bookster.activity.ui.search.services;
 
 import android.annotation.SuppressLint;
 import android.os.Parcel;

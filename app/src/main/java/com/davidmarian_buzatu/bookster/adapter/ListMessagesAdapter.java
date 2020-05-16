@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.model.Message;
+import com.davidmarian_buzatu.bookster.services.MessageActions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -93,11 +94,7 @@ public class ListMessagesAdapter extends RecyclerView.Adapter<ListMessagesAdapte
                     CardView cv = itemView.findViewById(R.id.adapter_listMessages_CV);
                     cv.setVisibility(View.GONE);
 
-                    FirebaseFirestore.getInstance()
-                            .collection("messages")
-                            .document(FirebaseAuth.getInstance().getUid())
-                            .update("messages", FieldValue.arrayRemove(message));
-                    Log.d("MESSAGE_TEST", "Pressed 'Check emails' button");
+                    MessageActions.deleteMessage(message);
                 }
             });
         }
