@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,7 +48,19 @@ public class ListOffersFragment extends Fragment {
 
         mRoot = inflater.inflate(R.layout.fragment_list_offers, container, false);
         setInformationInViews();
+        setBackButton(mRoot);
         return mRoot;
+    }
+
+    private void setBackButton(View mRoot) {
+        Fragment reference = this;
+        ImageView backButton = mRoot.findViewById(R.id.frag_listOffers_BTN_back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
+            }
+        });
     }
 
     private void setInformationInViews() {
