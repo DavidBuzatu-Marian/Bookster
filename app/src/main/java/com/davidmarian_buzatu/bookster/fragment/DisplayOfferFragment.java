@@ -1,7 +1,6 @@
 package com.davidmarian_buzatu.bookster.fragment;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,14 +17,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
+import com.davidmarian_buzatu.bookster.activity.ui.search.services.DateFormatter;
 import com.davidmarian_buzatu.bookster.adapter.ViewPagerImagesAdapter;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
@@ -37,6 +35,8 @@ import com.davidmarian_buzatu.bookster.services.MessageActions;
 import com.davidmarian_buzatu.bookster.services.OfferActions;
 
 import com.davidmarian_buzatu.bookster.services.ReservationActions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -102,13 +102,12 @@ public class DisplayOfferFragment extends Fragment {
         setContactManager(root);
     }
 
-    private void setUpButtonListener(View root) {
+
+    private void showCurrentButton(View root, DisplayOfferTypes displayOfferTypes) {
         Button buttonCancelReservation = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation);
         Button buttonReserve = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
         Button buttonCancelOffer = root.findViewById(R.id.frag_displayOffer_BTN_cancel_offer);
         Button buttonCancelReservationManager = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation_manager);
-        DisplayOfferTypes displayOfferTypes = DisplayOfferTypes.valueOf(mDisplayOfferType);
-        final Fragment reference = this;
         switch (displayOfferTypes) {
             case OFFER_RESERVATION:
                 buttonReserve.setVisibility(View.GONE);
@@ -118,10 +117,6 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservation.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        /*TODO: in the method deleteReservationsForOffer
-                                after deleting the reservation
-                                send email to manager (notification)
-                        * */
                         ReservationActions.getInstance().deleteReservationForClient(mOffer, getContext(), "reservations", FirebaseAuth.getInstance().getUid(),getActivity());
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
 
@@ -134,7 +129,40 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelReservation.setVisibility(View.GONE);
                 buttonCancelReservationManager.setVisibility(View.GONE);
                 buttonReserve.setVisibility(View.VISIBLE);
-                buttonReserve.setOnClickListener(new View.OnClickListener() {
+                break;
+            case OFFER_MANAGER:
+                buttonCancelReservation.setVisibility(View.GONE);
+                buttonReserve.setVisibility(View.GONE);
+                buttonCancelReservationManager.setVisibility(View.GONE);
+                buttonCancelOffer.setVisibility(View.VISIBLE);
+                break;
+            case OFFER_MANAGER_RESERVATION:
+                buttonCancelReservation.setVisibility(View.GONE);
+                buttonReserve.setVisibility(View.GONE);
+                buttonCancelOffer.setVisibility(View.GONE);
+                buttonCancelReservationManager.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    private void setUpButtonListener(View root) {
+        DisplayOfferTypes displayOfferTypes = DisplayOfferTypes.valueOf(mDisplayOfferType);
+        Button curButton;
+        final Fragment reference = this;
+        showCurrentButton(root, displayOfferTypes);
+        switch (displayOfferTypes) {
+            case OFFER_RESERVATION:
+                curButton = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation);
+                curButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ReservationActions.getInstance().deleteReservationForClient(mReservation, getContext(), "reservations", FirebaseAuth.getInstance().getUid(),mOffer.getManagerID());
+                    }
+                });
+                break;
+            case OFFER_CLIENT:
+                curButton = root.findViewById(R.id.frag_displayOffer_BTN_reserve);
+                curButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         OfferActions.getInstance().reserveOffer(mOffer, getContext(), getTotalPrice(mOffer.getPrice()));
@@ -142,11 +170,8 @@ public class DisplayOfferFragment extends Fragment {
                 });
                 break;
             case OFFER_MANAGER:
-                buttonCancelReservation.setVisibility(View.GONE);
-                buttonReserve.setVisibility(View.GONE);
-                buttonCancelReservationManager.setVisibility(View.GONE);
-                buttonCancelOffer.setVisibility(View.VISIBLE);
-                buttonCancelOffer.setOnClickListener(new View.OnClickListener() {
+                curButton = root.findViewById(R.id.frag_displayOffer_BTN_cancel_offer);
+                curButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         OfferActions.getInstance().deleteOffer(mOffer, getContext());
@@ -155,14 +180,12 @@ public class DisplayOfferFragment extends Fragment {
                 });
                 break;
             case OFFER_MANAGER_RESERVATION:
-                buttonCancelReservation.setVisibility(View.GONE);
-                buttonReserve.setVisibility(View.GONE);
-                buttonCancelOffer.setVisibility(View.GONE);
-                buttonCancelReservationManager.setVisibility(View.VISIBLE);
-                buttonCancelReservationManager.setOnClickListener(new View.OnClickListener() {
+                curButton = root.findViewById(R.id.frag_displayOffer_BTN_cancel_reservation_manager);
+                curButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         ReservationActions.getInstance().deleteReservationFromManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid());
+                        getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
                     }
                 });
                 break;
@@ -192,13 +215,13 @@ public class DisplayOfferFragment extends Fragment {
     }
 
     private double getTotalPrice(String price) {
-        DateFormater df = DateFormater.getInstance();
+        DateFormatter df = DateFormatter.getInstance();
         double numberOfDays = ChronoUnit.DAYS.between(df.getDate(mOffer.getDateStart()), df.getDate(mOffer.getDateEnd()));
         return numberOfDays * Double.parseDouble(price);
     }
 
     private void setAvailability(View root) {
-        DateFormater df = DateFormater.getInstance();
+        DateFormatter df = DateFormatter.getInstance();
         TextView startDate = root.findViewById(R.id.frag_displayOffer_TV_check_in_date);
         TextView endDate = root.findViewById(R.id.frag_displayOffer_TV_check_out_date);
 
@@ -339,16 +362,16 @@ public class DisplayOfferFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        final Fragment reference = this;
         if (requestCode == LAUNCH_MAIL_ACTIVITY) {
             Message message = new Message(mOffer.getOfferID());
-            FirebaseFirestore.getInstance()
-                    .collection("messages")
-                    .document(mOffer.getManagerID())
-                    .update("messages", FieldValue.arrayUnion(message));
+            MessageActions.addMessage(message, mOffer.getManagerID()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
+                }
+            });
         }
-
-        Log.d("TEST", "Resulted in" + resultCode);
     }
 
 }

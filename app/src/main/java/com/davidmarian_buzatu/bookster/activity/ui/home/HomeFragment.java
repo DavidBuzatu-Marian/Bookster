@@ -2,7 +2,6 @@ package com.davidmarian_buzatu.bookster.activity.ui.home;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
+import com.davidmarian_buzatu.bookster.services.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ListReservationsAdapter;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.model.Client;
@@ -25,13 +24,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import io.grpc.CallCredentials;
 
 public class HomeFragment extends Fragment {
     private User mCurrentUser;
@@ -46,7 +42,7 @@ public class HomeFragment extends Fragment {
         mCurrentUser.getUserInfo().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     displayUserReservations(root);
                 }
             }

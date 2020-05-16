@@ -14,23 +14,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
+import com.davidmarian_buzatu.bookster.services.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.model.Manager;
 import com.davidmarian_buzatu.bookster.model.Offer;
-import com.davidmarian_buzatu.bookster.model.User;
 import com.davidmarian_buzatu.bookster.services.OfferActions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class OffersFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
@@ -76,18 +72,12 @@ public class OffersFragment extends Fragment {
 
     private void getOffers(View root) {
         mOffers = new ArrayList<>();
-        OfferActions.getInstance().getOffersForFiled("managerID", Manager.getInstance().getUserID())
+        OfferActions.getInstance().getOffersForField("managerID", Manager.getInstance().getUserID())
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
-                                Map<String, Object> mapOffer = doc.getData();
-                                Offer offer = new Offer();
-                                offer.setOfferFromMap(mapOffer);
-                                offer.setOfferID(doc.getId());
-                                mOffers.add(offer);
-                            }
+                            mOffers = OfferActions.getInstance().getOffersFromQuery(task);
                             setUpRecyclerView(root);
                         }
                         mDialog.dismiss();

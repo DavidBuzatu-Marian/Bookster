@@ -14,15 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidmarian_buzatu.bookster.R;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DateFormater;
-import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
+import com.davidmarian_buzatu.bookster.activity.ui.search.services.DateFormatter;
+import com.davidmarian_buzatu.bookster.services.DialogShow;
 import com.davidmarian_buzatu.bookster.adapter.ListOffersAdapter;
 import com.davidmarian_buzatu.bookster.constant.DisplayOfferTypes;
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.davidmarian_buzatu.bookster.services.OfferActions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -54,7 +53,7 @@ public class ListOffersFragment extends Fragment {
         TextView textViewStartDate = mRoot.findViewById(R.id.frag_listOffers_TV_start_date);
         TextView textViewEndDate = mRoot.findViewById(R.id.frag_listOffers_TV_end_date);
         TextView textViewLocation = mRoot.findViewById(R.id.frag_listOffers_TV_location);
-        DateFormater df = DateFormater.getInstance();
+        DateFormatter df = DateFormatter.getInstance();
 
         textViewStartDate.setText(df.getFormattedDate(mStartDate, "EEE dd MMMM YYYY"));
         textViewEndDate.setText(df.getFormattedDate(mEndDate, "EEE dd MMMM YYYY"));
@@ -85,20 +84,12 @@ public class ListOffersFragment extends Fragment {
 
     private void getOffers() {
         mOffers = new ArrayList<>();
-        OfferActions.getInstance().getOffersForFiled("cityName", mCity)
+        OfferActions.getInstance().getOffersForField("cityName", mCity)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
-                                Map<String, Object> mapOffer = doc.getData();
-                                Offer offer = new Offer();
-                                offer.setOfferFromMap(mapOffer);
-                                offer.setOfferID(doc.getId());
-                                if (isValid(offer, mStartDate, mEndDate)) {
-                                    mOffers.add(offer);
-                                }
-                            }
+                            mOffers = OfferActions.getInstance().getOffersFromQueryWithinDate(task, mStartDate, mEndDate);
                             setUpRecyclerView(mRoot);
                         }
                         mDialog.dismiss();
@@ -106,9 +97,7 @@ public class ListOffersFragment extends Fragment {
                 });
     }
 
-    private boolean isValid(Offer offer, Long mStartDate, Long mEndDate) {
-        return (offer.getDateStart() <= mStartDate && offer.getDateEnd() >= mEndDate && Integer.parseInt(offer.getRoomsAvailable()) > 0);
-    }
+
 
 
     private void setUpRecyclerView(View root) {
