@@ -122,6 +122,7 @@ public class AddOfferFragment extends Fragment {
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
                     getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
+                    getActivity().onBackPressed();
                 }
                 mDialog.dismiss();
             }

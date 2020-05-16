@@ -170,6 +170,7 @@ public class DisplayOfferFragment extends Fragment {
                     public void onClick(View view) {
                         OfferActions.getInstance().deleteOffer(mOffer, getContext());
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
+                        getActivity().onBackPressed();
                     }
                 });
                 break;
@@ -180,6 +181,7 @@ public class DisplayOfferFragment extends Fragment {
                     public void onClick(View view) {
                         ReservationActions.getInstance().deleteReservationFromManager(mReservation, getContext(), "reservationsManager", FirebaseAuth.getInstance().getUid(),getActivity());
                         getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
+                        getActivity().onBackPressed();
                     }
                 });
                 break;
@@ -363,6 +365,7 @@ public class DisplayOfferFragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
+                    getActivity().onBackPressed();
                 }
             });
         }
