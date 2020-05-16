@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import android.util.Log;
 import android.view.View;
 
 import android.graphics.Bitmap;
@@ -21,6 +22,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +52,23 @@ public class OfferActions {
                 ReservationActions.getInstance().deleteAllReservationsForOffer(offer, context, mDialog);
             }
         });
+        deleteOfferImages(offer);
+    }
 
+    private void deleteOfferImages(Offer offer) {
+        for(String imageURL: offer.getPictures()) {
+            StorageReference photoReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageURL);
+            photoReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()) {
+                        Log.d("OFFER_IMG", "Successfully deleted!");
+                    } else {
+                        Log.d("OFFER_IMG", "Deleting failed!");
+                    }
+                }
+            });
+        }
     }
 
     private Task<Void> deleteOffer(Offer offer) {
