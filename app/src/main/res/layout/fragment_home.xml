@@ -36,6 +36,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frag_home_TV_header" />
 
+    <TextView
+        android:id="@+id/frag_home_TV_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/frag_home_TV_empty"
+        android:textColor="@color/colorBlackHeader"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frag_home_TV_details" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/frag_home_CV_reservations"
         android:layout_width="match_parent"

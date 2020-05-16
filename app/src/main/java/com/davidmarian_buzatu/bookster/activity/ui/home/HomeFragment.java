@@ -79,15 +79,21 @@ public class HomeFragment extends Fragment {
     private void setUpRecyclerView(View root, List<Reservation> reservationsList) {
         RecyclerView recyclerView = root.findViewById(R.id.frag_home_RV_reservations);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        if (mCurrentUser.getClass() == Client.class) {
-            mAdapter = new ListReservationsAdapter(reservationsList, DisplayOfferTypes.OFFER_RESERVATION, getContext(), getActivity());
+        if(reservationsList.size() == 0 ) {
+            recyclerView.setVisibility(View.GONE);
+            root.findViewById(R.id.frag_home_CV_reservations).setVisibility(View.GONE);
+            root.findViewById(R.id.frag_home_TV_empty).setVisibility(View.VISIBLE);
         } else {
-            mAdapter = new ListReservationsAdapter(reservationsList, DisplayOfferTypes.OFFER_MANAGER_RESERVATION, getContext(), getActivity());
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+
+            if (mCurrentUser.getClass() == Client.class) {
+                mAdapter = new ListReservationsAdapter(reservationsList, DisplayOfferTypes.OFFER_RESERVATION, getContext(), getActivity());
+            } else {
+                mAdapter = new ListReservationsAdapter(reservationsList, DisplayOfferTypes.OFFER_MANAGER_RESERVATION, getContext(), getActivity());
+            }
+            recyclerView.setAdapter(mAdapter);
         }
-        recyclerView.setAdapter(mAdapter);
     }
 
     private void showLoadingDialog() {

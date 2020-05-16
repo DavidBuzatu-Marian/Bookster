@@ -1,13 +1,17 @@
 package com.davidmarian_buzatu.bookster.services;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.model.Message;
+
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.davidmarian_buzatu.bookster.model.Reservation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -142,13 +146,15 @@ public class ReservationActions {
     }
 
 
-    private void deleteReservationManager(Reservation reservation, Context context, String collection, String document) {
+    private void deleteReservationManager(Reservation reservation, Context context, String collection, String document,FragmentActivity activity) {
+        MessageActions messageActions=new MessageActions();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     final List<Reservation> newListReservation = getListReservationsFromDoc(task, reservation);
                     saveReservationList(newListReservation, collection, document, context);
+                    messageActions.sendEmail(context,document,activity,"CanceledReservation");
                 }
                 if (mDialog.isShowing()) {
                     mDialog.dismiss();
@@ -161,7 +167,6 @@ public class ReservationActions {
 
 
     private void deleteReservationUser(Reservation reservation, Context context, String collection, String document) {
-        //List<Reservation> newListReservation = new ArrayList<>();
         getListOfReservations(collection, document).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -196,10 +201,10 @@ public class ReservationActions {
     }
 
 
-    public Reservation createReservation(Offer offer, double totalPrice) {
+    public Reservation createReservation(Offer offer, double totalPrice, Long startDate, Long endDate) {
         Reservation reservation = new Reservation();
-        reservation.setEndDate(offer.getDateEnd());
-        reservation.setStartDate(offer.getDateStart());
+        reservation.setEndDate(endDate);
+        reservation.setStartDate(startDate);
         reservation.setLocation(offer.getCityName());
         reservation.setOfferID(offer.getOfferID());
         reservation.setPresentationURL(offer.getPresentationURL());
@@ -255,15 +260,15 @@ public class ReservationActions {
                 });
     }
 
-    public void deleteReservationFromManager(Reservation reservation, Context context, String collection, String document) {
+    public void deleteReservationFromManager(Reservation reservation, Context context, String collection, String document,FragmentActivity activity) {
         displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
-        deleteReservationManager(reservation, context, collection, document);
+        deleteReservationManager(reservation, context, collection, document,activity);
         deleteReservationUser(reservation, context, "reservations", reservation.getClientID());
     }
 
-    public void deleteReservationForClient(Reservation reservation, Context context, String collection, String document,String managerID) {
+    public void deleteReservationForClient(Reservation reservation, Context context, String collection, String document,String managerID,FragmentActivity activity) {
         displayLoadingDialog(context, R.string.frag_displayOffer_dialog_delete_reservation_message);
         deleteReservationUser(reservation, context, collection, document);
-        deleteReservationManager(reservation, context, "reservationsManager", managerID);
+        deleteReservationManager(reservation, context, "reservationsManager", managerID,activity);
     }
 }

@@ -1,6 +1,8 @@
 package com.davidmarian_buzatu.bookster.services;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +54,7 @@ public class MessageActions {
     }
 
     @SuppressLint("IntentReset")
-    public void sendEmail(View root, String managerId, FragmentActivity activity) {
+    public void sendEmail(Context context, String managerId, FragmentActivity activity,String subject) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 
         FirebaseFirestore.getInstance()
@@ -66,7 +68,7 @@ public class MessageActions {
                             DocumentSnapshot doc = task.getResult();
                             if (doc != null) {
                                 mManagerMail[0] = (String) doc.getData().get("Email");
-                                sendEmailToManager(emailIntent, root, activity);
+                                sendEmailToManager(emailIntent, context, activity,subject);
                             }
                         } else {
                             Log.d("EMAIL", "Failed to get manager email:" + managerId + task.getException());
@@ -77,17 +79,18 @@ public class MessageActions {
 
     }
 
-    private void sendEmailToManager(Intent emailIntent, View root, FragmentActivity activity) {
+    private void sendEmailToManager(Intent emailIntent, Context context, FragmentActivity activity, String subject) {
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, mManagerMail);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, ...");
 
         try {
             activity.startActivityForResult(emailIntent, LAUNCH_MAIL_ACTIVITY);
         } catch (android.content.ActivityNotFoundException e) {
-            Toast.makeText(root.getContext(), "There is no email client installed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "There is no email client installed", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }

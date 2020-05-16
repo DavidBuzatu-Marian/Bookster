@@ -1,11 +1,17 @@
 package com.davidmarian_buzatu.bookster.services;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+
+import android.util.Log;
+import android.view.View;
+
 import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.model.Offer;
@@ -16,6 +22,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,16 +52,31 @@ public class OfferActions {
                 ReservationActions.getInstance().deleteAllReservationsForOffer(offer, context, mDialog);
             }
         });
-
+        deleteOfferImages(offer);
     }
 
+    private void deleteOfferImages(Offer offer) {
+        for(String imageURL: offer.getPictures()) {
+            StorageReference photoReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageURL);
+            photoReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()) {
+                        Log.d("OFFER_IMG", "Successfully deleted!");
+                    } else {
+                        Log.d("OFFER_IMG", "Deleting failed!");
+                    }
+                }
+            });
+        }
+    }
 
     private Task<Void> deleteOffer(Offer offer) {
         return FirebaseFirestore.getInstance().collection("offers").document(offer.getOfferID()).delete();
     }
 
 
-    public void reserveOffer(Offer offer, Context context, double totalPrice) {
+    public void reserveOffer(Offer offer, Context context, double totalPrice, Long startDate, Long endDate) {
         int nrRoomsAvailable = Integer.parseInt(offer.getRoomsAvailable());
         if (nrRoomsAvailable > 0) {
             offer.setRoomsAvailable(--nrRoomsAvailable + "");
@@ -64,7 +87,7 @@ public class OfferActions {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Reservation reservation = ReservationActions.getInstance().createReservation(offer, totalPrice);
+                    Reservation reservation = ReservationActions.getInstance().createReservation(offer, totalPrice, startDate, endDate);
                     ReservationActions.getInstance().saveReservationToFirebase(reservation, context, offer.getManagerID(), mDialog);
                 } else {
                     mDialog.dismiss();

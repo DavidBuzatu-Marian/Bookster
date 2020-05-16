@@ -70,7 +70,6 @@ public class AddOfferFragment extends Fragment {
             "roomFacilities", "price", "rating", "size"};
     private View mRoot;
     private ProgressDialog mDialog;
-    private boolean mErrorFound;
 
     @Nullable
     @Override
@@ -131,6 +130,7 @@ public class AddOfferFragment extends Fragment {
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
                     getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
+                    getActivity().onBackPressed();
                 }
                 mDialog.dismiss();
             }
