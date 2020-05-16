@@ -14,7 +14,7 @@ A mobile application for booking vacations
 </div>
 
 ## Usage
-1. Install apk directly to an Android mobile phone (APK >= 23) (*link soon)
+1. Install apk directly to an Android mobile phone (APK >= 23) (Link: https://drive.google.com/open?id=1_dXdix5YP6lySrnSeMrl7dI5Cqq6HUHj)
 2. Clone repository
 3. Open project in Android Studio
 4. Connect Android mobile phone (APK >=23) with an USB cable
