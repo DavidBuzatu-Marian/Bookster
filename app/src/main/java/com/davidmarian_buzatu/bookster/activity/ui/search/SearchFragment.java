@@ -48,7 +48,6 @@ public class SearchFragment extends Fragment {
         getUserInfo(root);
         setUpSearchView(root);
         setUpCalendarPicker(root);
-        setUpNumberPicker(root);
         setUpSubmitButton(root);
         return root;
     }
@@ -156,12 +155,6 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    private void setUpNumberPicker(View root) {
-        NumberPicker np = root.findViewById(R.id.frag_search_NP_persons);
-
-        np.setMinValue(1);
-        np.setMaxValue(10);
-    }
 
 
     private void startListOffersFragment(View view) {

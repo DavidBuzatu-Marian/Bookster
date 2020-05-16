@@ -14,12 +14,16 @@ import com.google.gson.GsonBuilder;
 
 public class FragmentActions {
 
-    public static void startDisplayOfferFragment(Offer offer, FragmentActivity activity, String displayType) {
+    public static void startDisplayOfferFragment(Offer offer, FragmentActivity activity, String displayType, Long startDate, Long endDate) {
         DisplayOfferFragment nextFragment = new DisplayOfferFragment();
         Bundle bundle = new Bundle();
         String offerStringified = new GsonBuilder().create().toJson(offer);
         bundle.putString("Offer", offerStringified);
         bundle.putString("displayOfferType", displayType);
+        if(startDate != null && endDate != null) {
+            bundle.putLong("startDate", startDate);
+            bundle.putLong("endDate", endDate);
+        }
         nextFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, nextFragment)

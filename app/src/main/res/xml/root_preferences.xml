@@ -2,16 +2,6 @@
 
     <PreferenceCategory app:title="@string/account_header">
 
-        <EditTextPreference
-            app:key="Email"
-            app:title="@string/email_title"
-            app:summary="@string/email_summary"/>
-
-        <EditTextPreference
-            app:key="Password"
-            app:title="@string/password_title"
-            app:summary="@string/password_summary"/>
-
         <Preference
             app:key="LogOut"
             app:title="@string/logOut_title" />
