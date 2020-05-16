@@ -204,47 +204,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/frag_search_CV_persons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="24dp"
-            app:cardCornerRadius="30dp"
-            app:cardElevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/frag_search_CV_date">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="60dp"
-                    android:contentDescription="@string/frag_search_IV_content_descr"
-                    android:src="@drawable/ic_name" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="@string/frag_search_TV_nr_persons"
-                    android:textSize="14sp" />
-
-                <NumberPicker
-                    android:id="@+id/frag_search_NP_persons"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="12dp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/frag_search_BTN_search"
@@ -256,6 +215,6 @@
             android:text="@string/frag_search_BTN_search"
             app:cornerRadius="18dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/frag_search_CV_persons" />
+            app:layout_constraintTop_toBottomOf="@id/frag_search_CV_date" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

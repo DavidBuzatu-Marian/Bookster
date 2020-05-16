@@ -68,7 +68,6 @@ public class AddOfferFragment extends Fragment {
             "roomFacilities", "price", "rating", "size"};
     private View mRoot;
     private ProgressDialog mDialog;
-    private boolean mErrorFound;
 
     @Nullable
     @Override
