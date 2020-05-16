@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.activity.ui.offers.services.InputFilterMinMax;
 import com.davidmarian_buzatu.bookster.services.DialogShow;
 import com.davidmarian_buzatu.bookster.activity.ui.search.services.UploadCities;
 import com.davidmarian_buzatu.bookster.constant.Facilities;
@@ -88,7 +90,13 @@ public class AddOfferFragment extends Fragment {
         setSpinner(root, R.id.frag_addOffer_SP_city, new UploadCities().getCities()); // set spinner for city
         setSpinner(root, R.id.frag_addOffer_SP_country, new UploadCities().getCountries()); // set spinner for country
         setTIETList(root);
+        setRatingTIET(root);
         setListenerForSubmit(root);
+    }
+
+    private void setRatingTIET(View root) {
+        TextInputEditText tiet = root.findViewById(R.id.frag_addOffer_TIET_room_rating);
+        tiet.setFilters(new InputFilter[] {new InputFilterMinMax(0.0, 5.0)});
     }
 
     private void setTIETList(View root) {

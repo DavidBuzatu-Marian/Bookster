@@ -100,6 +100,7 @@
     <string name="frag_addOffer_dialog_message">Saving offer</string>
     <string name="frag_displayOffer_BTN_delete_reservation_manager">Cancel reservation for client</string>
     <string name="frag_displayOffer_dialog_delete_reservation_message">Deleting reservation</string>
+    <string name="act_main_TV_LOGO">Bookster</string>
     <string name="frag_home_TV_empty">No reservations made</string>
 
 
