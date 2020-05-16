@@ -8,7 +8,7 @@ public class Offer {
 
     private String mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating, mLongitude, mLatitude, mOfferID;
     private List<String> mFacilities, mPictures, mPopularFacilities;
-    private String mNrPersons, mPrice, mRoomsAvailable, mSize, mCityName, mCountry;
+    private String mPrice, mRoomsAvailable, mSize, mCityName, mCountry;
     private Long mDateStart, mDateEnd;
 
     public void setOfferFromMap(Map<String, Object> mapOffer) {
@@ -40,9 +40,6 @@ public class Offer {
                     break;
                 case "managerID":
                     setManagerID((String) entry.getValue());
-                    break;
-                case "nrPerson":
-                    setNrPersons((String) entry.getValue());
                     break;
                 case "pictures":
                     setPictures((ArrayList<String>) entry.getValue());
@@ -208,14 +205,6 @@ public class Offer {
 
     public String getManagerID() {
         return mManagerID;
-    }
-
-    public void setNrPersons(String value) {
-        this.mNrPersons = value;
-    }
-
-    public String getNrPersons() {
-        return mNrPersons;
     }
 
     public String getLongitude() {

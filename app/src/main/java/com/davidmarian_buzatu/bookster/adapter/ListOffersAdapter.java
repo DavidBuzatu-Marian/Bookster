@@ -26,6 +26,7 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
     private List<Offer> mDataSet;
     private Context mContext;
     private String mDisplayOfferType;
+    private Long mStartDate, mEndDate;
 
     public ListOffersAdapter(List<Offer> dataset, Context context, FragmentActivity activity, String displayOfferType) {
         mDataSet = dataset;
@@ -34,6 +35,13 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
         mDisplayOfferType = displayOfferType;
     }
 
+    public void setStartDate(Long startDate) {
+        mStartDate = startDate;
+    }
+
+    public void setEndDate(Long endDate) {
+        mEndDate = endDate;
+    }
 
     @NonNull
     @Override
@@ -84,7 +92,7 @@ public class ListOffersAdapter extends RecyclerView.Adapter<ListOffersAdapter.Li
             mOpenOfferButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FragmentActions.startDisplayOfferFragment(offer, mActivity, mDisplayOfferType);
+                    FragmentActions.startDisplayOfferFragment(offer, mActivity, mDisplayOfferType, mStartDate, mEndDate);
                 }
             });
         }
