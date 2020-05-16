@@ -1,8 +1,11 @@
 package com.davidmarian_buzatu.bookster.model;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Offer {
 
@@ -237,5 +240,38 @@ public class Offer {
 
     public void setCountry(String country) {
         this.mCountry = country;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Offer offer = (Offer) o;
+        return Objects.equals(mName, offer.mName) &&
+                Objects.equals(mDescription, offer.mDescription) &&
+                Objects.equals(mPresentationURL, offer.mPresentationURL) &&
+                Objects.equals(mRoomDescription, offer.mRoomDescription) &&
+                Objects.equals(mRoomType, offer.mRoomType) &&
+                Objects.equals(mManagerID, offer.mManagerID) &&
+                Objects.equals(mRating, offer.mRating) &&
+                Objects.equals(mLongitude, offer.mLongitude) &&
+                Objects.equals(mLatitude, offer.mLatitude) &&
+                Objects.equals(mOfferID, offer.mOfferID) &&
+                Objects.equals(mFacilities, offer.mFacilities) &&
+                Objects.equals(mPictures, offer.mPictures) &&
+                Objects.equals(mPopularFacilities, offer.mPopularFacilities) &&
+                Objects.equals(mPrice, offer.mPrice) &&
+                Objects.equals(mRoomsAvailable, offer.mRoomsAvailable) &&
+                Objects.equals(mSize, offer.mSize) &&
+                Objects.equals(mCityName, offer.mCityName) &&
+                Objects.equals(mCountry, offer.mCountry) &&
+                Objects.equals(mDateStart, offer.mDateStart) &&
+                Objects.equals(mDateEnd, offer.mDateEnd);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mName, mDescription, mPresentationURL, mRoomDescription, mRoomType, mManagerID, mRating, mLongitude, mLatitude, mOfferID, mFacilities, mPictures, mPopularFacilities, mPrice, mRoomsAvailable, mSize, mCityName, mCountry, mDateStart, mDateEnd);
     }
 }
