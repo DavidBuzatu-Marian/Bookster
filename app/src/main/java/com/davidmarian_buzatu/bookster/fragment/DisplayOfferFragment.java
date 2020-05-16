@@ -114,6 +114,15 @@ public class DisplayOfferFragment extends Fragment {
                 buttonCancelOffer.setVisibility(View.GONE);
                 buttonCancelReservationManager.setVisibility(View.GONE);
                 buttonCancelReservation.setVisibility(View.VISIBLE);
+                buttonCancelReservation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ReservationActions.getInstance().deleteReservationForClient(mOffer, getContext(), "reservations", FirebaseAuth.getInstance().getUid(),getActivity());
+                        getActivity().getSupportFragmentManager().beginTransaction().remove(reference).commit();
+
+
+                    }
+                });
                 break;
             case OFFER_CLIENT:
                 buttonCancelOffer.setVisibility(View.GONE);
@@ -344,7 +353,7 @@ public class DisplayOfferFragment extends Fragment {
         textViewMail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageActions.sendEmail(root, mOffer.getManagerID(), getActivity());
+                messageActions.sendEmail(root.getContext(), mOffer.getManagerID(), getActivity(),"");
             }
         });
 

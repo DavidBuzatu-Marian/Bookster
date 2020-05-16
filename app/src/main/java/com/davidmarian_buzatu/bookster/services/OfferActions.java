@@ -1,11 +1,16 @@
 package com.davidmarian_buzatu.bookster.services;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+
+import android.view.View;
+
 import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.davidmarian_buzatu.bookster.R;
 import com.davidmarian_buzatu.bookster.model.Offer;
@@ -46,7 +51,6 @@ public class OfferActions {
         });
 
     }
-
 
     private Task<Void> deleteOffer(Offer offer) {
         return FirebaseFirestore.getInstance().collection("offers").document(offer.getOfferID()).delete();

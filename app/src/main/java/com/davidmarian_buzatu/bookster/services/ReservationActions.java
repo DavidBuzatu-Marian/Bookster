@@ -1,13 +1,18 @@
 package com.davidmarian_buzatu.bookster.services;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.davidmarian_buzatu.bookster.R;
+import com.davidmarian_buzatu.bookster.activity.ui.search.helper.DialogShow;
+import com.davidmarian_buzatu.bookster.model.Message;
+
 import com.davidmarian_buzatu.bookster.model.Offer;
 import com.davidmarian_buzatu.bookster.model.Reservation;
 import com.google.android.gms.tasks.OnCompleteListener;
